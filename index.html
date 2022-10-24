@@ -51,9 +51,9 @@
   </div>
 </nav>
 
-<div id="main-wrapper" class="d-flex justify-content-start flex-column" style="margin: auto; max-width:1200px; height: 100vh;"> <!-- main-page wrapper for max-width -->
+<div id="main-wrapper" class="d-flex justify-content-start flex-column" style="margin: auto auto; max-width:1200px; height: 90vh; "> <!-- main-page wrapper for max-width -->
 
-<div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center"> <!-- authforms wrapper -->
+<div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center h-100"> <!-- authforms wrapper -->
 
 <!-- signup forms -->
 <div id="signup-card" class="d-flex justify-content-center mb-1 d-none auth-form">
@@ -191,9 +191,9 @@
 <div id="sentences-container" class="mt-4"></div>
 
 <!-- error message to user -->
-<div class="d-flex justify-content-center d-none">
-  <div id="fetching-data-loader" class="spinner-border hide" role="status"></div>
-  <div id="error-message-alert" class="alert alert-dark hide" role="alert">
+<div class="d-flex justify-content-center">
+  <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
+  <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
   <span id="error-message-text">There was a problem fetching the data.</span>
   </div>
 </div>
@@ -220,6 +220,12 @@
   .chart-d-sm-w-100 {
     width: 100% !important;
   }
+  #main-wrapper {
+    padding: 0px 20px;
+  }
+}
+
+@media (max-width: 1219.98px) {
   #main-wrapper {
     padding: 0px 20px;
   }
@@ -585,10 +591,10 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
 }
 
 function errorAlert(errMessage) {
-    errorMessageBox.classList.remove('hide')
+    errorMessageBox.classList.remove('d-none')
     errorMessageText.innerHTML = errMessage
     setTimeout(() => {
-    errorMessageBox.classList.add('hide')
+    errorMessageBox.classList.add('d-none')
     }, 2000)
 }
 
