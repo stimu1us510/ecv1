@@ -51,9 +51,9 @@
   </div>
 </nav>
 
-<div class="d-flex justify-content-start flex-column" style="margin: auto; max-width:1200px;"> <!-- main-page wrapper for max-width -->
+<div id="main-wrapper" class="d-flex justify-content-start flex-column" style="margin: auto; max-width:1200px; height: 100vh;"> <!-- main-page wrapper for max-width -->
 
-<div id="getAuth-forms"> <!-- authforms wrapper -->
+<div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center"> <!-- authforms wrapper -->
 
 <!-- signup forms -->
 <div id="signup-card" class="d-flex justify-content-center mb-1 d-none auth-form">
@@ -74,7 +74,7 @@
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="mt-1 mb-3">
-                <button type="submit" class="btn btn-warning w-100">Signup</button>
+                <button type="submit" class="btn btn-dark w-100">Signup</button>
             </div>
         </form>
         </div>  
@@ -99,7 +99,7 @@
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="mt-1 mb-3">
-                <button type="submit" class="btn btn-warning w-100">Login</button>
+                <button type="submit" class="btn btn-dark w-100">Login</button>
             </div>
         </form>
         </div>      
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-<!-- welcome message   -->
+<!-- welcome message -->
 <div id="welcome-alert-container" class="d-flex justify-content-center d-none">
   <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" 
   role="alert" style="max-width: 800px;">
@@ -135,9 +135,9 @@
 
 <!-- user history w/score input  -->
 <div id="user-history-cont" class="d-none w-100">
-<!-- chart -->
+<!-- chart 1 daily totals -->
 <div class="d-flex justify-content-center mb-2">
-  <div class="h-50 w-50">
+  <div class="h-25 w-75 chart-d-sm-w-100">
       <canvas id="myChart"></canvas>
   </div>
 </div>
@@ -188,10 +188,10 @@
 </div>
 
 <!-- sentences -->
-<div id="sentences-container"></div>
+<div id="sentences-container" class="mt-4"></div>
 
 <!-- error message to user -->
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center d-none">
   <div id="fetching-data-loader" class="spinner-border hide" role="status"></div>
   <div id="error-message-alert" class="alert alert-dark hide" role="alert">
   <span id="error-message-text">There was a problem fetching the data.</span>
@@ -199,7 +199,7 @@
 </div>
 
 <!-- more sentences -->
-<div id="see-more-sentences-container" class="d-flex justify-content-center">
+<div id="see-more-sentences-container" class="d-flex justify-content-center d-none">
   <button id="show-more-button" class="btn btn-light hide border-1 shadow-sm">show more</button>
 </div>
 
@@ -210,10 +210,20 @@
 .mainAccord--summary {
   font-size: 1rem;
 }
+
 .brand-img {
-   -webkit-filter: invert(1);
-   filter: invert(1);
-   }
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
+@media (max-width: 767.98px) {
+  .chart-d-sm-w-100 {
+    width: 100% !important;
+  }
+  #main-wrapper {
+    padding: 0px 20px;
+  }
+}
 </style>
 
 <script>
@@ -364,9 +374,6 @@ hideAuthForms() //initial hide while waiting for authMe response
 authMe2() //check if the user needs to login or not on pageload
 </script>
 
-
-
-
 <script>
 let lablesForChartData = []
 let chartData = []
@@ -384,7 +391,11 @@ let chartData = []
   const config = {
     type: 'line',
     data: data,
-    options: {}
+    options: {
+      animation:{
+        duration: 0
+      }
+    }
   };
 
 </script>
@@ -465,6 +476,8 @@ getAllHistory()
 //document.querySelector('#home_header1').classList.add('d-none') // hide default softr header on the SPA page
 </script>
 
+
+
 <script>
 const showMoreButton = document.getElementById('show-more-button')
 const loadingSpinner = document.getElementById('fetching-data-loader')
@@ -524,7 +537,6 @@ function loadSentences() {
 
   sentencesContainer.appendChild(sentences)
   size = size +50
-
 }
 
 showMoreButton.onclick = () => {
