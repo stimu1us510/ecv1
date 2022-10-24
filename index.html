@@ -136,7 +136,7 @@
 <!-- user history w/score input  -->
 <div id="user-history-cont" class="d-none w-100">
 <!-- chart 1 daily totals -->
-<div class="d-flex justify-content-center mb-2">
+<div class="d-flex justify-content-center mb-4">
   <div class="h-25 w-75 chart-d-sm-w-100">
       <canvas id="myChart"></canvas>
   </div>
@@ -183,15 +183,15 @@
       </label>
   </div>
 
-  <button type="submit" class="btn btn-primary mt-2">Submit</button>
+  <button type="submit" class="btn btn-primary mt-4">Submit</button>
 </form>
 </div>
 
 <!-- sentences -->
-<div id="sentences-container" class="mt-4"></div>
+<div id="sentences-container" class="mt-4 pt-2"></div>
 
 <!-- error message to user -->
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center p-2">
   <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
   <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
   <span id="error-message-text">There was a problem fetching the data.</span>
@@ -199,9 +199,44 @@
 </div>
 
 <!-- more sentences -->
-<div id="see-more-sentences-container" class="d-flex justify-content-center d-none">
+<div id="see-more-sentences-container" class="d-flex justify-content-center pb-3 d-none">
   <button id="show-more-button" class="btn btn-light hide border-1 shadow-sm">show more</button>
 </div>
+
+
+<div id="floating-buttons">      
+  <div style="position: fixed; bottom: 0.4rem; right: 25px;">
+  <div class="d-flex flex-column float-button-cont">
+      <button id="goToTop" class="btn float-button mb-2 shadow d-none"><i class="bi bi-arrow-up"></i></button>
+      <button id="randomizeButton" class="btn float-button mb-2 shadow d-none"><i class="bi bi-shuffle"></i></button>
+  </div>
+</div>
+
+<style>
+.float-button {
+  height: 3rem;
+  width: 3rem;
+  background-color: #FFFAFA;
+  border-radius: 50px;
+  border-color: none;
+  font-size: 1.5rem;
+  color: grey;
+  outline: none !important;
+  box-shadow: none;
+}
+.float-button:active {
+  border: 0px;
+}
+.float-button:focus {
+  border: 0px;
+}
+.float-button:disabled,
+.float-button[disabled]{
+  border: 0px;
+  outline: none !important;
+  box-shadow: none;
+}
+</style>
 
 
 </div> <!-- body wrapper end -->
@@ -376,6 +411,23 @@ function toggleHelperTools() {
   helperTools.classList.remove('d-none')
 }
 
+// -- button functions -- //
+document.querySelector("#randomizeButton").onclick = () => {
+    //document.querySelector("#randomizeButton").disabled = true
+    //setTimeout(() => {document.querySelector("#randomizeButton").disabled = false;}, 3000) // stop shuffle spamming
+    var itemsCont = document.querySelector('#sentences-container') //items list must be first match
+    var shuffleItems = itemsCont.querySelectorAll('.card')
+    for (let i = shuffleItems.length; i >= 0; i--) {
+    itemsCont.appendChild(shuffleItems[Math.random() * i | 0])
+    }
+}
+
+document.getElementById("goToTop").onclick = () => sentencesContainer.scrollIntoView()
+
+const showGoToTopButton = _ => document.getElementById("goToTop").classList.add("d-none")
+const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remove("d-none")
+document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopButton() : showGoToTopButton())
+
 hideAuthForms() //initial hide while waiting for authMe response
 authMe2() //check if the user needs to login or not on pageload
 </script>
@@ -485,16 +537,16 @@ getAllHistory()
 
 
 <script>
-const showMoreButton = document.getElementById('show-more-button')
+const showMoreButton = document.getElementById('see-more-sentences-container')
 const loadingSpinner = document.getElementById('fetching-data-loader')
 const sentencesContainer = document.getElementById('sentences-container')
 const errorMessageBox = document.getElementById('error-message-alert')
 const errorMessageText = document.getElementById('error-message-text')
 let size = 0
 isDatafetched = false
+isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
 
 function loadSentences() {
-  
   const sentences = document.createDocumentFragment()
   fetchedData.slice(size, size+50).map(function (i, a) {
     // create card
@@ -542,6 +594,9 @@ function loadSentences() {
     })
 
   sentencesContainer.appendChild(sentences)
+  if (isInitialLoad) sentencesContainer.scrollIntoView()
+  isInitialLoad = false
+ document.querySelector('#randomizeButton').classList.remove('d-none')
   size = size +50
 }
 
@@ -570,7 +625,8 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
 }
 
 function getLockedSentences() {
-fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
+  loadingSpinner.classList.remove('d-none')
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
   method: 'GET',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
   })
@@ -578,14 +634,14 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
   .then(function (data) {
     fetchedData = data  // JSON from our response saved as fetchedData
     isDatafetched = true
-    showMoreButton.classList.remove('hide')
-    loadingSpinner.classList.add('hide')
+    showMoreButton.classList.remove('d-none')
+    loadingSpinner.classList.add('d-none')
     loadSentences()
     console.log(data)
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
-	showMoreButton.classList.add('hide')
+	showMoreButton.classList.add('d-none')
 	errorAlert("Loggin to access this content")
   })    
 }
