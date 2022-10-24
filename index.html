@@ -35,12 +35,12 @@
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="toggleHelperTools();return false;">Helper Tools</a>
         </li>
-        <li class="nav-item dropdown mx-3">
+        <li id="user-profile-dropdown" class="nav-item dropdown mx-3 d-none">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Profile
+            <i class="bi bi-person fa-lg"></i> Profile
           </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Action</a></li>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+            <li><a class="dropdown-item" href="#">My History</a></li>
             <li><a class="dropdown-item" href="#">Update Information</a></li>
             <div class="dropdown-divider"></div>
             <li><a class="dropdown-item d-flex justify-content-between" href="#" onclick="logout();return false;">Logout <i class="bi bi-box-arrow-right"></i></a></li>
@@ -336,6 +336,7 @@ function showAuthForms() {
 function setAuthDisp() {
   document.querySelector('#user-history-cont').classList.remove('d-none')
   document.querySelector('#welcome-alert-container').classList.remove('d-none')
+  document.querySelector('#user-profile-dropdown').classList.remove('d-none')
   document.querySelector('#welcome-user').innerHTML = user
 }
 
@@ -343,6 +344,7 @@ function setNoAuthDisp() {
   clearSentences()
   document.querySelector('#user-history-cont').classList.add('d-none')
   document.querySelector('#welcome-alert-container').classList.add('d-none')
+  document.querySelector('#user-profile-dropdown').classList.add('d-none')
 }
 
 function clearSentences() {
