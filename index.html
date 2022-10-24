@@ -15,9 +15,9 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-light shadow-sm mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="container-fluid">
-    <a class="navbar-brand mx-1" href="#"><img style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png"></a>
+    <a class="navbar-brand mx-1" href="#"><img class="brand-img" style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -51,39 +51,7 @@
   </div>
 </nav>
 
-
-
-
-
-<div id="nav-cont" class="">
-<nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #e3f2fd;">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse " id="navbarToggle">
-    <a class="navbar-brand mx-3" href="/"><img style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png"></a>
-    <ul class="navbar-nav ms-auto me-5 mt-2 mt-lg-0 text-primary">
-      <li class="nav-item mx-2">
-        <a class="nav-link" href="/">Home</a>
-      </li>
-      <li class="nav-item mx-3">
-        <a class="nav-link" href="#" onclick="getLockedSentences();return false;">Show All</a>    
-      </li>
-      <li class="nav-item mx-3">
-        <a class="nav-link" href="#">Collections</a>
-      </li>
-      <li class="nav-item mx-3">
-        <a class="nav-link" href="#" onclick="toggleHelperTools();return false;">helper tools</a>
-      </li>
-      <li class="nav-item mx-3 text-dark">
-        <a class="nav-link" href="#" onclick="logout();return false;"> Logout <i class="bi bi-box-arrow-right"></i></a>
-      </li>
-    </ul>
-  </div>
-</nav>
-</div>
-
-<div class="d-flex justify-content-start flex-column" style="margin: auto; max-width:1200px;">
+<div class="d-flex justify-content-start flex-column" style="margin: auto; max-width:1200px;"> <!-- main-page wrapper for max-width -->
 
 <div id="getAuth-forms"> <!-- authforms wrapper -->
 
@@ -146,19 +114,12 @@
 <div id="helper-tools" class="d-flex justify-content-center d-none mt-6 mb-2">
     <div class="card">
         <div class="card-body" style="width: 400px;">
-        
             <button class="btn btn-warning w-100 mb-2" onclick="signup()">Signup</button>
-
             <button class="btn btn-warning w-100 mb-2" onclick="login()">Login</button>
-
             <button class="btn btn-outline-danger w-100 mb-2" onclick="logout()">Logout</button>
-
             <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
-
             <button class="btn btn-outline-dark w-100 mb-2" onclick="authMe()">Auth Me</button>
-
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
-            
         </div>
     </div>
 </div>
@@ -171,7 +132,6 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 </div>
-
 
 <!-- user history w/score input  -->
 <div id="user-history-cont" class="d-none w-100">
@@ -188,7 +148,6 @@
 
 <!-- point entry form -->
 <form id="point-form">
-
   <div class="form-check">
       <input class="form-check-input" type="radio" name="flexRadioDefault" value="1" id="flexRadioDefault1" required>
       <label class="form-check-label" for="flexRadioDefault1">
@@ -225,7 +184,6 @@
   </div>
 
   <button type="submit" class="btn btn-primary mt-2">Submit</button>
-
 </form>
 </div>
 
@@ -252,6 +210,10 @@
 .mainAccord--summary {
   font-size: 1rem;
 }
+.brand-img {
+   -webkit-filter: invert(1);
+   filter: invert(1);
+   }
 </style>
 
 <script>
