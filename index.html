@@ -59,7 +59,7 @@
 <!-- signup forms -->
 <div id="signup-card" class="d-flex justify-content-center mb-1 d-none auth-form">
     <div class="card">
-        <div class="card-body" style="width: 400px;">
+        <div class="card-body" style="min-width: 400px; max-width: 400px;">
         <form id="signup-form">
             <div class="d-flex justify-content-center mt-2 mb-3"><h3>Signup</h3></div>
             <div class="form-floating mb-3">
@@ -88,7 +88,7 @@
 <!-- login forms  -->
 <div id="login-card" class="d-flex justify-content-center mb-1">
     <div class="card">
-        <div class="card-body" style="width: 400px;">
+        <div class="card-body" style="min-width: 400px; max-width: 400px;">
         <form id="login-form">
             <div class="d-flex justify-content-center mt-2 mb-3"><h3>Login</h3></div>
             <div class="form-floating mb-3">
@@ -114,7 +114,7 @@
 <!-- temp helper tools  -->
 <div id="helper-tools" class="d-flex justify-content-center d-none mt-6 mb-2">
     <div class="card">
-        <div class="card-body" style="width: 400px;">
+        <div class="card-body" style="min-width: 400px;">
             <button class="btn btn-warning w-100 mb-2" onclick="signup()">Signup</button>
             <button class="btn btn-warning w-100 mb-2" onclick="login()">Login</button>
             <button class="btn btn-outline-danger w-100 mb-2" onclick="logout()">Logout</button>
@@ -252,9 +252,13 @@
   filter: invert(1);
 }
 
-#site-icon {
-  -webkit-filter: invert(1);
-  filter: invert(1);
+@media (max-width: 449.98px) {
+  .chart-d-sm-w-100 {
+    width: 100% !important;
+  }
+  .card-body {
+    min-width: 350px !important;
+  }
 }
 
 @media (max-width: 767.98px) {
