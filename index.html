@@ -53,6 +53,17 @@
 </nav>
 
 <div id="main-wrapper" class="container-xl d-flex justify-content-start flex-column" style="height: 80vh;"> <!-- main-page wrapper for max-width -->
+  
+  <!-- temp helper tools  -->
+  <div id="helper-tools" class="d-flex justify-content-center d-none">
+    <div class="card">
+        <div class="card-body" style="min-width: 400px;">
+            <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
+            <button class="btn btn-outline-dark w-100 mb-2" onclick="authMe()">Auth Me</button>
+            <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
+        </div>
+    </div>
+  </div>
 
   <div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center h-100"> <!-- authforms wrapper -->
     <!-- signup forms -->
@@ -109,17 +120,6 @@
       <span>Need an account? <a id="myLink" title="singup" href="PleaseEnableJavascript.html" onclick="dispSignup();return false;">signup</a></span>
     </div>
   </div> <!-- authforms wrapper end -->
-
-  <!-- temp helper tools  -->
-  <div id="helper-tools" class="d-flex justify-content-center d-none mt-6 mb-2">
-      <div class="card">
-          <div class="card-body" style="min-width: 400px;">
-              <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
-              <button class="btn btn-outline-dark w-100 mb-2" onclick="authMe()">Auth Me</button>
-              <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
-          </div>
-      </div>
-  </div>
 
   <!-- welcome message -->
   <div id="welcome-alert-container" class="d-flex justify-content-center d-none">
