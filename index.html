@@ -425,11 +425,10 @@ function toggleHelperTools() {
 document.querySelector("#randomizeButton").onclick = () => {
     //document.querySelector("#randomizeButton").disabled = true
     //setTimeout(() => {document.querySelector("#randomizeButton").disabled = false;}, 3000) // stop shuffle spamming
-    var itemsCont = document.querySelector('#sentences-container') //items list must be first match
-    var shuffleItems = itemsCont.querySelectorAll('.card')
-    for (let i = shuffleItems.length; i >= 0; i--) {
-    itemsCont.appendChild(shuffleItems[Math.random() * i | 0])
-    }
+    var loadedSentenceCards = document.querySelector('#sentences-container') //items list must be first match
+    var sentenceCardsToShuffle = loadedSentenceCards.querySelectorAll('.card')
+    for(let i = sentenceCardsToShuffle.length; i >= 0; i--) loadedSentenceCards.appendChild(sentenceCardsToShuffle[Math.random() * i | 0])
+    //if(window.scrollY > 400) sentencesContainer.scrollIntoView()
 }
 
 document.getElementById("goToTop").onclick = () => sentencesContainer.scrollIntoView()
