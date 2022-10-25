@@ -25,7 +25,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto mx-2">
         <li class="nav-item mx-3">
-          <a class="nav-link" aria-current="page" href="#">Home</a>
+          <a class="nav-link" aria-current="page" href="#" onclick="showHero();return false;">Home</a>
         </li>
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="getLockedSentences();return false;">Show All</a>
@@ -36,11 +36,11 @@
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="toggleHelperTools();return false;">Helper Tools</a>
         </li>
-        <li id="sign-up-button" class="nav-item mx-3">
-          <a class="nav-link btn btn-sm btn-light text-dark" href="#" onclick="dispSignup();return false;"><b>Signup</b></a>
+        <li id="log-in-button" class="nav-item mx-3">
+          <a class="nav-link btn btn-sm btn-outline-dark text-light" href="#" onclick="dispLogin();return false;"><b>Login</b></a>
         </li>
-        <li id="log-in-button" class="nav-item mx-3 d-none">
-          <a class="nav-link btn btn-sm btn-light text-dark " href="#" onclick="dispLogin();return false;"><b>Login</b></a>
+        <li id="sign-up-button" class="nav-item">
+          <a class="nav-link btn btn-sm btn-light text-dark" href="#" onclick="dispSignup();return false;"><b>Signup</b></a>
         </li>
         <li id="user-profile-dropdown" class="nav-item dropdown mx-3 d-none">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -58,7 +58,7 @@
   </div>
 </nav>
 
-<div id="main-wrapper" class="container-xl d-flex justify-content-start flex-column" style="height: 80vh;"> <!-- main-page wrapper for max-width -->
+<div id="main-wrapper" class="container-xxl d-flex justify-content-start flex-column" style="height: 80vh;"> <!-- main-page wrapper for max-width -->
   
   <!-- temp helper tools  -->
   <div id="helper-tools" class="d-flex justify-content-center d-none">
@@ -68,6 +68,38 @@
             <button class="btn btn-outline-dark w-100 mb-2" onclick="authMe()">Auth Me</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
         </div>
+    </div>
+  </div>
+
+  <!-- error message to user -->
+  <div class="d-flex justify-content-center p-2">
+    <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
+    <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
+    <span id="error-message-text">There was a problem fetching the data.</span>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div id="hero-section" class="container-xxl pt-5">
+    <h1 class="d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-bold fs-2 mb-5 text-dark">
+      英語を聞いて、リピートするだけ。
+      <br>
+      心地よいレベルを、できるだけ毎日。
+    </h1>
+    <h6 class="text-center d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-light fs-6 mb-5">
+      ただし、英語の文字は見ずに、通じる発音で。
+      <br>
+      なかなか challenging ですね。
+      <br>
+      がんばりましょう！ 
+    </h6>
+    <div class="text-center d-flex flex-row d-flex justify-content-center align-items-center text-decoration-none">
+      <div class="btn btn-lg btn-outline-primary mx-2 mb-5" onclick="dispLogin();return false;">
+        やってみる！ <i class="bi bi-arrow-right"></i>
+      </div>
+    </div>
+    <div class="d-flex flex-column d-flex justify-content-center align-items-center">
+      <img style="height: 35vh;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/de13da6a-2f9f-451c-ab00-aa830df2cffd.png">
     </div>
   </div>
 
@@ -133,14 +165,6 @@
     role="alert" style="max-width: 800px;">
         <strong class="px-5">Welcome Back <span id="welcome-user">...</span>!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  <!-- error message to user -->
-  <div class="d-flex justify-content-center p-2">
-    <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
-    <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
-    <span id="error-message-text">There was a problem fetching the data.</span>
     </div>
   </div>
 
@@ -252,6 +276,33 @@
   </div>
 
 </div> <!-- body wrapper end -->
+
+
+<!-- Footer -->
+<hr class="mt-0 mb-1">
+<div class="container-xxl d-none d-sm-block mb-1 p-0 m-0">
+  <!-- normal text md+ -->
+  <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
+    <li class="list-group-item border-0 fw-light">About</li>
+    <li class="list-group-item border-0 fw-light">School</li>
+    <li class="list-group-item border-0 fw-light">Help</li>
+    <li class="list-group-item border-0 fw-light">Support</li>
+    <li class="list-group-item border-0 fw-light">Terms</li>
+    <li class="list-group-item border-0 fw-light">Privacy</li>
+  </ul>
+</div>
+
+<div class="container-xxl d-block d-sm-none mb-3 p-0 m-0">
+  <!-- small icons on sm -->
+  <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
+    <li class="list-group-item d-flex align-items-center border-0 d-block d-sm-none fw-light fs-6 px-2">About</li>
+    <li class="list-group-item border-0 fw-light fs-6 px-2">School</li>
+    <li class="list-group-item border-0 fw-light fs-6 px-2">Help</li>
+    <li class="list-group-item border-0 fw-light fs-6 px-2">Support</li>
+    <li class="list-group-item border-0 fw-light fs-6 px-2">Terms</li>
+    <li class="list-group-item border-0 fw-light fs-6 px-2">Privacy</li>
+  </ul>
+</div>
 
 <style>
 .mainAccord--summary {
@@ -383,7 +434,8 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   .then(function (response) {
     if(!response.ok) {
         console.log("authErr")
-        showAuthForms()
+        showHero()
+        //showAuthForms()
     } else {
       console.log("sucessful auth")
       hideAuthForms()
@@ -392,6 +444,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   })
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
+    hideHero()
     setAuthDisp()
     return data.id
     })
@@ -412,22 +465,38 @@ function clearSentences() {
     while(sentencesContainer.hasChildNodes()) sentencesContainer.removeChild(sentencesContainer.lastChild)
 }
 
+function showHero() {
+  document.querySelector('#hero-section').classList.remove('d-none')
+  document.querySelector('#sign-up-button').classList.remove('d-none')
+  document.querySelector('#log-in-button').classList.remove('d-none')
+  hideAuthForms()
+
+}
+
+function hideHero() {
+  document.querySelector('#hero-section').classList.add('d-none')
+}
+
 function dispSignup() {
+  showAuthForms()
   loginCard.classList.add('d-none')
   signupCard.classList.remove('d-none')
   document.querySelector('.loginLink').classList.remove('d-none')
   document.querySelector('#sign-up-button').classList.add('d-none')
   document.querySelector('#log-in-button').classList.remove('d-none')
   document.querySelector('.signupLink').classList.add('d-none')
+  hideHero()
 }
 
 function dispLogin() {
+  showAuthForms()
   loginCard.classList.remove('d-none')
   signupCard.classList.add('d-none')
   document.querySelector('.loginLink').classList.add('d-none')
   document.querySelector('.signupLink').classList.remove('d-none')
   document.querySelector('#sign-up-button').classList.remove('d-none')
   document.querySelector('#log-in-button').classList.add('d-none')
+  hideHero()
 }
 
 function hideAuthForms() {
@@ -483,6 +552,7 @@ const showGoToTopButton = _ => document.getElementById("goToTop").classList.add(
 const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remove("d-none")
 document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopButton() : showGoToTopButton())
 
+hideHero() //intial hide 
 hideAuthForms() //initial hide while waiting for authMe response
 authMe2() //check if the user needs to login or not on pageload
 </script>
