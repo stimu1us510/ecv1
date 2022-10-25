@@ -52,193 +52,201 @@
   </div>
 </nav>
 
-<div id="main-wrapper" class="d-flex justify-content-start flex-column" style="margin: auto auto; max-width:1200px; height: 80vh; "> <!-- main-page wrapper for max-width -->
+<div id="main-wrapper" class="container-xl d-flex justify-content-start flex-column" style="height: 80vh;"> <!-- main-page wrapper for max-width -->
 
-<div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center h-100"> <!-- authforms wrapper -->
-
-<!-- signup forms -->
-<div id="signup-card" class="d-flex justify-content-center mb-1 d-none auth-form">
-    <div class="card">
-        <div class="card-body" style="min-width: 400px;">
-        <form id="signup-form">
-            <div class="d-flex justify-content-center mt-2 mb-3"><h3>Signup</h3></div>
-            <div class="form-floating mb-3">
-                <input name="name" type="text" class="form-control" id="floatingInputNameSignup" placeholder="John-Doe">
-                <label for="floatingInput">Name</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input name="email" type="email" class="form-control" id="floatingInputEmailSignup" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input name="password" type="password" minlength="4" class="form-control" id="floatingPasswordSignup" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            <div class="mt-1 mb-3">
-                <button type="submit" class="btn btn-dark w-100">Signup</button>
-            </div>
-        </form>
-        </div>  
-    </div>
-</div>
-<div class="d-flex justify-content-center loginLink d-none">
-  <span>Have an account? <a id="myLink" title="login"href="PleaseEnableJavascript.html" onclick="dispLogin();return false;">login</a></span>
-</div>
-
-<!-- login forms  -->
-<div id="login-card" class="d-flex justify-content-center mb-1">
-    <div class="card">
-        <div class="card-body" style="min-width: 400px;">
-        <form id="login-form">
-            <div class="d-flex justify-content-center mt-2 mb-3"><h3>Login</h3></div>
-            <div class="form-floating mb-3">
-                <input name="email" type="email" class="form-control" id="floatingInputEmail" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input name="password" type="password" minlength="4" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            <div class="mt-1 mb-3">
-                <button type="submit" class="btn btn-dark w-100">Login</button>
-            </div>
-        </form>
-        </div>      
-    </div>
-</div>
-<div class="d-flex justify-content-center singupLink">
-  <span>Need an account? <a id="myLink" title="singup" href="PleaseEnableJavascript.html" onclick="dispSignup();return false;">signup</a></span>
-</div>
-</div> <!-- authforms wrapper end -->
-
-<!-- temp helper tools  -->
-<div id="helper-tools" class="d-flex justify-content-center d-none mt-6 mb-2">
-    <div class="card">
-        <div class="card-body" style="min-width: 400px;">
-            <button class="btn btn-warning w-100 mb-2" onclick="signup()">Signup</button>
-            <button class="btn btn-warning w-100 mb-2" onclick="login()">Login</button>
-            <button class="btn btn-outline-danger w-100 mb-2" onclick="logout()">Logout</button>
-            <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
-            <button class="btn btn-outline-dark w-100 mb-2" onclick="authMe()">Auth Me</button>
-            <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
+  <div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center h-100"> <!-- authforms wrapper -->
+    <!-- signup forms -->
+    <div id="signup-card" class="d-flex justify-content-center mb-1 d-none auth-form">
+        <div class="card">
+            <div class="card-body" style="min-width: 400px;">
+            <form id="signup-form">
+                <div class="d-flex justify-content-center mt-2 mb-3"><h3>Signup</h3></div>
+                <div class="form-floating mb-3">
+                    <input name="name" type="text" class="form-control" id="floatingInputNameSignup" placeholder="John-Doe">
+                    <label for="floatingInput">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input name="email" type="email" class="form-control" id="floatingInputEmailSignup" placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input name="password" type="password" minlength="4" class="form-control" id="floatingPasswordSignup" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="mt-1 mb-3">
+                    <button type="submit" class="btn btn-dark w-100">Signup</button>
+                </div>
+            </form>
+            </div>  
         </div>
     </div>
-</div>
+    <div class="d-flex justify-content-center loginLink d-none">
+      <span>Have an account? <a id="myLink" title="login"href="PleaseEnableJavascript.html" onclick="dispLogin();return false;">login</a></span>
+    </div>
 
-<!-- welcome message -->
-<div id="welcome-alert-container" class="d-flex justify-content-center d-none">
-  <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" 
-  role="alert" style="max-width: 800px;">
-      <strong class="px-5">Welcome Back <span id="welcome-user">...</span>!</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- login forms  -->
+    <div id="login-card" class="d-flex justify-content-center mb-1">
+        <div class="card">
+            <div class="card-body" style="min-width: 400px;">
+            <form id="login-form">
+                <div class="d-flex justify-content-center mt-2 mb-3"><h3>Login</h3></div>
+                <div class="form-floating mb-3">
+                    <input name="email" type="email" class="form-control" id="floatingInputEmail" placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input name="password" type="password" minlength="4" class="form-control" id="floatingPassword" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="mt-1 mb-3">
+                    <button type="submit" class="btn btn-dark w-100">Login</button>
+                </div>
+            </form>
+            </div>      
+        </div>
+    </div>
+    <div class="d-flex justify-content-center singupLink">
+      <span>Need an account? <a id="myLink" title="singup" href="PleaseEnableJavascript.html" onclick="dispSignup();return false;">signup</a></span>
+    </div>
+  </div> <!-- authforms wrapper end -->
+
+  <!-- temp helper tools  -->
+  <div id="helper-tools" class="d-flex justify-content-center d-none mt-6 mb-2">
+      <div class="card">
+          <div class="card-body" style="min-width: 400px;">
+              <button class="btn btn-warning w-100 mb-2" onclick="signup()">Signup</button>
+              <button class="btn btn-warning w-100 mb-2" onclick="login()">Login</button>
+              <button class="btn btn-outline-danger w-100 mb-2" onclick="logout()">Logout</button>
+              <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
+              <button class="btn btn-outline-dark w-100 mb-2" onclick="authMe()">Auth Me</button>
+              <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
+          </div>
+      </div>
   </div>
-</div>
 
-<!-- user history w/score input  -->
-<div id="user-history-cont" class="d-none w-100">
-<!-- chart 1 daily totals -->
-<div class="d-flex justify-content-center mb-4">
-  <div class="h-25 w-75 chart-d-sm-w-100">
-      <canvas id="myChart"></canvas>
+  <!-- welcome message -->
+  <div id="welcome-alert-container" class="d-flex justify-content-center d-none">
+    <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" 
+    role="alert" style="max-width: 800px;">
+        <strong class="px-5">Welcome Back <span id="welcome-user">...</span>!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   </div>
-</div>
-<!-- total score display -->
-<div id="total-score-cont" class="d-flex flex-column justify-content-center">
-<h3>Your current total score for today is <span id="current-total-score">...</span> !</h3>
-</div>
 
-<!-- point entry form -->
-<form id="point-form">
-  <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="1" id="flexRadioDefault1" required>
-      <label class="form-check-label" for="flexRadioDefault1">
-      Award 1 point
+  <!-- user history w/score input  -->
+  <div id="user-history-cont" class="d-none w-100">
+  <!-- chart 1 daily totals -->
+  <div class="d-flex justify-content-center mb-4">
+    <div class="h-25 w-75 chart-d-sm-w-100">
+        <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <!-- total score display -->
+  <div id="total-score-cont" class="d-flex flex-column justify-content-center">
+    <h3>Your current total score for today is <span id="current-total-score">...</span> !</h3>
+  </div>
+
+  <!-- point entry form -->
+  <div class="container-xl d-flex flex-row">
+    <form id="point-form" class="">
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="1" id="flexRadioDefault1" required>
+          <label class="form-check-label" for="flexRadioDefault1">
+          Award 1 point
+          </label>
+      </div>
+      
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="2" id="flexRadioDefault2" required>
+          <label class="form-check-label" for="flexRadioDefault2">
+          Award 2 points
+          </label>
+      </div>
+      
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="3" id="flexRadioDefault3" required>
+          <label class="form-check-label" for="flexRadioDefault3">
+          Award 3 points
+          </label>
+      </div>
+      
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="4" id="flexRadioDefault4" required>
+          <label class="form-check-label" for="flexRadioDefault4">
+          Award 4 points
+          </label>
+      </div>
+      
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="5" id="flexRadioDefault5" required>
+          <label class="form-check-label" for="flexRadioDefault5">
+          Award 5 points
+          </label>
+      </div>
+        
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" value="6" id="flexRadioDefault6" required>
+        <label class="form-check-label" for="flexRadioDefault6">
+        Award 6 points
+        </label>
+    </div>
+      
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" value="7" id="flexRadioDefault7" required>
+      <label class="form-check-label" for="flexRadioDefault7">
+      Award 7 points
       </label>
-  </div>
-  
-  <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="2" id="flexRadioDefault2" required>
-      <label class="form-check-label" for="flexRadioDefault2">
-      Award 2 points
+    </div>
+      
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" value="8" id="flexRadioDefault8" required>
+      <label class="form-check-label" for="flexRadioDefault8">
+      Award 8 points
       </label>
-  </div>
-  
-  <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="3" id="flexRadioDefault3" required>
-      <label class="form-check-label" for="flexRadioDefault3">
-      Award 3 points
+    </div>
+      
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" value="9" id="flexRadioDefault9" required>
+      <label class="form-check-label" for="flexRadioDefault9">
+      Award 9 points
       </label>
-  </div>
-  
-  <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="4" id="flexRadioDefault4" required>
-      <label class="form-check-label" for="flexRadioDefault4">
-      Award 4 points
+    </div>
+      
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" value="10" id="flexRadioDefault10" required>
+      <label class="form-check-label" for="flexRadioDefault10">
+      Award 10 points
       </label>
-  </div>
-  
-  <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="5" id="flexRadioDefault5" required>
-      <label class="form-check-label" for="flexRadioDefault5">
-      Award 5 points
-      </label>
+    </div>
+
+      <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </form>
   </div>
 
-  <button type="submit" class="btn btn-primary mt-4">Submit</button>
-</form>
-</div>
+  <!-- sentences -->
+  <div id="sentences-container" class="mt-4 pt-2"></div>
 
-<!-- sentences -->
-<div id="sentences-container" class="mt-4 pt-2"></div>
-
-<!-- error message to user -->
-<div class="d-flex justify-content-center p-2">
-  <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
-  <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
-  <span id="error-message-text">There was a problem fetching the data.</span>
+  <!-- error message to user -->
+  <div class="d-flex justify-content-center p-2">
+    <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
+    <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
+    <span id="error-message-text">There was a problem fetching the data.</span>
+    </div>
   </div>
-</div>
 
-<!-- more sentences -->
-<div id="see-more-sentences-container" class="d-flex justify-content-center pb-3 d-none">
-  <button id="show-more-button" class="btn btn-light hide border-1 shadow-sm">show more</button>
-</div>
+  <!-- more sentences -->
+  <div id="see-more-sentences-container" class="d-flex justify-content-center pb-3 d-none">
+    <button id="show-more-button" class="btn btn-light hide border-1 shadow-sm">show more</button>
+  </div>
 
 
-<div id="floating-buttons">      
-  <div style="position: fixed; bottom: 0.4rem; right: 25px;">
-  <div class="d-flex flex-column float-button-cont">
+  <div id="floating-buttons">      
+    <div style="position: fixed; bottom: 0.4rem; right: 25px;">
+    <div class="d-flex flex-column float-button-cont">
       <button id="goToTop" class="btn float-button mb-2 shadow d-none"><i class="bi bi-arrow-up"></i></button>
       <button id="randomizeButton" class="btn float-button mb-2 shadow d-none"><i class="bi bi-shuffle"></i></button>
+    </div>
   </div>
-</div>
-
-<style>
-.float-button {
-  height: 3rem;
-  width: 3rem;
-  background-color: #FFFAFA;
-  border-radius: 50px;
-  border-color: none;
-  font-size: 1.5rem;
-  color: grey;
-  outline: none !important;
-  box-shadow: none;
-}
-.float-button:active {
-  border: 0px;
-}
-.float-button:focus {
-  border: 0px;
-}
-.float-button:disabled,
-.float-button[disabled]{
-  border: 0px;
-  outline: none !important;
-  box-shadow: none;
-}
-</style>
-
 
 </div> <!-- body wrapper end -->
 
@@ -259,6 +267,9 @@
   .card-body {
     min-width: 350px !important;
   }
+  #main-wrapper {
+    padding: 0px 20px;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -275,6 +286,32 @@
     padding: 0px 20px;
   }
 }
+</style>
+
+<style>
+  .float-button {
+    height: 3rem;
+    width: 3rem;
+    background-color: #FFFAFA;
+    border-radius: 50px;
+    border-color: none;
+    font-size: 1.5rem;
+    color: grey;
+    outline: none !important;
+    box-shadow: none;
+  }
+  .float-button:active {
+    border: 0px;
+  }
+  .float-button:focus {
+    border: 0px;
+  }
+  .float-button:disabled,
+  .float-button[disabled]{
+    border: 0px;
+    outline: none !important;
+    box-shadow: none;
+  }
 </style>
 
 <script>
@@ -329,8 +366,8 @@ loginForm.addEventListener('submit', function(e) {
       location.reload()
      })
     .catch((error) => {
-         console.error('Error:', error)
-         errorAlert("There was an error signing up")
+      console.error('Error:', error)
+      errorAlert("There was an error signing up")
     })
   payload = {}
 })
@@ -479,14 +516,22 @@ function submitPoints(form) {
   let date = new Date()
   let dateToSend = date.toISOString()
   let payload = { pointsGained : formData.get('flexRadioDefault'), timeStamp : dateToSend }
-  fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}', {
+  // OLD VERSION: https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}
+  // NEW VERSION: https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/point_dist
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/point_dist', {
   method: 'POST',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') },
   body: JSON.stringify(payload)
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    document.querySelector('#current-total-score').innerHTML = data
+    console.log(data)
+    try {
+      document.querySelector('#current-total-score').innerHTML = data.totalPoints
+    } catch {
+      document.querySelector('#current-total-score').innerHTML = data 
+    }
+    
     getAllHistory()
     })
   .catch(function (err) {
@@ -528,6 +573,8 @@ function getAllHistory() {
         myChart.config.data.datasets[0].data.push(dataObject.totalPoints)
     })
     
+    myChart.data.labels = myChart.data.labels.slice(-7)
+    myChart.config.data.datasets[0].data = myChart.config.data.datasets[0].data.slice(-7)
     myChart.update('none')
 
     })
@@ -542,8 +589,6 @@ getTotalScore()
 getAllHistory()
 //document.querySelector('#home_header1').classList.add('d-none') // hide default softr header on the SPA page
 </script>
-
-
 
 <script>
 const showMoreButton = document.getElementById('see-more-sentences-container')
