@@ -130,6 +130,14 @@
     </div>
   </div>
 
+  <!-- error message to user -->
+  <div class="d-flex justify-content-center p-2">
+    <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
+    <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
+    <span id="error-message-text">There was a problem fetching the data.</span>
+    </div>
+  </div>
+
   <!-- user history w/score input  -->
   <div id="user-history-cont" class="d-none w-100">
   <!-- chart 1 daily totals -->
@@ -222,14 +230,6 @@
 
   <!-- sentences -->
   <div id="sentences-container" class="mt-4 pt-2"></div>
-
-  <!-- error message to user -->
-  <div class="d-flex justify-content-center p-2">
-    <div id="fetching-data-loader" class="spinner-border hide d-none" role="status"></div>
-    <div id="error-message-alert" class="alert alert-dark hide d-none" role="alert">
-    <span id="error-message-text">There was a problem fetching the data.</span>
-    </div>
-  </div>
 
   <!-- more sentences -->
   <div id="see-more-sentences-container" class="d-flex justify-content-center pb-3 d-none">
