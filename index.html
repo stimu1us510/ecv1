@@ -17,7 +17,7 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-  <div class="container-fluid">
+  <div class="container-xxl">
     <a class="navbar-brand mx-1" href="#"><img class="brand-img" style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -36,8 +36,11 @@
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="toggleHelperTools();return false;">Helper Tools</a>
         </li>
-        <li class="nav-item mx-3">
-          <a class="nav-link btn btn-light text-dark" href="#" onclick="dispSignup();return false;"><b>Signup</b></a>
+        <li id="sign-up-button" class="nav-item mx-3">
+          <a class="nav-link btn btn-sm btn-light text-dark" href="#" onclick="dispSignup();return false;"><b>Signup</b></a>
+        </li>
+        <li id="log-in-button" class="nav-item mx-3 d-none">
+          <a class="nav-link btn btn-sm btn-light text-dark " href="#" onclick="dispLogin();return false;"><b>Login</b></a>
         </li>
         <li id="user-profile-dropdown" class="nav-item dropdown mx-3 d-none">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -119,7 +122,7 @@
             </div>      
         </div>
     </div>
-    <div class="d-flex justify-content-center singupLink">
+    <div class="d-flex justify-content-center signupLink">
       <span>Need an account? <a id="myLink" title="singup" href="PleaseEnableJavascript.html" onclick="dispSignup();return false;">signup</a></span>
     </div>
   </div> <!-- authforms wrapper end -->
@@ -411,16 +414,20 @@ function clearSentences() {
 
 function dispSignup() {
   loginCard.classList.add('d-none')
-  document.querySelector('.loginLink').classList.remove('d-none')
   signupCard.classList.remove('d-none')
-  document.querySelector('.singupLink').classList.add('d-none')
+  document.querySelector('.loginLink').classList.remove('d-none')
+  document.querySelector('#sign-up-button').classList.add('d-none')
+  document.querySelector('#log-in-button').classList.remove('d-none')
+  document.querySelector('.signupLink').classList.add('d-none')
 }
 
 function dispLogin() {
   loginCard.classList.remove('d-none')
-  document.querySelector('.loginLink').classList.add('d-none')
   signupCard.classList.add('d-none')
-  document.querySelector('.singupLink').classList.remove('d-none')
+  document.querySelector('.loginLink').classList.add('d-none')
+  document.querySelector('.signupLink').classList.remove('d-none')
+  document.querySelector('#sign-up-button').classList.remove('d-none')
+  document.querySelector('#log-in-button').classList.add('d-none')
 }
 
 function hideAuthForms() {
@@ -435,6 +442,7 @@ function setAuthDisp() {
   document.querySelector('#user-history-cont').classList.remove('d-none')
   document.querySelector('#welcome-alert-container').classList.remove('d-none')
   document.querySelector('#user-profile-dropdown').classList.remove('d-none')
+  document.querySelector('#sign-up-button').classList.add('d-none')
   document.querySelector('#welcome-user').innerHTML = user
 }
 
@@ -443,6 +451,7 @@ function setNoAuthDisp() {
   document.querySelector('#user-history-cont').classList.add('d-none')
   document.querySelector('#welcome-alert-container').classList.add('d-none')
   document.querySelector('#user-profile-dropdown').classList.add('d-none')
+  document.querySelector('#sign-up-button').classList.remove('d-none')
 }
 
 function clearSentences() {
