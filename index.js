@@ -3,7 +3,15 @@ const signupCard = document.getElementById('signup-card')
 const loginForm = document.getElementById('login-form')
 const loginCard = document.getElementById('login-card')
 const helperTools = document.getElementById('helper-tools')
-let user = ''
+const showMoreButton = document.getElementById('see-more-sentences-container')
+const loadingSpinner = document.getElementById('fetching-data-loader')
+const sentencesContainer = document.getElementById('sentences-container')
+const errorMessageBox = document.getElementById('error-message-alert')
+const errorMessageText = document.getElementById('error-message-text')
+let user = '' //stores username after auth
+let size = 0 // used for display sentence cards
+let isDatafetched = false // used for loading sentence cards display
+let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
 var helperToolsToggle = true
 
 signupForm.addEventListener('submit', function(e) {
@@ -64,9 +72,9 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
     if(!response.ok) {
         console.log("authErr")
         showHero()
-        //showAuthForms()
+        //showAuthForms()  >> document.querySelector('#getAuth-forms').classList.remove('d-none')
     } else {
-      console.log("sucessful auth")
+      console.log("sucessfully auth")
       hideAuthForms()
       return response.json()
     }
@@ -98,9 +106,7 @@ function clearSentences() {
 }
 
 function showHero() {
-  document.querySelector('#hero-section').classList.remove('d-none')
-  document.querySelector('#sign-up-button').classList.remove('d-none')
-  document.querySelector('#log-in-button').classList.remove('d-none')
+  document.querySelectorAll('#hero-section, #sign-up-button, #log-in-button').forEach(e => e.classList.remove('d-none'))
   hideAuthForms()
 }
 
@@ -109,24 +115,16 @@ function hideHero() {
 }
 
 function dispSignup() {
-  showAuthForms()
-  loginCard.classList.add('d-none')
-  signupCard.classList.remove('d-none')
-  document.querySelector('.loginLink').classList.remove('d-none')
-  document.querySelector('#sign-up-button').classList.add('d-none')
-  document.querySelector('#log-in-button').classList.remove('d-none')
-  document.querySelector('.signupLink').classList.add('d-none')
+  document.querySelector('#getAuth-forms').classList.remove('d-none')
+  document.querySelectorAll('#login-card, #sign-up-button, #signup-link').forEach(e => e.classList.add('d-none'))
+  document.querySelectorAll('#signup-card, #log-in-button, #login-link').forEach(e => e.classList.remove('d-none'))
   hideHero()
 }
 
 function dispLogin() {
-  showAuthForms()
-  loginCard.classList.remove('d-none')
-  signupCard.classList.add('d-none')
-  document.querySelector('.loginLink').classList.add('d-none')
-  document.querySelector('.signupLink').classList.remove('d-none')
-  document.querySelector('#sign-up-button').classList.remove('d-none')
-  document.querySelector('#log-in-button').classList.add('d-none')
+  document.querySelector('#getAuth-forms').classList.remove('d-none') // show auth-forms
+  document.querySelectorAll('#signup-card, #log-in-button, #login-link').forEach(e => e.classList.add('d-none'))
+  document.querySelectorAll('#login-card, #sign-up-button, #signup-link').forEach(e => e.classList.remove('d-none'))
   hideHero()
 }
 
@@ -139,9 +137,9 @@ function hideAuthButtons() {
   document.querySelector('#sign-up-button').classList.add('d-none')
 }
 
-function showAuthForms() {
- document.querySelector('#getAuth-forms').classList.remove('d-none')
-}
+// function showAuthForms() {
+//  document.querySelector('#getAuth-forms').classList.remove('d-none')
+// }
 
 function setAuthDisp() {
   document.querySelector('#user-history-cont').classList.remove('d-none')
@@ -201,8 +199,7 @@ function submitPoints(form) {
   let date = new Date()
   let dateToSend = date.toISOString()
   let payload = { pointsGained : formData.get('flexRadioDefault'), timeStamp : dateToSend }
-  // OLD VERSION: https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}
-  // NEW VERSION: https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/point_dist
+
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/point_dist', {
   method: 'POST',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') },
@@ -268,28 +265,23 @@ function getAllHistory() {
   }) 
 }
 
-const showMoreButton = document.getElementById('see-more-sentences-container')
-const loadingSpinner = document.getElementById('fetching-data-loader')
-const sentencesContainer = document.getElementById('sentences-container')
-const errorMessageBox = document.getElementById('error-message-alert')
-const errorMessageText = document.getElementById('error-message-text')
-let size = 0
-isDatafetched = false
-isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
-
-function loadSentences() {
+function loadSentences(fetchedData) {
   const sentences = document.createDocumentFragment()
   fetchedData.slice(size, size+50).map(function (i, a) {
     // create card
     let card = document.createElement('div')
     card.classList.add('card')
-    card.classList.add('mb-4')
+    card.classList.add('mb-5')
     let cardBody = document.createElement('div')
     cardBody.classList.add('card-body')
 
     // card number
     let number = document.createElement('h4')
     number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
+
+    let gradePill = document.createElement('div')
+    gradePill.classList.add('d-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light','fs-6', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
+    gradePill.innerHTML = `${i.Grade}`
 
     // make main accordian
     let mainAccord = document.createElement('details')
@@ -301,7 +293,7 @@ function loadSentences() {
     let nestAccordOne = document.createElement('details')
     nestAccordOne.classList.add('nested')
     let nestAccordOneSummary = document.createElement('summary')
-    nestAccordOne.innerHTML=`${i.JpnWordOrder}`
+    nestAccordOne.innerHTML = `${i.JpnWordOrder}`
     nestAccordOne.appendChild(nestAccordOneSummary)
     nestAccordOneSummary.innerHTML = `<span class="nestAccord--summary">Word Order</span>`
     mainAccord.appendChild(nestAccordOne)
@@ -310,24 +302,38 @@ function loadSentences() {
     let nestAccordTwo = document.createElement('details')
     nestAccordTwo.classList.add('nested')
     let nestAccordTwoSummary = document.createElement('summary')
-    nestAccordTwo.innerHTML=`${i.EngPlain}`
+    nestAccordTwo.innerHTML = `${i.EngPlain}`
     nestAccordTwo.appendChild(nestAccordTwoSummary)
     nestAccordTwoSummary.innerHTML = `<span class="nestAccord--summary">English</span>`
     mainAccord.appendChild(nestAccordTwo) 
+
+    // make modal button
+    let modalButtonContainer = document.createElement('div')
+    modalButtonContainer.classList.add('d-flex', 'flex-row-reverse')
+    let modalButton = document.createElement('button')
+    modalButton.classList.add('btn', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
+    modalButton.setAttribute('id', `${i.SentenceID}`)
+    modalButton.setAttribute('data-bs-toggle', 'modal')
+    modalButton.setAttribute('data-bs-target', '#exampleModal')
+    //modalButton.setAttribute('style', 'border-opacity: 0.5; border-width: 2px;')
+    modalButton.innerHTML = `<span class="fw-bold"> ${i.LevelShown} ${i.LevelShown > 1 ? 'pts' : 'pt'}</span>`
+    modalButtonContainer.appendChild(modalButton)
     
-    // append to body
+    // append each element to card body
     cardBody.appendChild(number)
+    cardBody.appendChild(gradePill)
     cardBody.appendChild(mainAccord)
+    cardBody.appendChild(modalButtonContainer)
     
     // append to body to card and card to sentences
     card.appendChild(cardBody)
     sentences.appendChild(card)
     })
-
+  
   sentencesContainer.appendChild(sentences)
   if (isInitialLoad) sentencesContainer.scrollIntoView()
   isInitialLoad = false
- document.querySelector('#randomizeButton').classList.remove('d-none')
+  document.querySelector('#randomizeButton').classList.remove('d-none')
   size = size +50
 }
 
@@ -340,34 +346,34 @@ function showKey() {
     errorAlert(`This is the authkey: ${localStorage.getItem('authkey')}`)
 }
 
-function authMe() {
-fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
-  method: 'GET',
-  headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
-  })
-  .then(function (response) {return response.json()})
-  .then(function (data) {
-    fetchedData = data  // JSON from our response saved as fetchedData
-    console.log(data)
-    })
-  .catch(function (err) {
-	console.warn('Something went wrong.', err)
-  })    
-}
+// function authMe() {
+// fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
+//   method: 'GET',
+//   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
+//   })
+//   .then(function (response) {return response.json()})
+//   .then(function (data) {
+//     fetchedData = data  // JSON from our response saved as fetchedData
+//     console.log(data)
+//     })
+//   .catch(function (err) {
+// 	console.warn('Something went wrong.', err)
+//   })    
+// }
 
 function getLockedSentences() {
-  loadingSpinner.classList.remove('d-none')
+  loadingSpinner.classList.remove('d-none') //display fetching data
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
   method: 'GET',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    fetchedData = data  // JSON from our response saved as fetchedData
+    _fetchedData = data  // JSON from our response saved as fetchedData
     isDatafetched = true
     showMoreButton.classList.remove('d-none')
     loadingSpinner.classList.add('d-none')
-    loadSentences()
+    loadSentences(_fetchedData)
     console.log(data)
     })
   .catch(function (err) {
@@ -385,7 +391,6 @@ function errorAlert(errMessage) {
     }, 2000)
 }
 
-
 // -- initial page load functions -- //
 
 // displays on pageload
@@ -393,5 +398,5 @@ hideHero()
 hideAuthButtons()
 hideAuthForms()
 
-// auth? on pageload
+// authed? on pageload
 authMe2()

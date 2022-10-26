@@ -6,30 +6,6 @@
     -webkit-filter: invert(1);
     filter: invert(1);
   }
-  
-.float-button {
-height: 3rem;
-width: 3rem;
-background-color: #FFFAFA;
-border-radius: 50px;
-border-color: none;
-font-size: 1.5rem;
-color: grey;
-outline: none !important;
-box-shadow: none;
-}
-.float-button:active {
-border: 0px;
-}
-.float-button:focus {
-border: 0px;
-}
-.float-button:disabled,
-.float-button[disabled]{
-border: 0px;
-outline: none !important;
-box-shadow: none;
-}
 
 @media (max-width: 449.98px) {
     .chart-d-sm-w-100 {
