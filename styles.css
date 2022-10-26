@@ -1,0 +1,59 @@
+.mainAccord--summary {
+    font-size: 1rem;
+  }
+  
+.brand-img {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+  }
+  
+.float-button {
+height: 3rem;
+width: 3rem;
+background-color: #FFFAFA;
+border-radius: 50px;
+border-color: none;
+font-size: 1.5rem;
+color: grey;
+outline: none !important;
+box-shadow: none;
+}
+.float-button:active {
+border: 0px;
+}
+.float-button:focus {
+border: 0px;
+}
+.float-button:disabled,
+.float-button[disabled]{
+border: 0px;
+outline: none !important;
+box-shadow: none;
+}
+
+@media (max-width: 449.98px) {
+    .chart-d-sm-w-100 {
+      width: 100% !important;
+    }
+    .card-body {
+      min-width: 350px !important;
+    }
+    #main-wrapper {
+      padding: 0px 20px;
+    }
+}
+  
+@media (max-width: 767.98px) {
+    .chart-d-sm-w-100 {
+      width: 100% !important;
+    }
+    #main-wrapper {
+      padding: 0px 20px;
+    }
+}
+  
+  @media (max-width: 1219.98px) {
+    #main-wrapper {
+      padding: 0px 20px;
+    }
+}
