@@ -179,6 +179,8 @@ document.querySelector("#randomizeButton").onclick = () => {
     var loadedSentenceCards = document.querySelector('#sentences-container') //items list must be first match
     var sentenceCardsToShuffle = loadedSentenceCards.querySelectorAll('.card')
     for(let i = sentenceCardsToShuffle.length; i >= 0; i--) loadedSentenceCards.appendChild(sentenceCardsToShuffle[Math.random() * i | 0])
+    sentencesContainer.scrollIntoView()
+    //window.scrollTo(0, document.getElementById('sentences-container').offsetTop)
     //if(window.scrollY > 400) sentencesContainer.scrollIntoView()
 }
 
@@ -265,9 +267,9 @@ function getAllHistory() {
   }) 
 }
 
-function loadSentences(fetchedData) {
+function loadSentences() {
   const sentences = document.createDocumentFragment()
-  fetchedData.slice(size, size+50).map(function (i, a) {
+  fetchedSentencesData.slice(size, size+50).map(function (i, a) {
     // create card
     let card = document.createElement('div')
     card.classList.add('card')
@@ -276,8 +278,8 @@ function loadSentences(fetchedData) {
     cardBody.classList.add('card-body')
 
     // card number
-    let number = document.createElement('h4')
-    number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
+    //let number = document.createElement('h4')
+    //number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
 
     let gradePill = document.createElement('div')
     gradePill.classList.add('d-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light','fs-6', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
@@ -311,16 +313,16 @@ function loadSentences(fetchedData) {
     let modalButtonContainer = document.createElement('div')
     modalButtonContainer.classList.add('d-flex', 'flex-row-reverse')
     let modalButton = document.createElement('button')
-    modalButton.classList.add('btn', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
+    modalButton.classList.add('btn', 'btn-lg', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
     modalButton.setAttribute('id', `${i.SentenceID}`)
     modalButton.setAttribute('data-bs-toggle', 'modal')
     modalButton.setAttribute('data-bs-target', '#exampleModal')
     //modalButton.setAttribute('style', 'border-opacity: 0.5; border-width: 2px;')
-    modalButton.innerHTML = `<span class="fw-bold"> ${i.LevelShown} ${i.LevelShown > 1 ? 'pts' : 'pt'}</span>`
+    modalButton.innerHTML = `<span class="fw-bold"> ${i.LevelShown} ${i.LevelShown > 1 ? 'pts' : 'pt'}!</span>`
     modalButtonContainer.appendChild(modalButton)
     
     // append each element to card body
-    cardBody.appendChild(number)
+    //cardBody.appendChild(number)
     cardBody.appendChild(gradePill)
     cardBody.appendChild(mainAccord)
     cardBody.appendChild(modalButtonContainer)
@@ -328,6 +330,8 @@ function loadSentences(fetchedData) {
     // append to body to card and card to sentences
     card.appendChild(cardBody)
     sentences.appendChild(card)
+
+    modalButton.addEventListener("click", () => setNewModalData(i))
     })
   
   sentencesContainer.appendChild(sentences)
@@ -346,21 +350,6 @@ function showKey() {
     errorAlert(`This is the authkey: ${localStorage.getItem('authkey')}`)
 }
 
-// function authMe() {
-// fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
-//   method: 'GET',
-//   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
-//   })
-//   .then(function (response) {return response.json()})
-//   .then(function (data) {
-//     fetchedData = data  // JSON from our response saved as fetchedData
-//     console.log(data)
-//     })
-//   .catch(function (err) {
-// 	console.warn('Something went wrong.', err)
-//   })    
-// }
-
 function getLockedSentences() {
   loadingSpinner.classList.remove('d-none') //display fetching data
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
@@ -369,11 +358,11 @@ function getLockedSentences() {
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    _fetchedData = data  // JSON from our response saved as fetchedData
+    fetchedSentencesData = data  // JSON from our response saved as fetchedData
     isDatafetched = true
     showMoreButton.classList.remove('d-none')
     loadingSpinner.classList.add('d-none')
-    loadSentences(_fetchedData)
+    loadSentences()
     console.log(data)
     })
   .catch(function (err) {
@@ -392,11 +381,7 @@ function errorAlert(errMessage) {
 }
 
 // -- initial page load functions -- //
-
-// displays on pageload
 hideHero() 
 hideAuthButtons()
 hideAuthForms()
-
-// authed? on pageload
-authMe2()
+authMe2() // check authed

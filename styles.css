@@ -1,3 +1,7 @@
+html, body {
+  scroll-behavior: auto !important;
+}
+
 .mainAccord--summary {
     font-size: 1rem;
   }
@@ -6,6 +10,19 @@
     -webkit-filter: invert(1);
     filter: invert(1);
   }
+
+.modal-content {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 80%;
+}
+
+.modal-backdrop {
+  background-color: white;
+  opacity: 1 !important;
+  background: radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent) 25px 25px, linear-gradient(#e0e2ff 2px, transparent 2px) 0 -1px, linear-gradient(90deg, #e0e2ff 2px, #ffffff 2px) -1px 0;
+  background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
+}
 
 @media (max-width: 449.98px) {
     .chart-d-sm-w-100 {

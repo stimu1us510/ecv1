@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="styles.css">
     <script src="index.js" defer></script>
+    <script src="modal.js" defer></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -19,19 +20,29 @@
 <body>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+      <div class="modal-header border-0 px-0">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <canvas id="confetticanvas"></canvas>
+        <audio id="phraseaudio" src="https://simons.xsrv.jp/eigo/220729_010.mp3"></audio>
+        <audio id="correctaudio" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/correctanswer4.wav"></audio>
+
+        <div>
+          <h3 id="japanese-phrase-plain"></h3>
+        </div>
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button id="translateButton" class="btn btn-light btn-lg border border-dark"><i class="bi bi-lightbulb"></i></button>
+        <button id="listenButton" class="btn btn-light btn-lg border border-dark"><i class="bi bi-play"></i></button>
+        <button id="endSpeechButton" class="btn btn-outline-danger btn-lg hide"><i class="bi bi-mic-mute"></i></button>
+        <button id="speechButton" class="btn btn-warning btn-lg"><img class="svg-icon" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/confetti.png" style="height:20px; width:20px;"></button>
+        <button id="nextButton" class="btn btn-success btn-lg hide"><i class="bi bi-arrow-right-circle"></i></button>
       </div>
     </div>
   </div>
@@ -88,6 +99,9 @@
         <div class="card-body" style="min-width: 400px;">
             <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
+            <button type="button" class="btn btn-outline-dark w-100 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Launch demo modal
+            </button>
         </div>
     </div>
   </div>
@@ -284,7 +298,7 @@
   <div id="sentences-container" class="mt-4 pt-2"></div>
 
   <!-- more sentences -->
-  <div id="see-more-sentences-container" class="d-flex justify-content-center pb-3 d-none">
+  <div id="see-more-sentences-container" class="text-center d-none mb-5">
     <button id="show-more-button" class="btn btn-light hide border-1 shadow-sm">show more</button>
   </div>
 
