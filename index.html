@@ -170,92 +170,93 @@
 
   <!-- user history w/score input  -->
   <div id="user-history-cont" class="d-none w-100">
-  <!-- chart 1 daily totals -->
-  <div class="d-flex justify-content-center mb-4">
-    <div class="h-25 w-75 chart-d-sm-w-100">
-        <canvas id="myChart"></canvas>
+    <div class="d-flex justify-content-center mb-4">   <!-- chart 1 daily totals -->
+      <div class="h-25 w-75 chart-d-sm-w-100">
+          <canvas id="myChart"></canvas>
+      </div>
     </div>
-  </div>
-  <!-- total score display -->
-  <div id="total-score-cont" class="d-flex flex-column justify-content-center">
-    <h3>Your current total score for today is <span id="current-total-score">...</span> !</h3>
-  </div>
+    <!-- total score display -->
+    <div id="total-score-cont" class="d-flex flex-column justify-content-center">
+      <h3>Your current total score for today is <span id="current-total-score">...</span> !</h3>
+    </div>
+    <!-- point entry form -->
+    <div class="container-xl d-flex flex-row">
+      <form id="point-form" class="">
 
-  <!-- point entry form -->
-  <div class="container-xl d-flex flex-row">
-    <form id="point-form" class="">
-      <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" value="1" id="flexRadioDefault1" required>
-          <label class="form-check-label" for="flexRadioDefault1">
-          Award 1 point
-          </label>
-      </div>
-      
-      <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" value="2" id="flexRadioDefault2" required>
-          <label class="form-check-label" for="flexRadioDefault2">
-          Award 2 points
-          </label>
-      </div>
-      
-      <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" value="3" id="flexRadioDefault3" required>
-          <label class="form-check-label" for="flexRadioDefault3">
-          Award 3 points
-          </label>
-      </div>
-      
-      <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" value="4" id="flexRadioDefault4" required>
-          <label class="form-check-label" for="flexRadioDefault4">
-          Award 4 points
-          </label>
-      </div>
-      
-      <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" value="5" id="flexRadioDefault5" required>
-          <label class="form-check-label" for="flexRadioDefault5">
-          Award 5 points
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="1" id="flexRadioDefault1" required>
+            <label class="form-check-label" for="flexRadioDefault1">
+            Award 1 point
+            </label>
+        </div>
+        
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="2" id="flexRadioDefault2" required>
+            <label class="form-check-label" for="flexRadioDefault2">
+            Award 2 points
+            </label>
+        </div>
+        
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="3" id="flexRadioDefault3" required>
+            <label class="form-check-label" for="flexRadioDefault3">
+            Award 3 points
+            </label>
+        </div>
+        
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="4" id="flexRadioDefault4" required>
+            <label class="form-check-label" for="flexRadioDefault4">
+            Award 4 points
+            </label>
+        </div>
+        
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="5" id="flexRadioDefault5" required>
+            <label class="form-check-label" for="flexRadioDefault5">
+            Award 5 points
+            </label>
+        </div>
+          
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="6" id="flexRadioDefault6" required>
+          <label class="form-check-label" for="flexRadioDefault6">
+          Award 6 points
           </label>
       </div>
         
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" value="6" id="flexRadioDefault6" required>
-        <label class="form-check-label" for="flexRadioDefault6">
-        Award 6 points
+        <input class="form-check-input" type="radio" name="flexRadioDefault" value="7" id="flexRadioDefault7" required>
+        <label class="form-check-label" for="flexRadioDefault7">
+        Award 7 points
         </label>
-    </div>
-      
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="7" id="flexRadioDefault7" required>
-      <label class="form-check-label" for="flexRadioDefault7">
-      Award 7 points
-      </label>
-    </div>
-      
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="8" id="flexRadioDefault8" required>
-      <label class="form-check-label" for="flexRadioDefault8">
-      Award 8 points
-      </label>
-    </div>
-      
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="9" id="flexRadioDefault9" required>
-      <label class="form-check-label" for="flexRadioDefault9">
-      Award 9 points
-      </label>
-    </div>
-      
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" value="10" id="flexRadioDefault10" required>
-      <label class="form-check-label" for="flexRadioDefault10">
-      Award 10 points
-      </label>
-    </div>
+      </div>
+        
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" value="8" id="flexRadioDefault8" required>
+        <label class="form-check-label" for="flexRadioDefault8">
+        Award 8 points
+        </label>
+      </div>
+        
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" value="9" id="flexRadioDefault9" required>
+        <label class="form-check-label" for="flexRadioDefault9">
+        Award 9 points
+        </label>
+      </div>
+        
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" value="10" id="flexRadioDefault10" required>
+        <label class="form-check-label" for="flexRadioDefault10">
+        Award 10 points
+        </label>
+      </div>
 
       <button type="submit" class="btn btn-primary mt-4">Submit</button>
-    </form>
+
+      </form>
+    </div>
   </div>
 
   <!-- sentences -->
@@ -279,29 +280,31 @@
 
 
 <!-- Footer -->
-<hr class="mt-0 mb-1">
-<div class="container-xxl d-none d-sm-block mb-1 p-0 m-0">
-  <!-- normal text md+ -->
-  <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
-    <li class="list-group-item border-0 fw-light">About</li>
-    <li class="list-group-item border-0 fw-light">School</li>
-    <li class="list-group-item border-0 fw-light">Help</li>
-    <li class="list-group-item border-0 fw-light">Support</li>
-    <li class="list-group-item border-0 fw-light">Terms</li>
-    <li class="list-group-item border-0 fw-light">Privacy</li>
-  </ul>
-</div>
+<div id="footer" class="d-none">
+  <div class="container-xxl d-none d-sm-block mb-1 p-0 m-0">
+    <hr class="mt-0 mb-1">
+    <!-- normal text md+ -->
+    <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
+      <li class="list-group-item border-0 fw-light">About</li>
+      <li class="list-group-item border-0 fw-light">School</li>
+      <li class="list-group-item border-0 fw-light">Help</li>
+      <li class="list-group-item border-0 fw-light">Support</li>
+      <li class="list-group-item border-0 fw-light">Terms</li>
+      <li class="list-group-item border-0 fw-light">Privacy</li>
+    </ul>
+  </div>
 
-<div class="container-xxl d-block d-sm-none mb-3 p-0 m-0">
-  <!-- small icons on sm -->
-  <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
-    <li class="list-group-item d-flex align-items-center border-0 d-block d-sm-none fw-light fs-6 px-2">About</li>
-    <li class="list-group-item border-0 fw-light fs-6 px-2">School</li>
-    <li class="list-group-item border-0 fw-light fs-6 px-2">Help</li>
-    <li class="list-group-item border-0 fw-light fs-6 px-2">Support</li>
-    <li class="list-group-item border-0 fw-light fs-6 px-2">Terms</li>
-    <li class="list-group-item border-0 fw-light fs-6 px-2">Privacy</li>
-  </ul>
+  <div class="container-xxl d-block d-sm-none mb-3 p-0 m-0">
+    <!-- small icons on sm -->
+    <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
+      <li class="list-group-item d-flex align-items-center border-0 d-block d-sm-none fw-light fs-6 px-2">About</li>
+      <li class="list-group-item border-0 fw-light fs-6 px-2">School</li>
+      <li class="list-group-item border-0 fw-light fs-6 px-2">Help</li>
+      <li class="list-group-item border-0 fw-light fs-6 px-2">Support</li>
+      <li class="list-group-item border-0 fw-light fs-6 px-2">Terms</li>
+      <li class="list-group-item border-0 fw-light fs-6 px-2">Privacy</li>
+    </ul>
+  </div>
 </div>
 
 <style>
@@ -470,7 +473,6 @@ function showHero() {
   document.querySelector('#sign-up-button').classList.remove('d-none')
   document.querySelector('#log-in-button').classList.remove('d-none')
   hideAuthForms()
-
 }
 
 function hideHero() {
@@ -503,6 +505,11 @@ function hideAuthForms() {
   document.querySelector('#getAuth-forms').classList.add('d-none')
 }
 
+function hideAuthButtons() {
+  document.querySelector('#log-in-button').classList.add('d-none')
+  document.querySelector('#sign-up-button').classList.add('d-none')
+}
+
 function showAuthForms() {
  document.querySelector('#getAuth-forms').classList.remove('d-none')
 }
@@ -511,6 +518,8 @@ function setAuthDisp() {
   document.querySelector('#user-history-cont').classList.remove('d-none')
   document.querySelector('#welcome-alert-container').classList.remove('d-none')
   document.querySelector('#user-profile-dropdown').classList.remove('d-none')
+  document.querySelector('#footer').classList.remove('d-none')
+  document.querySelector('#log-in-button').classList.add('d-none')
   document.querySelector('#sign-up-button').classList.add('d-none')
   document.querySelector('#welcome-user').innerHTML = user
 }
@@ -552,8 +561,12 @@ const showGoToTopButton = _ => document.getElementById("goToTop").classList.add(
 const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remove("d-none")
 document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopButton() : showGoToTopButton())
 
-hideHero() //intial hide 
-hideAuthForms() //initial hide while waiting for authMe response
+
+
+// -- on page load -- //
+hideHero() 
+hideAuthButtons()
+hideAuthForms()
 authMe2() //check if the user needs to login or not on pageload
 </script>
 
