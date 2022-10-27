@@ -1,7 +1,5 @@
 const signupForm = document.getElementById('signup-form')
-const signupCard = document.getElementById('signup-card')
 const loginForm = document.getElementById('login-form')
-const loginCard = document.getElementById('login-card')
 const helperTools = document.getElementById('helper-tools')
 const showMoreButton = document.getElementById('see-more-sentences-container')
 const loadingSpinner = document.getElementById('fetching-data-loader')
@@ -12,7 +10,7 @@ let user = '' //stores username after auth
 let size = 0 // used for display sentence cards
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
-var helperToolsToggle = true
+var helperToolsToggle = true //temp delete later
 
 signupForm.addEventListener('submit', function(e) {
   e.preventDefault()
@@ -198,9 +196,12 @@ const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remo
 document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopButton() : showGoToTopButton())
 
 const pointForm = document.getElementById('point-form')
-const changeToDateFormat = d => d.toJSON().slice(0,10).split('-').reverse().join('/')
-const myChart = new Chart(document.getElementById('myChart'), chartOneConfig)
+//const changeToDateFormat = d => d.toJSON().slice(0,10).split('-').reverse().join('/')
+
+// -- create charts -- //
+const myChart = new Chart(document.getElementById('myChartOne'), chartOneConfig)
 const myChart2 = new Chart(document.getElementById('myChartTwo'), chartTwoConfig)
+const myChart3 = new Chart(document.getElementById('myChartThree'), chartThreeConfig)
 
 pointForm.addEventListener("submit", submitPoints)
 function submitPoints(form) {

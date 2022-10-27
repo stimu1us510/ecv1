@@ -123,16 +123,10 @@
   <!-- Hero Section -->
   <div id="hero-section" class="container-xxl pt-5">
     <h1 class="d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-bold fs-2 mb-5 text-dark">
-      英語を聞いて、リピートするだけ。
-      <br>
-      心地よいレベルを、できるだけ毎日。
+      英語を聞いて、リピートするだけ。<br>心地よいレベルを、できるだけ毎日。
     </h1>
     <h6 class="text-center d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-light fs-6 mb-5">
-      ただし、英語の文字は見ずに、通じる発音で。
-      <br>
-      なかなか challenging ですね。
-      <br>
-      がんばりましょう！ 
+      ただし、英語の文字は見ずに、通じる発音で。<br>なかなか challenging ですね。<br>がんばりましょう！ 
     </h6>
     <div class="text-center d-flex flex-row d-flex justify-content-center align-items-center text-decoration-none">
       <div class="btn btn-outline-primary mx-2 mb-5" onclick="dispLogin();return false;">
@@ -216,22 +210,29 @@
   <div id="user-history-cont" class="d-none w-100 text-center">
     <h2>Your total score today is <span id="current-total-score">...</span> !</h2>
 
-    <!-- seven day  progress display -->
-    <div id="total-daily-score-containter" class="d-flex flex-column justify-content-center align-items-center mt-3">
+    <!-- seven day progress chart display -->
+    <div id="seven-day-chart-containter" class="d-flex flex-column justify-content-center align-items-center mt-3">
       <h3 class="fc-grey fw-light">7 Day Progress</h3>
       <div class="chart-one-wrapper" style="width: 800px; height: auto;">
-        <canvas id="myChart"></canvas>
+        <canvas id="myChartOne">Your browser does not support the canvas element.</canvas>
       </div>
     </div>
 
-    <!-- total daily score display -->
-    <div id="total-daily-score-containter" class="d-flex flex-column justify-content-center align-items-center mt-5">
+    <!-- daily breakdown points per level chart display -->
+    <div id="daily-dabreakdown-perlevel-containter" class="d-flex flex-column justify-content-center align-items-center mt-5">
       <h3 class="fc-grey fw-light">Daily Total Breakdown <span class="fs-5"><i>(points per level)</i></span></h3>
       <div class="chart-wrapper" style="width: 400px; height: auto;">
-        <canvas id="myChartTwo"></canvas>
+        <canvas id="myChartTwo">Your browser does not support the canvas element.</canvas>
       </div>
     </div>
-    
+
+    <!-- daily breakdown by level count -->
+    <div id="daily-dabreakdown-levelcount-containter" class="d-flex flex-column justify-content-center align-items-center mt-5">
+      <h3 class="fc-grey fw-light">Daily Total Breakdown <span class="fs-5"><i>(count of correct phrases by level)</i></span></h3>
+      <div class="chart-wrapper" style="width: 400px; height: auto;">
+        <canvas id="myChartThree">Your browser does not support the canvas element.</canvas>
+      </div>
+    </div>
 
     <!-- point entry form -->
     <div class="container-xl d-flex flex-row mt-4">
@@ -362,7 +363,7 @@
 </div>
 
 <script>
-// -- chart data --
+// -- chart data -- //
 
 //chart one: last 7 day total points
 let chartOneLableData = []
@@ -389,25 +390,24 @@ const chartOneConfig = {
 }
 
 
-// chart 2: pie chart
-//let chartTwoLableData = []
+// chart 2: daily breakdown points per level
 let chartTwoChartData = [1,2,3,4,0,0,7,8,0,50]
 
 const chartTwoData = {
-  labels: ["1 point",2,3,4,5,6,7,8,9,10],
+  labels: ["Level One","Level Two","Level Three","Level Four","Level Five","Level Six","Level Seven","Level Eight","Level Nine","Level Ten",],
   datasets: [{
     label: 'daily breakdown by points per level',
     backgroundColor: [ 
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',      
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',      
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',
-      'rgb(255, 99, 132)'],
+      '#FCF8F7',
+      '#F7F6E8',
+      '#E0EECD',      
+      '#B0E2A7',
+      '#81D588',
+      '#57C798',      
+      '#3EBBA2',
+      '#38A89D',
+      '#308691',
+      '#2A697E'],
     //borderColor: 'rgb(255, 99, 132)',
     data: chartTwoChartData,
   }]
@@ -422,7 +422,39 @@ const chartTwoConfig = {
     }
   }
 }
-  
+
+// chart 3: daily breakdown number of correctly repeated phrases by level
+let chartThreeChartData = [1,2,3,4,0,0,7,8,0,50]
+
+const chartThreeData = {
+  labels: ["1 point","2 points","3 points","4 points","5 points","6 points","7 points","8 points","9 points","10 points"],
+  datasets: [{
+    label: 'daily breakdown by points per level',
+    backgroundColor: [ 
+      '#FEFBFB',
+      '#FBF4F4',
+      '#F6E4EB',      
+      '#EECDE9',
+      '#D3B6E7',
+      '#AE9FDF',      
+      '#A594DB',
+      '#9E85D6',
+      '#9575D1',
+      '#8C62CB'],
+    //borderColor: 'rgb(255, 99, 132)',
+    data: chartThreeChartData,
+  }]
+}
+
+const chartThreeConfig = {
+  type: 'doughnut',
+  data: chartThreeData,
+  options: {
+    animation:{
+      duration: 0
+    }
+  }
+}
 </script>
 
 </body>
