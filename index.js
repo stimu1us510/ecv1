@@ -78,7 +78,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
     setAuthDisp()
-    getTotalScore() 
+    getDailyTotalScore() 
     getSevenDayHistory()
     })
   .catch(function (err) {
@@ -141,7 +141,9 @@ function toggleHelperTools() {
   helperTools.classList.remove('d-none')
 }
 
-// -- button functions -- //
+// -- floating action buttons -- //
+const showGoToTopButton = _ => document.getElementById("goToTop").classList.add("d-none")
+const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remove("d-none")
 document.querySelector("#randomizeButton").onclick = () => {
     //document.querySelector("#randomizeButton").disabled = true
     //setTimeout(() => {document.querySelector("#randomizeButton").disabled = false;}, 3000) // stop shuffle spamming
@@ -152,14 +154,8 @@ document.querySelector("#randomizeButton").onclick = () => {
     //window.scrollTo(0, document.getElementById('sentences-container').offsetTop)
     //if(window.scrollY > 400) sentencesContainer.scrollIntoView()
 }
-
 document.getElementById("goToTop").onclick = () => sentencesContainer.scrollIntoView()
-
-const showGoToTopButton = _ => document.getElementById("goToTop").classList.add("d-none")
-const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remove("d-none")
 document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopButton() : showGoToTopButton())
-
-//const changeToDateFormat = d => d.toJSON().slice(0,10).split('-').reverse().join('/')
 
 // -- create charts w/ temp point form -- //
 const myChartOne = new Chart(document.getElementById('myChartOne'), chartOneConfig)
@@ -182,25 +178,17 @@ function submitPoints(form) {
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    console.log(data)
-
-    document.querySelector('#current-total-score').innerHTML = data.totalPoints
-
-    // try {
-    //   document.querySelector('#current-total-score').innerHTML = data.totalPoints
-    // } catch {
-    //   document.querySelector('#current-total-score').innerHTML = data 
-    // }
-
+    //console.log(data)
     getSevenDayHistory()
+    if (data.totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
+    document.querySelector('#current-total-score').innerHTML = data.totalPoints
     })
   .catch(function (err) {
 	  console.warn('Something went wrong.', err)
-    document.querySelector('#current-total-score').innerHTML = '???'
   })    
 }
 
-function getTotalScore() {
+function getDailyTotalScore() {
   let dateNow = Date.now()
   let postData = { timeStamp : dateNow }
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/get_total_score', {
@@ -210,10 +198,14 @@ function getTotalScore() {
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    document.querySelector('#current-total-score').innerHTML = data
+    console.log(data)
+
+    if (data[0].totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
+    document.querySelector('#current-total-score').innerHTML = data[0].totalPoints
+
+
     })
   .catch(function (err) {
-    document.querySelector('#current-total-score').innerHTML = '???'
 	  console.warn('Something went wrong.', err)
   })   
 }
@@ -256,8 +248,8 @@ function loadSentences() {
     cardBody.classList.add('card-body')
 
     // card number
-    //let number = document.createElement('h4')
-    //number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
+    let number = document.createElement('h4')
+    number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
 
     let gradePill = document.createElement('div')
     gradePill.classList.add('d-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light','fs-6', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
