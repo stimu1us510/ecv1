@@ -56,7 +56,7 @@ loginForm.addEventListener('submit', function(e) {
      })
     .catch((error) => {
       console.error('Error:', error)
-      errorAlert("There was an error signing up")
+      errorAlert("There was an error logging in")
     })
   payload = {}
 })
@@ -71,21 +71,15 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
         console.log("authErr")
         setNoAuthDisp()
         showHero()
-        //showAuthForms()  >> document.querySelector('#getAuth-forms').classList.remove('d-none')
     } else {
-      console.log("sucessfully auth")
-      hideAuthForms()
+      //console.log("sucessfully auth")
       return response.json()
-    }
-  })
+    }})
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
-    hideHero()
     setAuthDisp()
-    // get data for dashboard screen after authed
     getTotalScore() 
     getSevenDayHistory()
-    return data.id
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
@@ -94,8 +88,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
 
 function logout() {
     localStorage.setItem('authkey', '')
-    //setNoAuthDisp() //reset display to pre-logged in state
-    location.reload() //reload to show login screen
+    location.reload()
 }
 
 function clearSentences() {
@@ -106,63 +99,34 @@ function clearSentences() {
 
 function showHero() {
   document.querySelectorAll('#hero-section, #sign-up-button, #log-in-button').forEach(e => e.classList.remove('d-none'))
-  hideAuthForms()
-}
-
-function hideHero() {
-  document.querySelector('#hero-section').classList.add('d-none')
-}
-
-function dispSignup() {
-  document.querySelector('#getAuth-forms').classList.remove('d-none')
-  document.querySelectorAll('#login-card, #sign-up-button, #signup-link').forEach(e => e.classList.add('d-none'))
-  document.querySelectorAll('#signup-card, #log-in-button, #login-link').forEach(e => e.classList.remove('d-none'))
-  hideHero()
-}
-
-function dispLogin() {
-  document.querySelector('#getAuth-forms').classList.remove('d-none') // show auth-forms
-  document.querySelectorAll('#signup-card, #log-in-button, #login-link').forEach(e => e.classList.add('d-none'))
-  document.querySelectorAll('#login-card, #sign-up-button, #signup-link').forEach(e => e.classList.remove('d-none'))
-  hideHero()
-}
-
-function hideAuthForms() {
   document.querySelector('#getAuth-forms').classList.add('d-none')
 }
 
-function hideAuthButtons() {
-  document.querySelector('#log-in-button').classList.add('d-none')
-  document.querySelector('#sign-up-button').classList.add('d-none')
+function dispSignup() {
+  hideElements('#hero-section, #login-card, #sign-up-button, #signup-link')
+  showElements('#getAuth-forms, #signup-card, #log-in-button, #login-link')
 }
 
-// function showAuthForms() {
-//  document.querySelector('#getAuth-forms').classList.remove('d-none')
-// }
+function dispLogin() {
+  hideElements('#hero-section, #signup-card, #log-in-button, #login-link')
+  showElements('#getAuth-forms, #login-card, #sign-up-button, #signup-link')
+}
 
 function setAuthDisp() {
-  document.querySelector('#user-history-cont').classList.remove('d-none')
-  document.querySelector('#welcome-alert-container').classList.remove('d-none')
-  document.querySelector('#user-profile-dropdown').classList.remove('d-none')
-  document.querySelector('#footer').classList.remove('d-none')
-  document.querySelector('#log-out-button').classList.remove('d-none')
-  document.querySelector('#log-in-button').classList.add('d-none')
-  document.querySelector('#sign-up-button').classList.add('d-none')
-  document.querySelector('#home-button').classList.add('d-none')
-  document.querySelector('#dashboard-button').classList.remove('d-none')
+  hideElements('#hero-section, #getAuth-forms, #log-in-button, #sign-up-button, #home-button')
+  showElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-cont, #footer')
   document.querySelector('#welcome-user').innerHTML = user
 }
 
 function setNoAuthDisp() {
   clearSentences()
-  document.querySelector('#user-history-cont').classList.add('d-none')
-  document.querySelector('#welcome-alert-container').classList.add('d-none')
-  document.querySelector('#user-profile-dropdown').classList.add('d-none')
-  document.querySelector('#log-out-button').classList.add('d-none')
-  document.querySelector('#sign-up-button').classList.remove('d-none')
-  document.querySelector('#home-button').classList.remove('d-none')
-  document.querySelector('#dashboard-button').classList.add('d-none')
+  hideElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-cont')
+  showElements('#home-button, #sign-up-button')
 }
+
+// -- display control functions -- //
+const hideElements = listOfElements => document.querySelectorAll(listOfElements).forEach(e => e.classList.add('d-none'))
+const showElements = listOfElements => document.querySelectorAll(listOfElements).forEach(e => e.classList.remove('d-none'))
 
 function clearSentences() {
     size = 0
@@ -195,13 +159,13 @@ const showGoToTopButton = _ => document.getElementById("goToTop").classList.add(
 const hideGoToTopButton = _ => document.getElementById("goToTop").classList.remove("d-none")
 document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopButton() : showGoToTopButton())
 
-const pointForm = document.getElementById('point-form')
 //const changeToDateFormat = d => d.toJSON().slice(0,10).split('-').reverse().join('/')
 
-// -- create charts -- //
-const myChart = new Chart(document.getElementById('myChartOne'), chartOneConfig)
+// -- create charts w/ temp point form -- //
+const myChartOne = new Chart(document.getElementById('myChartOne'), chartOneConfig)
 const myChart2 = new Chart(document.getElementById('myChartTwo'), chartTwoConfig)
 const myChart3 = new Chart(document.getElementById('myChartThree'), chartThreeConfig)
+const pointForm = document.getElementById('point-form')
 
 pointForm.addEventListener("submit", submitPoints)
 function submitPoints(form) {
@@ -220,18 +184,19 @@ function submitPoints(form) {
   .then(function (data) {
     console.log(data)
 
-      document.querySelector('#current-total-score').innerHTML = data.totalPoints
+    document.querySelector('#current-total-score').innerHTML = data.totalPoints
 
     // try {
     //   document.querySelector('#current-total-score').innerHTML = data.totalPoints
     // } catch {
     //   document.querySelector('#current-total-score').innerHTML = data 
     // }
-    
+
     getSevenDayHistory()
     })
   .catch(function (err) {
-	console.warn('Something went wrong.', err)
+	  console.warn('Something went wrong.', err)
+    document.querySelector('#current-total-score').innerHTML = '???'
   })    
 }
 
@@ -248,7 +213,8 @@ function getTotalScore() {
     document.querySelector('#current-total-score').innerHTML = data
     })
   .catch(function (err) {
-	console.warn('Something went wrong.', err)
+    document.querySelector('#current-total-score').innerHTML = '???'
+	  console.warn('Something went wrong.', err)
   })   
 }
 
@@ -260,18 +226,18 @@ function getSevenDayHistory() {
   .then(function (response) {return response.json()})
   .then(function (data) {
     
-    myChart.config.data.datasets[0].data.length = 0
-    myChart.config.data.labels.length = 0
+    myChartOne.config.data.datasets[0].data.length = 0
+    myChartOne.config.data.labels.length = 0
 
     data.map(dataObject => {
         dataObject.created_at = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric' }).format(dataObject.created_at)
-        myChart.data.labels.push(dataObject.created_at)
-        myChart.config.data.datasets[0].data.push(dataObject.totalPoints)
+        myChartOne.data.labels.push(dataObject.created_at)
+        myChartOne.config.data.datasets[0].data.push(dataObject.totalPoints)
     })
     
-    myChart.data.labels = myChart.data.labels.slice(-7)
-    myChart.config.data.datasets[0].data = myChart.config.data.datasets[0].data.slice(-7)
-    myChart.update('none')
+    myChartOne.data.labels = myChartOne.data.labels.slice(-7)
+    myChartOne.config.data.datasets[0].data = myChartOne.config.data.datasets[0].data.slice(-7)
+    myChartOne.update('none')
 
     })
   .catch(function (err) {
@@ -392,8 +358,5 @@ function errorAlert(errMessage) {
     }, 2000)
 }
 
-// -- initial page load functions -- //
-hideHero() 
-hideAuthButtons()
-hideAuthForms()
-authMe2() // check authed
+// -- on page load -- //
+authMe2()

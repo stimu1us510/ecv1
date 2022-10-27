@@ -72,13 +72,10 @@
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="toggleHelperTools();return false;">Helper Tools</a>
         </li>
-        <li id="log-out-button" class="nav-item mx-3 d-none">
-          <a class="nav-link" href="#" onclick="logout();return false;">Logout <i class="bi bi-box-arrow-right"></i></a>
-        </li>
-        <li id="log-in-button" class="nav-item mx-3">
+        <li id="log-in-button" class="nav-item mx-3 d-none">
           <a class="nav-link btn btn-sm btn-outline-dark text-light" href="#" onclick="dispLogin();return false;"><b>Login</b></a>
         </li>
-        <li id="sign-up-button" class="nav-item">
+        <li id="sign-up-button" class="nav-item d-none">
           <a class="nav-link btn btn-sm btn-light text-dark" href="#" onclick="dispSignup();return false;"><b>Signup</b></a>
         </li>
         <li id="user-profile-dropdown" class="nav-item dropdown mx-3 d-none">
@@ -121,7 +118,7 @@
   </div>
 
   <!-- Hero Section -->
-  <div id="hero-section" class="container-xxl pt-5">
+  <div id="hero-section" class="container-xxl pt-5 d-none">
     <h1 class="d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-bold fs-2 mb-5 text-dark">
       英語を聞いて、リピートするだけ。<br>心地よいレベルを、できるだけ毎日。
     </h1>
@@ -141,7 +138,7 @@
     </div>
   </div>
 
-  <div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center h-100"> <!-- authforms wrapper -->
+  <div id="getAuth-forms" class="d-flex justify-content-center flex-column align-items-center h-100 d-none"> <!-- authforms wrapper -->
     <!-- signup forms -->
     <div id="signup-card" class="d-flex justify-content-center mb-1 d-none auth-form">
         <div class="card">
@@ -372,7 +369,7 @@ let chartOneChartData = []
 const chartOneData = {
   labels: chartOneLableData,
   datasets: [{
-    label: 'points per day',
+    label: 'Daily Total Score',
     backgroundColor: 'rgb(255, 99, 132)',
     borderColor: 'rgb(255, 99, 132)',
     data: chartOneChartData,
