@@ -94,7 +94,7 @@
   </div>
 </nav>
 
-<div id="main-wrapper" class="container-xxl d-flex justify-content-start flex-column" style="height: 80vh;"> <!-- main-page wrapper for max-width -->
+<div id="main-wrapper" class="container-xxl d-flex justify-content-start flex-column" style="height: 80vh; padding:0;"> <!-- main-page wrapper for max-width -->
   
   <!-- temp helper tools  -->
   <div id="helper-tools" class="d-flex justify-content-center d-none">
@@ -205,37 +205,56 @@
 
   <!-- user history w/score input  -->
   <div id="user-history-cont" class="d-none w-100 text-center">
-    <h2>Your total score today is <span id="current-total-score">...</span> !</h2>
+    
 
-    <!-- seven day progress chart display -->
-    <div id="seven-day-chart-containter" class="d-flex flex-column justify-content-center align-items-center mt-3">
-      <h3 class="fc-grey fw-light">7 Day Progress</h3>
-      <div class="chart-one-wrapper" style="width: 800px; height: auto;">
-        <canvas id="myChartOne">Your browser does not support the canvas element.</canvas>
+    <div class="container-xxl">
+      <div class="card">
+        <div class="card-body">
+          <!-- seven day progress chart display -->
+            <div id="seven-day-chart-container" class="d-flex flex-column justify-content-center align-items-center mt-3">
+              <h3 class="fc-grey fw-light">7 Day Progress</h3>
+              <div class="chart-one-wrapper" style="width: 800px; height: auto;">
+                <canvas id="myChartOne">Your browser does not support the canvas element.</canvas>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
 
-    <div class="container text-center">
+    <div class="container-xxl">
+      <div class="card mt-4">
+        <div class="card-body">
+          <h2>Your total score today is <span id="current-total-score">...</span> !</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-xxl">
       <div class="row">
-
         <div class="col">
-
-          <!-- daily breakdown points per level chart display -->
-          <div id="daily-dabreakdown-perlevel-containter" class="d-flex flex-column justify-content-center align-items-center mt-5">
-            <h3 class="fc-grey fw-light">Daily Total Breakdown <span class="fs-5"><i>(points per level)</i></span></h3>
-            <div class="chart-wrapper p-3" style="width: 400px; height: auto;">
-              <canvas id="myChartTwo">Your browser does not support the canvas element.</canvas>
+          <div class="card mt-4">
+            <div class="card-body">
+              <!-- daily breakdown points per level chart display -->
+              <div id="daily-dabreakdown-perlevel-container" class="d-flex flex-column justify-content-center align-items-center">
+                <h3 class="fc-grey fw-light mt-3">Daily Total Breakdown <br><span class="fs-5"><i>(points per level)</i></span></h3>
+                <div class="chart-wrapper p-3" style="width: 400px; height: auto;">
+                  <canvas id="myChartTwo">Your browser does not support the canvas element.</canvas>
+                </div>
+              </div>
             </div>
           </div>
-
         </div>
 
         <div class="col">
-          <!-- daily breakdown by level count -->
-          <div id="daily-dabreakdown-levelcount-containter" class="d-flex flex-column justify-content-center align-items-center mt-5">
-            <h3 class="fc-grey fw-light">Daily Total Breakdown <span class="fs-5"><i>(count of correct phrases by level)</i></span></h3>
-            <div class="chart-wrapper p-3" style="width: 400px; height: auto;">
-              <canvas id="myChartThree">Your browser does not support the canvas element.</canvas>
+          <div class="card mt-4">
+            <div class="card-body">
+              <!-- daily breakdown by level count -->
+              <div id="daily-dabreakdown-levelcount-container" class="d-flex flex-column justify-content-center align-items-center">
+                <h3 class="fc-grey fw-light mt-3">Daily Total Breakdown <br><span class="fs-5"><i>(count by level)</i></span></h3>
+                <div class="chart-wrapper p-3" style="width: 400px; height: auto;">
+                  <canvas id="myChartThree">Your browser does not support the canvas element.</canvas>
+                </div>
+              </div>
             </div>
           </div>
         </div>
