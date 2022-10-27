@@ -57,8 +57,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto mx-2">
-        <li class="nav-item mx-3">
+        <li id="home-button"class="nav-item mx-3">
           <a class="nav-link" aria-current="page" href="#" onclick="showHero();return false;">Home</a>
+        </li>
+        <li id="dashboard-button"class="nav-item mx-3">
+          <a class="nav-link" aria-current="page" href="#" onclick="">Dashboard</a>
         </li>
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="getLockedSentences();return false;">Show All</a>
@@ -68,6 +71,9 @@
         </li>
         <li class="nav-item mx-3">
           <a class="nav-link" href="#" onclick="toggleHelperTools();return false;">Helper Tools</a>
+        </li>
+        <li id="log-out-button" class="nav-item mx-3 d-none">
+          <a class="nav-link" href="#" onclick="logout();return false;">Logout <i class="bi bi-box-arrow-right"></i></a>
         </li>
         <li id="log-in-button" class="nav-item mx-3">
           <a class="nav-link btn btn-sm btn-outline-dark text-light" href="#" onclick="dispLogin();return false;"><b>Login</b></a>

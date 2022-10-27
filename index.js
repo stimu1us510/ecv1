@@ -71,6 +71,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   .then(function (response) {
     if(!response.ok) {
         console.log("authErr")
+        setNoAuthDisp()
         showHero()
         //showAuthForms()  >> document.querySelector('#getAuth-forms').classList.remove('d-none')
     } else {
@@ -95,7 +96,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
 
 function logout() {
     localStorage.setItem('authkey', '')
-    setNoAuthDisp() //reset display to pre-logged in state
+    //setNoAuthDisp() //reset display to pre-logged in state
     location.reload() //reload to show login screen
 }
 
@@ -146,8 +147,11 @@ function setAuthDisp() {
   document.querySelector('#welcome-alert-container').classList.remove('d-none')
   document.querySelector('#user-profile-dropdown').classList.remove('d-none')
   document.querySelector('#footer').classList.remove('d-none')
+  document.querySelector('#log-out-button').classList.remove('d-none')
   document.querySelector('#log-in-button').classList.add('d-none')
   document.querySelector('#sign-up-button').classList.add('d-none')
+  document.querySelector('#home-button').classList.add('d-none')
+  document.querySelector('#dashboard-button').classList.remove('d-none')
   document.querySelector('#welcome-user').innerHTML = user
 }
 
@@ -156,7 +160,10 @@ function setNoAuthDisp() {
   document.querySelector('#user-history-cont').classList.add('d-none')
   document.querySelector('#welcome-alert-container').classList.add('d-none')
   document.querySelector('#user-profile-dropdown').classList.add('d-none')
+  document.querySelector('#log-out-button').classList.add('d-none')
   document.querySelector('#sign-up-button').classList.remove('d-none')
+  document.querySelector('#home-button').classList.remove('d-none')
+  document.querySelector('#dashboard-button').classList.add('d-none')
 }
 
 function clearSentences() {
