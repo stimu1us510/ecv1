@@ -78,7 +78,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
     setAuthDisp()
-    getDailyTotalScore() 
+    getDailyTotalScoreBreakdown() 
     getSevenDayHistory()
     })
   .catch(function (err) {
@@ -159,8 +159,8 @@ document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopBut
 
 // -- create charts w/ temp point form -- //
 const myChartOne = new Chart(document.getElementById('myChartOne'), chartOneConfig)
-const myChart2 = new Chart(document.getElementById('myChartTwo'), chartTwoConfig)
-const myChart3 = new Chart(document.getElementById('myChartThree'), chartThreeConfig)
+const myChartTwo = new Chart(document.getElementById('myChartTwo'), chartTwoConfig)
+const myChartThree = new Chart(document.getElementById('myChartThree'), chartThreeConfig)
 const pointForm = document.getElementById('point-form')
 
 pointForm.addEventListener("submit", submitPoints)
@@ -179,16 +179,19 @@ function submitPoints(form) {
   .then(function (response) {return response.json()})
   .then(function (data) {
     //console.log(data)
-    getSevenDayHistory()
-    if (data.totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
-    document.querySelector('#current-total-score').innerHTML = data.totalPoints
+    getDailyTotalScoreBreakdown() // this only needs to be called when going into history view
+    getSevenDayHistory() // this only needs to be called when going into history view
+
+    // if (data.totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
+    // document.querySelector('#current-total-score').innerHTML = data.totalPoints
+
     })
   .catch(function (err) {
 	  console.warn('Something went wrong.', err)
   })    
 }
 
-function getDailyTotalScore() {
+function getDailyTotalScoreBreakdown() {
   let dateNow = Date.now()
   let postData = { timeStamp : dateNow }
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/get_total_score', {
@@ -198,11 +201,21 @@ function getDailyTotalScore() {
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    console.log(data)
-
     if (data[0].totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
+    
     document.querySelector('#current-total-score').innerHTML = data[0].totalPoints
 
+    let dataNames = {0:'one', 1:'two', 2:'three', 3:'four', 4:'five', 5:'six', 6:'seven', 7:'eight', 8:'nine', 9:'ten'} //for json scheme
+    
+    // donut chart two: daily breakdown points per level
+    myChartTwo.config.data.datasets[0].data.length = 0
+    for (let i = 0; i < 10; i++, dataNames) myChartTwo.config.data.datasets[0].data.push(data[0][dataNames[i]])
+    myChartTwo.update('none')
+   
+    // donut chart one: daily breakdown points per level
+    myChartThree.config.data.datasets[0].data.length = 0
+    for (let i = 0; i < 10; i++, dataNames) myChartThree.config.data.datasets[0].data.push(data[0][dataNames[i]] / (i+1))
+    myChartThree.update('none')
 
     })
   .catch(function (err) {
