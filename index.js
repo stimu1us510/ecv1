@@ -85,7 +85,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
     setAuthDisp()
     // get data for dashboard screen after authed
     getTotalScore() 
-    getAllHistory()
+    getSevenDayHistory()
     return data.id
     })
   .catch(function (err) {
@@ -192,7 +192,8 @@ document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopBut
 
 const pointForm = document.getElementById('point-form')
 const changeToDateFormat = d => d.toJSON().slice(0,10).split('-').reverse().join('/')
-const myChart = new Chart(document.getElementById('myChart'),config)
+const myChart = new Chart(document.getElementById('myChart'), chartOneConfig)
+const myChart2 = new Chart(document.getElementById('myChartTwo'), chartTwoConfig)
 
 pointForm.addEventListener("submit", submitPoints)
 function submitPoints(form) {
@@ -210,13 +211,16 @@ function submitPoints(form) {
   .then(function (response) {return response.json()})
   .then(function (data) {
     console.log(data)
-    try {
+
       document.querySelector('#current-total-score').innerHTML = data.totalPoints
-    } catch {
-      document.querySelector('#current-total-score').innerHTML = data 
-    }
+
+    // try {
+    //   document.querySelector('#current-total-score').innerHTML = data.totalPoints
+    // } catch {
+    //   document.querySelector('#current-total-score').innerHTML = data 
+    // }
     
-    getAllHistory()
+    getSevenDayHistory()
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
@@ -240,7 +244,7 @@ function getTotalScore() {
   })   
 }
 
-function getAllHistory() {
+function getSevenDayHistory() {
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history_get_all', {
     method: 'GET',
     headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') },
@@ -252,7 +256,7 @@ function getAllHistory() {
     myChart.config.data.labels.length = 0
 
     data.map(dataObject => {
-        dataObject.created_at = new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }).format(dataObject.created_at)
+        dataObject.created_at = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric' }).format(dataObject.created_at)
         myChart.data.labels.push(dataObject.created_at)
         myChart.config.data.datasets[0].data.push(dataObject.totalPoints)
     })

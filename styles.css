@@ -24,6 +24,10 @@ html, body {
   background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
 }
 
+.fc-grey{
+  color: #4E4E4E
+}
+
 @media (max-width: 449.98px) {
     .chart-d-sm-w-100 {
       width: 100% !important;
@@ -38,6 +42,9 @@ html, body {
   
 @media (max-width: 767.98px) {
     .chart-d-sm-w-100 {
+      width: 100% !important;
+    }
+    .chart-one-wrapper {
       width: 100% !important;
     }
     #main-wrapper {

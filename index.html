@@ -207,18 +207,28 @@
   </div>
 
   <!-- user history w/score input  -->
-  <div id="user-history-cont" class="d-none w-100">
-    <div class="d-flex justify-content-center mb-4">   <!-- chart 1 daily totals -->
-      <div class="h-25 w-75 chart-d-sm-w-100">
-          <canvas id="myChart"></canvas>
+  <div id="user-history-cont" class="d-none w-100 text-center">
+    <h2>Your total score today is <span id="current-total-score">...</span> !</h2>
+
+    <!-- seven day  progress display -->
+    <div id="total-daily-score-containter" class="d-flex flex-column justify-content-center align-items-center mt-3">
+      <h3 class="fc-grey fw-light">7 Day Progress</h3>
+      <div class="chart-one-wrapper" style="width: 800px; height: auto;">
+        <canvas id="myChart"></canvas>
       </div>
     </div>
-    <!-- total score display -->
-    <div id="total-score-cont" class="d-flex flex-column justify-content-center">
-      <h3>Your current total score for today is <span id="current-total-score">...</span> !</h3>
+
+    <!-- total daily score display -->
+    <div id="total-daily-score-containter" class="d-flex flex-column justify-content-center align-items-center mt-5">
+      <h3 class="fc-grey fw-light">Daily Total Breakdown <span class="fs-5"><i>(points per level)</i></span></h3>
+      <div class="chart-wrapper" style="width: 400px; height: auto;">
+        <canvas id="myChartTwo"></canvas>
+      </div>
     </div>
+    
+
     <!-- point entry form -->
-    <div class="container-xl d-flex flex-row">
+    <div class="container-xl d-flex flex-row mt-4">
       <form id="point-form" class="">
 
         <div class="form-check">
@@ -346,29 +356,67 @@
 </div>
 
 <script>
-// js for chart 1
-let lablesForChartData = []
-let chartData = []
+// -- chart data --
 
-  const data = {
-    labels: lablesForChartData,
-    datasets: [{
-      label: 'points per day',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: chartData,
-    }]
-  };
+//chart one: last 7 day total points
+let chartOneLableData = []
+let chartOneChartData = []
 
-  const config = {
-    type: 'line',
-    data: data,
-    options: {
-      animation:{
-        duration: 0
-      }
+const chartOneData = {
+  labels: chartOneLableData,
+  datasets: [{
+    label: 'points per day',
+    backgroundColor: 'rgb(255, 99, 132)',
+    borderColor: 'rgb(255, 99, 132)',
+    data: chartOneChartData,
+  }]
+}
+
+const chartOneConfig = {
+  type: 'line',
+  data: chartOneData,
+  options: {
+    animation:{
+      duration: 0
     }
-  };
+  }
+}
+
+
+// chart 2: pie chart
+//let chartTwoLableData = []
+let chartTwoChartData = [1,2,3,4,0,0,7,8,0,50]
+
+const chartTwoData = {
+  labels: ["1 point",2,3,4,5,6,7,8,9,10],
+  datasets: [{
+    label: 'daily breakdown by points per level',
+    backgroundColor: [ 
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)',      
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)',      
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)',
+      'rgb(255, 99, 132)'],
+    //borderColor: 'rgb(255, 99, 132)',
+    data: chartTwoChartData,
+  }]
+}
+
+const chartTwoConfig = {
+  type: 'doughnut',
+  data: chartTwoData,
+  options: {
+    animation:{
+      duration: 0
+    }
+  }
+}
+  
 </script>
 
 </body>
