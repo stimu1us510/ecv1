@@ -29,7 +29,17 @@ const chartOneConfig = {
 let chartTwoChartData = [0,0,0,0,0,0,0,0,0,0]
 
 const chartTwoData = {
-  labels: ["Level One","Level Two","Level Three","Level Four","Level Five","Level Six","Level Seven","Level Eight","Level Nine","Level Ten",],
+  labels: [
+    "難易度１",
+    "難易度２",
+    "難易度３",
+    "難易度４",
+    "難易度５",
+    "難易度６",
+    "難易度７",
+    "難易度８",
+    "難易度９",
+    "難易度１０"],
   datasets: [{
     label: 'daily breakdown by points per level',
     backgroundColor: [ 
@@ -62,7 +72,17 @@ const chartTwoConfig = {
 let chartThreeChartData = [0,0,0,0,0,0,0,0,0,0]
 
 const chartThreeData = {
-  labels: ["1 point","2 points","3 points","4 points","5 points","6 points","7 points","8 points","9 points","10 points"],
+  labels:  [
+    "難易度１",
+    "難易度２",
+    "難易度３",
+    "難易度４",
+    "難易度５",
+    "難易度６",
+    "難易度７",
+    "難易度８",
+    "難易度９",
+    "難易度１０"],
   datasets: [{
     label: 'daily breakdown by points per level',
     backgroundColor: [ 

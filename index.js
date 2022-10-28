@@ -116,13 +116,13 @@ function dispLogin() {
 
 function setAuthDisp() {
   hideElements('#hero-section, #getAuth-forms, #log-in-button, #sign-up-button, #home-button')
-  showElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-cont, #footer')
+  showElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-container, #footer')
   document.querySelector('#welcome-user').innerHTML = user
 }
 
 function setNoAuthDisp() {
   clearSentences()
-  hideElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-cont')
+  hideElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-container')
   showElements('#home-button, #sign-up-button')
 }
 
@@ -344,7 +344,8 @@ function showKey() {
 }
 
 function getLockedSentences() {
-  loadingSpinner.classList.remove('d-none') //display fetching data
+  showElements('#error-message-container, #fetching-data-loader')
+  //loadingSpinner.classList.remove('d-none') //display fetching data
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
   method: 'GET',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
@@ -354,7 +355,7 @@ function getLockedSentences() {
     fetchedSentencesData = data  // JSON from our response saved as fetchedData
     isDatafetched = true
     showMoreButton.classList.remove('d-none')
-    loadingSpinner.classList.add('d-none')
+    hideElements('#error-message-container, #fetching-data-loader')
     loadSentences()
     console.log(data)
     })
@@ -366,10 +367,12 @@ function getLockedSentences() {
 }
 
 function errorAlert(errMessage) {
-    errorMessageBox.classList.remove('d-none')
+    showElements('#error-message-container, #error-message-alert')
+    //errorMessageBox.classList.remove('d-none')
     errorMessageText.innerHTML = errMessage
     setTimeout(() => {
-    errorMessageBox.classList.add('d-none')
+      hideElements('#error-message-container, #error-message-alert')
+    //errorMessageBox.classList.add('d-none')
     }, 2000)
 }
 
