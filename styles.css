@@ -24,8 +24,18 @@ html, body {
   background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
 }
 
-.fc-grey{
+.fc-grey {
   color: #4E4E4E
+}
+
+.nested summary {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  color: gray;
+  border-bottom: 1px solid #bababa;
+  margin: 1rem 0 1rem;
 }
 
 @media (max-width: 449.98px) {

@@ -10,6 +10,7 @@ let user = '' //stores username after auth
 let size = 0 // used for display sentence cards
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
+let isFiltered = true
 var helperToolsToggle = true //temp delete later
 
 signupForm.addEventListener('submit', function(e) {
@@ -252,7 +253,9 @@ function getSevenDayHistory() {
 
 function loadSentences() {
   const sentences = document.createDocumentFragment()
-  fetchedSentencesData.slice(size, size+50).map(function (i, a) {
+  isFiltered ? sentencesToCreate = fetchedSentencesData.filter(o=>Object.values(o).includes('C 中学標準')) 
+  : sentencesToCreate = fetchedSentencesData
+  sentencesToCreate.slice(size, size+50).map(function (i, a) {
     // create card
     let card = document.createElement('div')
     card.classList.add('card')
@@ -314,7 +317,7 @@ function loadSentences() {
     card.appendChild(cardBody)
     sentences.appendChild(card)
 
-    modalButton.addEventListener("click", () => setNewModalData(i))
+    modalButton.addEventListener("click", () => setNewModalData(i)) //pass sentence card data to be set for modal/stt use
     })
   
   sentencesContainer.appendChild(sentences)
@@ -325,6 +328,12 @@ function loadSentences() {
 }
 
 showMoreButton.onclick = () => {
+  loadSentences()
+}
+
+const filterSentences = () => {
+  isFiltered = !isFiltered
+  clearSentences()
   loadSentences()
 }
 
