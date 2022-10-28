@@ -11,10 +11,29 @@ html, body {
     filter: invert(1);
   }
 
+.modal-header {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0.5em;
+}
+
+.modal-body {
+  width: 100%;
+  max-width: 1200px;
+  padding-top: 0.3em;
+  position: relative;
+}
+
 .modal-content {
   padding-left: 1em;
   padding-right: 1em;
   height: 80%;
+}
+
+.modal-footer {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0.5em;
 }
 
 .modal-backdrop {
@@ -22,6 +41,14 @@ html, body {
   opacity: 1 !important;
   background: radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #ffffff 20%, #ffffff 80%, transparent 80%, transparent) 25px 25px, linear-gradient(#e0e2ff 2px, transparent 2px) 0 -1px, linear-gradient(90deg, #e0e2ff 2px, #ffffff 2px) -1px 0;
   background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
+}
+
+#confetticanvas {
+  position:absolute;
+  top:0;
+  left:0;
+  height: 100%;
+  width: 100%;
 }
 
 .fc-grey {

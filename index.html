@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="styles.css">
+    <!-- JavaScript -->
     <script src="index.js" defer></script>
     <script src="modal.js" defer></script>
-    <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="chartdata.js"></script>
-    <!-- CSS only -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin=" anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    
     <title>英語チャレンジ by 英会話サイモンズ</title>
     <link id="site-icon" rel="icon" href="https://cdn-icons-png.flaticon.com/512/1212/1212830.png" style="filter: invert(1);" type="image/icon type">
 </head>
@@ -28,15 +29,36 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body pt-0">
         <canvas id="confetticanvas"></canvas>
         <audio id="phraseaudio" src="https://simons.xsrv.jp/eigo/220729_010.mp3"></audio>
         <audio id="correctaudio" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/correctanswer4.wav"></audio>
 
-        <div>
-          <h3 id="japanese-phrase-plain"></h3>
-        </div>
-        ...
+        <div class ="innerbodycontainer d-flex flex-column h-100"> <!-- body wrapper --> 
+          <div class="scorescontainer d-flex justify-content-between"> <!-- score bar wrapper -->  
+              <div class="innerscorescontainer text-center"> 
+                  <h4 class="lead">Points</h4>
+                  <h3><span id="points"></span></h3>
+              </div>
+              <div class="innerscorescontainer text-center"> 
+                  <h4 class="lead">Total Score</h4>
+                  <h3><span id="total"></span></h3>
+              </div>
+          </div> <!-- scores container end --> 
+          <div class="textdisplaycontainer d-flex flex-column justify-content-center h-100"> <!-- text outputs --> 
+              <div id="innertextdisplaycontainer">
+                  <br>
+                  <h4 id="scoreresultcontainer" class="text-center"></h4>
+                  <div id="timer-bar"></div>
+                  <br>
+                  <h4 id="status" class="small"></h4>
+                  <div id="webspeech-results"> <!-- webspeech final and interim results --> 
+                      <h1><span class="final" id="final_span"></span><span class="interim text-muted" id="interim_span"></span></h1>
+                  </div>
+              </div> <!-- inner text display container end --> 
+          </div> <!-- text display container end --> 
+          <h5 id="japanese-text"></h5>
+      </div> <!-- body wrapper end --> 
       </div>
       <div class="modal-footer">
         <button id="translateButton" class="btn btn-light btn-lg border border-dark"><i class="bi bi-lightbulb"></i></button>
@@ -98,12 +120,14 @@
 <div id="main-wrapper" class="container-xxl d-flex justify-content-start flex-column" style="height: 80vh; padding:0;"> <!-- main-page wrapper for max-width -->
   
   <!-- temp helper tools  -->
-  <div id="helper-tools" class="d-flex justify-content-center d-none">
+  <div id="helper-tools" class="d-flex justify-content-center d-none position-fixed position-absolute top-0 end-0" style="z-index: 99999999999;">
     <div class="card">
-        <div class="card-body" style="min-width: 400px;">
+        <div class="card-body" style="min-width: 400px; max-width: 400px;">
+            <div class="d-flex flex-row-reverse mb-2"><button class="btn btn-close" onclick="toggleHelperTools()"></button></div>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
             <button id="temp-filter-button" class="btn btn-outline-dark w-100 mb-2" onclick="filterSentences()">Filter Sentences (test)</button>
+            <button class="btn btn-outline-dark w-100 mb-2" onclick="testConfetti()">Test Confetti</button>
             <button type="button" class="btn btn-outline-dark w-100 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
         </div>
     </div>
@@ -205,6 +229,13 @@
 
   <!-- user history w/score input  -->
   <div id="user-history-cont" class="d-none w-100 text-center">
+    <div class="container-xxl">
+      <div class="card mb-4 mt-2">
+        <div class="card-body">
+          <h2> Your total score today is <span id="current-total-score">...</span> !</h2>
+        </div>
+      </div>
+    </div>
     
     <div class="container-xxl">
       <div class="card">
@@ -220,13 +251,6 @@
       </div>
     </div>
 
-    <div class="container-xxl">
-      <div class="card mt-4">
-        <div class="card-body">
-          <h2>Your total score today is <span id="current-total-score">...</span> !</h2>
-        </div>
-      </div>
-    </div>
 
     <div class="container-xxl">
       <div class="row">

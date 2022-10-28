@@ -8,9 +8,10 @@ const errorMessageBox = document.getElementById('error-message-alert')
 const errorMessageText = document.getElementById('error-message-text')
 let user = '' //stores username after auth
 let size = 0 // used for display sentence cards
+let currentTotalPoints = 0
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
-let isFiltered = true
+let isFiltered = false
 var helperToolsToggle = true //temp delete later
 
 signupForm.addEventListener('submit', function(e) {
@@ -203,8 +204,8 @@ function getDailyTotalScoreBreakdown() {
   .then(function (response) {return response.json()})
   .then(function (data) {
     if (data[0].totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
-    
-    document.querySelector('#current-total-score').innerHTML = data[0].totalPoints
+    currentTotalPoints = data[0].totalPoints
+    document.querySelector('#current-total-score').innerHTML = currentTotalPoints
 
     let dataNames = {0:'one', 1:'two', 2:'three', 3:'four', 4:'five', 5:'six', 6:'seven', 7:'eight', 8:'nine', 9:'ten'} //for json scheme
     
