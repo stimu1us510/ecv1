@@ -264,8 +264,8 @@ function loadSentences() {
     cardBody.classList.add('card-body')
 
     // card number
-    let number = document.createElement('h4')
-    number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
+    // let number = document.createElement('h4')
+    // number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
 
     let gradePill = document.createElement('div')
     gradePill.classList.add('d-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light','fs-6', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
