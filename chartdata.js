@@ -1,5 +1,26 @@
 // -- chart data -- //
 
+const plugin = {
+  id: 'no-data',
+  afterDraw: function(chart) {
+  	if (chart.data.datasets.length === 0) {
+    	// No data is present
+      var ctx = chart.chart.ctx;
+      var width = chart.chart.width;
+      var height = chart.chart.height
+      chart.clear();
+      
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = "16px normal 'Helvetica Nueue'";
+      ctx.fillText('No data to display', width / 2, height / 2);
+      ctx.restore();
+    }
+  }
+}
+
+
 //chart one: last 7 day total points
 let chartOneLableData = []
 let chartOneChartData = []
@@ -27,6 +48,7 @@ const chartOneConfig = {
 // chart 2: daily breakdown points per level
 //let chartTwoChartData = [1,2,3,4,0,0,7,8,0,50]
 let chartTwoChartData = [0,0,0,0,0,0,0,0,0,0]
+
 
 const chartTwoData = {
   labels: [
@@ -64,7 +86,8 @@ const chartTwoConfig = {
   options: {
     animation:{
       duration: 0
-    }
+    },
+    plugins: [plugin]
   }
 }
 

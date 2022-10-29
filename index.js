@@ -64,13 +64,18 @@ loginForm.addEventListener('submit', function(e) {
 })
 
 function authMe2() {
+if(!localStorage.getItem('authkey')) {
+  setNoAuthDisp()
+  showHero()
+  return
+} 
 fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   method: 'GET',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
   })
   .then(function (response) {
     if(!response.ok) {
-        console.log("authErr")
+        console.warn("User not logged in or there was an error authorizing the user.")
         setNoAuthDisp()
         showHero()
     } else {
@@ -163,6 +168,7 @@ document.addEventListener("scroll", (e) => window.scrollY > 400 ? hideGoToTopBut
 const myChartOne = new Chart(document.getElementById('myChartOne'), chartOneConfig)
 const myChartTwo = new Chart(document.getElementById('myChartTwo'), chartTwoConfig)
 const myChartThree = new Chart(document.getElementById('myChartThree'), chartThreeConfig)
+
 const pointForm = document.getElementById('point-form')
 
 pointForm.addEventListener("submit", submitPoints)
@@ -203,7 +209,8 @@ function getDailyTotalScoreBreakdown() {
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    if (data[0].totalPoints === undefined) return document.querySelector('#current-total-score').innerHTML = '???'
+    if (data === 0) return document.querySelector('#current-total-score').innerHTML = 0
+    
     currentTotalPoints = data[0].totalPoints
     document.querySelector('#current-total-score').innerHTML = currentTotalPoints
 
@@ -221,7 +228,7 @@ function getDailyTotalScoreBreakdown() {
 
     })
   .catch(function (err) {
-	  console.warn('Something went wrong.', err)
+	  //console.warn('Something went wrong.', err)
   })   
 }
 

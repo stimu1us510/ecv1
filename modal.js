@@ -12,6 +12,41 @@ let currentPraise = "Great!"
 let clearedPhrases = []
 let triedPhrases = []
 
+
+
+function detectDevice() {
+    // NOTE: iPad Pro is marked as MacIntel (same as macBooks) so a hack is to check if it has touch
+    // but this is only as of now and has the potential to break in the future if apple add touch to macBooks
+  var ua = navigator.userAgent;
+  
+  let makeFullscreen = () => {
+  document.querySelector(".modal-dialog").classList.add("modal-fullscreen")
+  document.querySelector(".modal-dialog-centered").classList.add("modal-dialog-centered-fix")
+  document.querySelector(".modal-content").classList.add("border-0")
+  }
+  if(/Android|webOS/i.test(ua)) {
+    detectedDevice = "android"
+    makeFullscreen()
+    }
+    else if(/iPhone|iPad|iPod/i.test(ua)){
+        detectedDevice = "iOS"
+        makeFullscreen()
+    }
+    else if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 0){
+        detectedDevice = "iOS"
+        makeFullscreen()
+    }
+    else if(/Chrome/i.test(ua)){
+    detectedDevice = "chrome"
+    }
+    else {
+    detectedDevice = "other"
+    }
+}
+
+
+
+
 // -- when button on sentence card is pressed -- //
 function setNewModalData(newSentenceData) {
   // set data
@@ -45,3 +80,6 @@ function goToNextCardModal() {
 document.querySelector('#nextButton').onclick = () => {
     goToNextCardModal()
 }
+
+// -- on page load -- //
+detectDevice()

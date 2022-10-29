@@ -65,9 +65,19 @@ html, body {
   margin: 1rem 0 1rem;
 }
 
-@media (max-width: 449.98px) {
+@media (max-width: 453.98px) {
     .chart-d-sm-w-100 {
       width: 100% !important;
+    }
+    #hero-section{
+      padding-top: 15px !important;
+    }
+    #hero-h2 {
+      font-size: 1.2rem;
+    }
+
+    #hero-h6{
+      font-size: 0.9rem;
     }
     /* .card-body {
       min-width: 350px !important;
