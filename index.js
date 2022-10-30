@@ -90,6 +90,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
+  errorAlert('Something went wrong.', err)
   })    
 }
 
@@ -196,6 +197,7 @@ function submitPoints(form) {
     })
   .catch(function (err) {
 	  console.warn('Something went wrong.', err)
+    errorAlert('Something went wrong.', err)
   })    
 }
 
@@ -228,6 +230,7 @@ function getDailyTotalScoreBreakdown() {
 
     })
   .catch(function (err) {
+    errorAlert('Something went wrong.', err)
 	  //console.warn('Something went wrong.', err)
   })   
 }
@@ -256,6 +259,7 @@ function getSevenDayHistory() {
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
+  errorAlert('Something went wrong.', err)
   }) 
 }
 
@@ -382,6 +386,7 @@ function errorAlert(errMessage) {
     //errorMessageBox.classList.add('d-none')
     }, 2000)
 }
+
 
 // -- on page load -- //
 authMe2()
