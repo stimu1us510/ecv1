@@ -7,13 +7,13 @@
     <!-- JavaScript -->
     <script src="index.js" defer></script>
     <script src="modal.js" defer></script>
-    <script src="bootstrap.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="chartdata.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin=" anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     
     <title>英語チャレンジ by 英会話サイモンズ</title>
@@ -27,7 +27,7 @@
     <div class="modal-content">
       <div class="modal-header border-0 px-0">
         <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button id="modal-close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body pt-0">
         <canvas id="confetticanvas"></canvas>
@@ -45,10 +45,10 @@
                   <h3><span id="total"></span></h3>
               </div>
           </div> <!-- scores container end --> 
-          <div class="textdisplaycontainer d-flex flex-column justify-content-center h-100"> <!-- text outputs --> 
+          <div class="textdisplaycontainer d-flex flex-column justify-content-center align-items-center h-100"> <!-- text outputs --> 
               <div id="innertextdisplaycontainer">
                   <br>
-                  <h4 id="scoreresultcontainer" class="text-center"></h4>
+                  <h4 id="main-output-container" class="text-center"></h4>
                   <div id="timer-bar"></div>
                   <br>
                   <h4 id="status" class="small"></h4>
@@ -61,11 +61,12 @@
       </div> <!-- body wrapper end --> 
       </div>
       <div class="modal-footer">
-        <button id="translateButton" class="btn btn-light btn-lg border border-dark"><i class="bi bi-lightbulb"></i></button>
-        <button id="listenButton" class="btn btn-light btn-lg border border-dark"><i class="bi bi-play"></i></button>
-        <button id="endSpeechButton" class="btn btn-outline-danger btn-lg hide"><i class="bi bi-mic-mute"></i></button>
-        <button id="speechButton" class="btn btn-warning btn-lg"><img class="svg-icon" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/confetti.png" style="height:20px; width:20px;"></button>
-        <button id="nextButton" class="btn btn-success btn-lg hide"><i class="bi bi-arrow-right-circle"></i></button>
+        <button id="translate-button" class="btn btn-light btn-lg border border-dark"><i class="bi bi-lightbulb"></i></button>
+        <button id="listen-button" class="btn btn-light btn-lg border border-dark"><i class="bi bi-play"></i></button>
+        <button id="end-speech-button" class="btn btn-outline-danger btn-lg d-none"><i class="bi bi-mic-mute"></i></button>
+        <button id="start-speech-button" class="btn btn-warning btn-lg"><img class="svg-icon" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/confetti.png" style="height:20px; width:20px;"></button>
+        <button id="mic-active-button" class="btn btn-light btn-lg d-none"><span class="spinner-grow spinner-grow-sm text-danger" role="status" aria-hidden="true"></span></button>
+        <button id="next-button" class="btn btn-success btn-lg d-none"><i class="bi bi-arrow-right-circle"></i></button>
       </div>
     </div>
   </div>

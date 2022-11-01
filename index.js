@@ -90,7 +90,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
-  errorAlert('Something went wrong.', err)
+  //errorAlert('Something went wrong.', err)
   })    
 }
 
@@ -267,7 +267,7 @@ function loadSentences() {
   const sentences = document.createDocumentFragment()
   isFiltered ? sentencesToCreate = fetchedSentencesData.filter(o=>Object.values(o).includes('C 中学標準')) 
   : sentencesToCreate = fetchedSentencesData
-  sentencesToCreate.slice(size, size+50).map(function (i, a) {
+  sentencesToCreate.slice(size, size+50).map(function (e, i) {
     // create card
     let card = document.createElement('div')
     card.classList.add('card')
@@ -276,24 +276,24 @@ function loadSentences() {
     cardBody.classList.add('card-body')
 
     // card number
-    // let number = document.createElement('h4')
-    // number.innerHTML = `${size === 0 ? a + 1 : size + (a + 1)}`
+    let number = document.createElement('h4')
+    number.innerHTML = `${size === 0 ? i + 1 : size + (i + 1)}`
 
     let gradePill = document.createElement('div')
     gradePill.classList.add('d-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light','fs-6', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
-    gradePill.innerHTML = `${i.Grade}`
+    gradePill.innerHTML = `${e.Grade}`
 
     // make main accordian
     let mainAccord = document.createElement('details')
     let mainAccordSummary = document.createElement('summary')
     mainAccord.appendChild(mainAccordSummary)
-    mainAccordSummary.innerHTML = `<span class="mainAccord--summary">${i.JpnPlain}</span>`
+    mainAccordSummary.innerHTML = `<span class="mainAccord--summary">${e.JpnPlain}</span>`
     
     // make first nested accordian
     let nestAccordOne = document.createElement('details')
     nestAccordOne.classList.add('nested')
     let nestAccordOneSummary = document.createElement('summary')
-    nestAccordOne.innerHTML = `${i.JpnWordOrder}`
+    nestAccordOne.innerHTML = `${e.JpnWordOrder}`
     nestAccordOne.appendChild(nestAccordOneSummary)
     nestAccordOneSummary.innerHTML = `<span class="nestAccord--summary">Word Order</span>`
     mainAccord.appendChild(nestAccordOne)
@@ -302,7 +302,7 @@ function loadSentences() {
     let nestAccordTwo = document.createElement('details')
     nestAccordTwo.classList.add('nested')
     let nestAccordTwoSummary = document.createElement('summary')
-    nestAccordTwo.innerHTML = `${i.EngPlain}`
+    nestAccordTwo.innerHTML = `${e.EngPlain}`
     nestAccordTwo.appendChild(nestAccordTwoSummary)
     nestAccordTwoSummary.innerHTML = `<span class="nestAccord--summary">English</span>`
     mainAccord.appendChild(nestAccordTwo) 
@@ -312,15 +312,16 @@ function loadSentences() {
     modalButtonContainer.classList.add('d-flex', 'flex-row-reverse')
     let modalButton = document.createElement('button')
     modalButton.classList.add('btn', 'btn-lg', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
-    modalButton.setAttribute('id', `${i.SentenceID}`)
+    modalButton.setAttribute('id', `${e.SentenceID}`)
     modalButton.setAttribute('data-bs-toggle', 'modal')
     modalButton.setAttribute('data-bs-target', '#exampleModal')
     //modalButton.setAttribute('style', 'border-opacity: 0.5; border-width: 2px;')
-    modalButton.innerHTML = `<span class="fw-bold"> ${i.LevelShown} ${i.LevelShown > 1 ? 'pts' : 'pt'}!</span>`
+    modalButton.innerHTML = `<span class="fw-bold"> ${e.LevelShown} ${e.LevelShown > 1 ? 'pts' : 'pt'}!</span>`
     modalButtonContainer.appendChild(modalButton)
     
     // append each element to card body
     //cardBody.appendChild(number)
+    cardBody.appendChild(number)
     cardBody.appendChild(gradePill)
     cardBody.appendChild(mainAccord)
     cardBody.appendChild(modalButtonContainer)
@@ -329,7 +330,7 @@ function loadSentences() {
     card.appendChild(cardBody)
     sentences.appendChild(card)
 
-    modalButton.addEventListener("click", () => setNewModalData(i)) //pass sentence card data to be set for modal/stt use
+    modalButton.addEventListener("click", () => setNewModalData(e)) //pass sentence card data to be set for modal/stt use
     })
   
   sentencesContainer.appendChild(sentences)
