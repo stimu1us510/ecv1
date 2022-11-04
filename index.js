@@ -12,6 +12,7 @@ let currentTotalPoints = 0
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
 let isFiltered = false
+let isFavorited
 var helperToolsToggle = true //temp delete later
 
 signupForm.addEventListener('submit', function(e) {
@@ -265,8 +266,10 @@ function getSevenDayHistory() {
 
 function loadSentences() {
   const sentences = document.createDocumentFragment()
-  isFiltered ? sentencesToCreate = fetchedSentencesData.filter(o=>Object.values(o).includes('C 中学標準')) 
+  //isFiltered ? sentencesToCreate = fetchedSentencesData.filter(o=>Object.values(o).includes('C 中学標準')) : sentencesToCreate = fetchedSentencesData
+  isFiltered ? sentencesToCreate = fetchedSentencesData.filter(e => e._user_sentences_addon[0]?.isFavorited)
   : sentencesToCreate = fetchedSentencesData
+  console.log("sentences loaded")
   sentencesToCreate.slice(size, size+50).map(function (e, i) {
     // create card
     let card = document.createElement('div')
@@ -274,21 +277,28 @@ function loadSentences() {
     card.classList.add('mb-5')
     let cardBody = document.createElement('div')
     cardBody.classList.add('card-body')
-
     // card number
     let number = document.createElement('h4')
     number.innerHTML = `${size === 0 ? i + 1 : size + (i + 1)}`
-
+    // grade pill
     let gradePill = document.createElement('div')
-    gradePill.classList.add('d-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light','fs-6', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
+    gradePill.classList.add('grade-pill', 'd-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
     gradePill.innerHTML = `${e.Grade}`
-
+    //favorites star
+    let favoritesStar = document.createElement('button')
+    favoritesStar.classList.add('d-flex', 'flex-row-reverse', 'justify-content-end', 'btn','btn-light')
+    favoritesStar.innerHTML = e._user_sentences_addon[0]?.isFavorited ? 
+    `<i class="bi bi-star-fill icon-yellow"></i>` : `<i class="bi bi-star"></i>`
+    // grade & favorites container
+    let gradeFavoritesContainer = document.createElement('div')
+    gradeFavoritesContainer.classList.add('d-flex', 'justify-content-between', 'align-items-center')
+    gradeFavoritesContainer.appendChild(gradePill)
+    gradeFavoritesContainer.appendChild(favoritesStar)
     // make main accordian
     let mainAccord = document.createElement('details')
     let mainAccordSummary = document.createElement('summary')
     mainAccord.appendChild(mainAccordSummary)
     mainAccordSummary.innerHTML = `<span class="mainAccord--summary">${e.JpnPlain}</span>`
-    
     // make first nested accordian
     let nestAccordOne = document.createElement('details')
     nestAccordOne.classList.add('nested')
@@ -297,7 +307,6 @@ function loadSentences() {
     nestAccordOne.appendChild(nestAccordOneSummary)
     nestAccordOneSummary.innerHTML = `<span class="nestAccord--summary">Word Order</span>`
     mainAccord.appendChild(nestAccordOne)
-    
     // make second nested accordian
     let nestAccordTwo = document.createElement('details')
     nestAccordTwo.classList.add('nested')
@@ -306,12 +315,11 @@ function loadSentences() {
     nestAccordTwo.appendChild(nestAccordTwoSummary)
     nestAccordTwoSummary.innerHTML = `<span class="nestAccord--summary">English</span>`
     mainAccord.appendChild(nestAccordTwo) 
-
     // make modal button
     let modalButtonContainer = document.createElement('div')
     modalButtonContainer.classList.add('d-flex', 'flex-row-reverse')
     let modalButton = document.createElement('button')
-    modalButton.classList.add('btn', 'btn-lg', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
+    modalButton.classList.add('btn', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
     modalButton.setAttribute('id', `${e.SentenceID}`)
     modalButton.setAttribute('data-bs-toggle', 'modal')
     modalButton.setAttribute('data-bs-target', '#exampleModal')
@@ -321,23 +329,31 @@ function loadSentences() {
     
     // append each element to card body
     //cardBody.appendChild(number)
-    cardBody.appendChild(number)
-    cardBody.appendChild(gradePill)
+    //cardBody.appendChild(gradePill)
+    cardBody.appendChild(gradeFavoritesContainer)
     cardBody.appendChild(mainAccord)
     cardBody.appendChild(modalButtonContainer)
-    
     // append to body to card and card to sentences
     card.appendChild(cardBody)
     sentences.appendChild(card)
-
+    // button listeners
     modalButton.addEventListener("click", () => setNewModalData(e)) //pass sentence card data to be set for modal/stt use
-    })
+    favoritesStar.addEventListener("click", () => toggleFavorite(e))   
+  })
   
   sentencesContainer.appendChild(sentences)
   if (isInitialLoad) sentencesContainer.scrollIntoView()
   isInitialLoad = false
   document.querySelector('#randomizeButton').classList.remove('d-none')
   size = size +50
+  // if(size >= sentencesToCreate.length) showMoreButton.classList.add('d-none')
+  // console.log(sentencesToCreate)
+  // if(sentencesToCreate.length === 0) {
+  //   showElements('#no-results-container')
+  // } else {hideElements('#no-results-container')}
+  size >= sentencesToCreate.length ? hideElements('#see-more-sentences-container') : showElements('#see-more-sentences-container')
+  sentencesToCreate.length === 0 ? showElements('#no-results-container') : hideElements('#no-results-container')
+
 }
 
 showMoreButton.onclick = () => {
@@ -348,11 +364,40 @@ const filterSentences = () => {
   isFiltered = !isFiltered
   clearSentences()
   loadSentences()
+  sentencesContainer.scrollIntoView()
+}
+
+const toggleFavorite = (e) => {
+  let payload = { sentenceIdForFavorites : e.id }
+  let selectedFavoriteButton = event.currentTarget
+  selectedFavoriteButton.disabled = true
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/toggle_favorite', {
+      method: 'POST',
+      headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') },
+      body: JSON.stringify(payload)
+      })
+      .then(function (response) {return response.json()})
+      .then(function (data) {
+        if (data === true ) {
+          selectedFavoriteButton.innerHTML = `<i class="bi bi-star-fill icon-yellow"></i>`
+          e._user_sentences_addon[0].isFavorited = true
+        } else {
+          selectedFavoriteButton.innerHTML = `<i class="bi bi-star"></i>`
+          e._user_sentences_addon[0].isFavorited = false
+        }
+      
+        if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove()
+        selectedFavoriteButton.disabled = false
+      })
+      .catch(function (err) {
+      errorAlert('Something went wrong.', err)
+	    //console.warn('Something went wrong.', err)
+      }) 
 }
 
 function showKey() {
-    console.log(localStorage.getItem('authkey'))
-    errorAlert(`This is the authkey: ${localStorage.getItem('authkey')}`)
+  console.log(localStorage.getItem('authkey'))
+  errorAlert(`This is the authkey: ${localStorage.getItem('authkey')}`)
 }
 
 function getLockedSentences() {
@@ -387,7 +432,6 @@ function errorAlert(errMessage) {
     //errorMessageBox.classList.add('d-none')
     }, 2000)
 }
-
 
 // -- on page load -- //
 authMe2()

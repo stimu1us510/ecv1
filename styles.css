@@ -65,6 +65,19 @@ html, body {
   margin: 1rem 0 1rem;
 }
 
+.grade-pill {
+  font-size: 0.7rem;
+}
+
+.icon-yellow {
+  color: goldenrod;
+}
+
+.hr-bar {
+    color: #dee2e6;
+    opacity: 1 !important;
+}
+
 @media (max-width: 453.98px) {
     .chart-d-sm-w-100 {
       width: 100% !important;

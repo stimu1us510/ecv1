@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin=" anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    
     <title>英語チャレンジ by 英会話サイモンズ</title>
     <link id="site-icon" rel="icon" href="https://cdn-icons-png.flaticon.com/512/1212/1212830.png" style="filter: invert(1);" type="image/icon type">
 </head>
@@ -127,7 +126,7 @@
             <div class="d-flex flex-row-reverse mb-2"><button class="btn btn-close" onclick="toggleHelperTools()"></button></div>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
-            <button id="temp-filter-button" class="btn btn-outline-dark w-100 mb-2" onclick="filterSentences()">Filter Sentences (test)</button>
+            <button id="temp-filter-button" class="btn btn-outline-dark w-100 mb-2" onclick="filterSentences()">Filter by Favorites</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="testConfetti()">Test Confetti</button>
             <button type="button" class="btn btn-outline-dark w-100 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
         </div>
@@ -372,6 +371,11 @@
   <!-- more sentences -->
   <div id="see-more-sentences-container" class="text-center d-none mb-5">
     <button id="show-more-button" class="btn btn-light hide border-1 shadow-sm">show more</button>
+  </div>
+
+  <!-- no results -->
+  <div id="no-results-container" class="text-center d-none mb-5">
+    <button id="no-results-button" class="btn btn-light hide border-1 shadow-sm">no results</button>
   </div>
 
   <div id="floating-buttons">      
