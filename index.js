@@ -7,13 +7,13 @@ const sentencesContainer = document.getElementById('sentences-container')
 const errorMessageBox = document.getElementById('error-message-alert')
 const errorMessageText = document.getElementById('error-message-text')
 const tempFilterButton = document.getElementById('temp-filter-button')
-let user = '' //stores username after auth
+let user = '' //stores username on auth
 let size = 0 // used for display sentence cards
 let currentTotalPoints = 0
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
 let isFiltered = false
-let isFavorited
+//let isFavorited
 var helperToolsToggle = true //temp delete later
 var searchTextDelayTimer
 var textInput = ""

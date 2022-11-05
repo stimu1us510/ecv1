@@ -59,6 +59,7 @@ function setNewModalData(newSentenceData) {
   document.querySelector('#points').innerHTML = +LevelShown //+num removed trailing 0
   document.querySelector('#total').innerHTML = currentTotalPoints
   document.querySelectorAll('#final_span, #interim_span').forEach(e => e.innerHTML='')
+  listenButton.innerHTML = `<i class="bi bi-play">`
   hideElements('#end-speech-button, #mic-active-button, #next-button, #japanese-text')
   showElements('#translate-button, #listen-button, #start-speech-button')
   mainOutputDisplay.innerHTML = instruction
