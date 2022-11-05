@@ -1,5 +1,4 @@
 // -- chart data -- //
-
 const plugin = {
   id: 'no-data',
   afterDraw: function(chart) {
@@ -9,7 +8,6 @@ const plugin = {
       var width = chart.chart.width;
       var height = chart.chart.height
       chart.clear();
-      
       ctx.save();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -20,11 +18,9 @@ const plugin = {
   }
 }
 
-
 //chart one: last 7 day total points
 let chartOneLableData = []
 let chartOneChartData = []
-
 const chartOneData = {
   labels: chartOneLableData,
   datasets: [{
@@ -34,7 +30,6 @@ const chartOneData = {
     data: chartOneChartData,
   }]
 }
-
 const chartOneConfig = {
   type: 'line',
   data: chartOneData,
@@ -46,10 +41,7 @@ const chartOneConfig = {
 }
 
 // chart 2: daily breakdown points per level
-//let chartTwoChartData = [1,2,3,4,0,0,7,8,0,50]
 let chartTwoChartData = [0,0,0,0,0,0,0,0,0,0]
-
-
 const chartTwoData = {
   labels: [
     "難易度１",
@@ -79,7 +71,6 @@ const chartTwoData = {
     data: chartTwoChartData,
   }]
 }
-
 const chartTwoConfig = {
   type: 'doughnut',
   data: chartTwoData,
@@ -93,7 +84,6 @@ const chartTwoConfig = {
 
 // chart 3: daily breakdown number of correctly repeated phrases by level
 let chartThreeChartData = [0,0,0,0,0,0,0,0,0,0]
-
 const chartThreeData = {
   labels:  [
     "難易度１",
@@ -123,7 +113,6 @@ const chartThreeData = {
     data: chartThreeChartData,
   }]
 }
-
 const chartThreeConfig = {
   type: 'doughnut',
   data: chartThreeData,

@@ -126,7 +126,7 @@
             <div class="d-flex flex-row-reverse mb-2"><button class="btn btn-close" onclick="toggleHelperTools()"></button></div>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
-            <button id="temp-filter-button" class="btn btn-outline-dark w-100 mb-2" onclick="filterSentences()">Filter by Favorites</button>
+            <button id="temp-filter-button" class="btn btn-outline-dark w-100 mb-2">Filter</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="testConfetti()">Test Confetti</button>
             <button type="button" class="btn btn-outline-dark w-100 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
         </div>
@@ -365,8 +365,13 @@
     </div>
   </div>
 
+  <!-- filters -->
+  <div id="filters-container" class="mt-4 p-2">
+    <input id="text-search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" oninput="textFilter();return false;">
+  </div>
+
   <!-- sentences -->
-      <div id="sentences-container" class="mt-4 p-2"></div>
+  <div id="sentences-container" class="mt-4 p-2"></div>
 
   <!-- more sentences -->
   <div id="see-more-sentences-container" class="text-center d-none mb-5">

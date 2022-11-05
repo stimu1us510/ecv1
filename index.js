@@ -6,6 +6,7 @@ const loadingSpinner = document.getElementById('fetching-data-loader')
 const sentencesContainer = document.getElementById('sentences-container')
 const errorMessageBox = document.getElementById('error-message-alert')
 const errorMessageText = document.getElementById('error-message-text')
+const tempFilterButton = document.getElementById('temp-filter-button')
 let user = '' //stores username after auth
 let size = 0 // used for display sentence cards
 let currentTotalPoints = 0
@@ -14,6 +15,10 @@ let isInitialLoad = true //scrolls to first card after fetch, but won't on any m
 let isFiltered = false
 let isFavorited
 var helperToolsToggle = true //temp delete later
+var searchTextDelayTimer
+var textInput = ""
+var textInputEng = ""
+var textInputJpn = ""
 
 signupForm.addEventListener('submit', function(e) {
   e.preventDefault()
@@ -266,15 +271,14 @@ function getSevenDayHistory() {
 
 function loadSentences() {
   const sentences = document.createDocumentFragment()
-  //isFiltered ? sentencesToCreate = fetchedSentencesData.filter(o=>Object.values(o).includes('C 中学標準')) : sentencesToCreate = fetchedSentencesData
-  isFiltered ? sentencesToCreate = fetchedSentencesData.filter(e => e._user_sentences_addon[0]?.isFavorited)
-  : sentencesToCreate = fetchedSentencesData
+  isFiltered ? sentencesToCreate = filterArray(fetchedSentencesData, filters) : sentencesToCreate = fetchedSentencesData
   console.log("sentences loaded")
+  //console.log(sentencesToCreate)
   sentencesToCreate.slice(size, size+50).map(function (e, i) {
     // create card
     let card = document.createElement('div')
-    card.classList.add('card')
-    card.classList.add('mb-5')
+    card.classList.add('card', 'mb-5')
+    //card.classList.add()
     let cardBody = document.createElement('div')
     cardBody.classList.add('card-body')
     // card number
@@ -353,8 +357,17 @@ showMoreButton.onclick = () => {
   loadSentences()
 }
 
+tempFilterButton.addEventListener("click", () => filterSentences())  
+
 const filterSentences = () => {
   isFiltered = !isFiltered
+  if(isFiltered) {
+    event.currentTarget.classList.remove('btn-outline-dark')
+    event.currentTarget.classList.add('btn-dark')
+  } else {
+    event.currentTarget.classList.add('btn-outline-dark')
+    event.currentTarget.classList.remove('btn-dark')
+  }
   clearSentences()
   loadSentences()
   sentencesContainer.scrollIntoView()
@@ -380,7 +393,7 @@ const toggleFavorite = (e) => {
           e._user_sentences_addon = [{isFavorited: false}]
           selectedFavoriteButton.disabled = false
         }
-        if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove()
+        if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove() // TODO: only remove is favorites filter is active
       })
       .catch(function (err) {
       errorAlert('Something went wrong.', err)
@@ -404,11 +417,16 @@ function getLockedSentences() {
   .then(function (data) {
     fetchedSentencesData = data  // JSON from our response saved as fetchedData
     isDatafetched = true
+    //get values for buttons
+    var gradeListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grade))].sort()
+    var pointListForButtons = [...new Set(fetchedSentencesData.map(item => item.Points))].sort((a, b) => a - b)
+    var gramCatListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grammar_Categories[0]))].sort()
+    console.log(gradeListForButtons, pointListForButtons, gramCatListForButtons)
     showMoreButton.classList.remove('d-none')
     hideElements('#error-message-container, #fetching-data-loader')
     loadSentences()
     console.log(data)
-    })
+  })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
 	showMoreButton.classList.add('d-none')
@@ -424,6 +442,46 @@ function errorAlert(errMessage) {
       hideElements('#error-message-container, #error-message-alert')
     //errorMessageBox.classList.add('d-none')
     }, 2000)
+}
+
+
+function filterArray(array, filters) {
+  const filterKeys = Object.keys(filters)
+  return array.filter(item => {
+    // validates all filter criteria
+    return filterKeys.every(key => {
+      // ignores non-function predicates
+      if (typeof filters[key] !== 'function') return true
+      return filters[key](item[key])
+    })
+  })
+}
+
+var filters = {
+  Grade: grade => ['C 中学標準', 'D 中学応用・高校基礎'].includes(grade),
+  Points: points => ['4'].includes(points.toLowerCase()),
+  Match01_by_calc: Match01_by_calc => {if (Match01_by_calc.includes(textInputEng)) return true},
+  JpnPlain: JpnPlain => {if (JpnPlain.includes(textInputJpn)) return true},
+  _user_sentences_addon: fav => fav[0]?.isFavorited === !undefined || true,
+  Grammar_Categories: gramCat => ['01 文の種類', '10 関係詞'].includes(gramCat[0])
+}
+
+function textFilter() {
+  clearTimeout(searchTextDelayTimer)
+  searchTextDelayTimer = setTimeout(function() {
+    textInput = document.getElementById('text-search-input').value
+    if (textInput.match(/[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B/g)) {
+      textInputEng = ''
+      textInputJpn = textInput
+      console.log("input is English")
+    } else {
+      textInputJpn = ''
+      textInputEng = textInput
+      console.log("input is Japanese")
+    }
+    clearSentences()
+    loadSentences()
+  }, 300)
 }
 
 // -- on page load -- //

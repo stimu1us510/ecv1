@@ -321,26 +321,26 @@ if ("webkitSpeechRecognition" in window) {
         //showElements('#translate-button, #listen-button, #start-speech-button')
         })
     
-    // keydown listeners for keyboard controls
-    window.addEventListener('keydown', (event) => {
-    switch (event.key) {
-        case 'q': // stop stt
-            endSpeechButton.click()
-            //timeIsUp()
-            break
-        case 'd': // next list item
-            nextButton.click()
-            break
-        case 'a': // listen to audio
-            listenButton.click()
-            break
-        case 's': // start stt
-            startSpeechButton.click()
-            break
-        case 'w': // show Japanese text
-            translateButton.click()
-        }
-    })
+    // // keydown listeners for keyboard controls
+    // window.addEventListener('keydown', (event) => {
+    // switch (event.key) {
+    //     case 'q': // stop stt
+    //         endSpeechButton.click()
+    //         //timeIsUp()
+    //         break
+    //     case 'd': // next list item
+    //         nextButton.click()
+    //         break
+    //     case 'a': // listen to audio
+    //         listenButton.click()
+    //         break
+    //     case 's': // start stt
+    //         startSpeechButton.click()
+    //         break
+    //     case 'w': // show Japanese text
+    //         translateButton.click()
+    //     }
+    // })
     
 } else {
     status.innerHTML = "Sorry not speech-to-text is not supported 😭";
