@@ -7,24 +7,19 @@ const endSpeechButton = document.getElementById('end-speech-button')
 const nextButton = document.getElementById('next-button')
 const mainOutputDisplay = document.getElementById('main-output-container')
 const japaneseTextDisplay = document.getElementById('japanese-text')
-
-const statusArray = ["Loading...", "Match found!!", "Time's up!"]
 const praiseArray = ["Great!","Good Job!", "Excellent!"]
 const instruction = `<i class="bi bi-play"></i>  Hear the phrase <br><br> <i class="bi bi-lightbulb"></i>  Check the meaning <br><br> <img class="" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/confetti.png" style="height:30px; width:30px;"></img>  Repeat the phrase!`
-
-// -- confetti -- //
-const canvas = document.getElementById('confetticanvas')
-canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true })
-
 let currentModalData = [] //global variable for current sentence data
 let detectedDevice = "unknown"
-//let currentPraise = "Great!"
 let clearedPhrases = []
 let triedPhrases = []
 let isMatched = false
 let timer
 let isTimeUp = false
 
+// -- confetti -- //
+const canvas = document.getElementById('confetticanvas')
+canvas.confetti = canvas.confetti || confetti.create(canvas, { resize: true })
 
 function detectDevice() {
   var ua = navigator.userAgent
@@ -55,7 +50,7 @@ function detectDevice() {
     }
 }
 
-// -- when button on sentence card is pressed and modal opens-- //
+// -- when modal button on the sentence ard is pressed -- //
 function setNewModalData(newSentenceData) {
   // set data
   currentModalData = newSentenceData
@@ -64,7 +59,7 @@ function setNewModalData(newSentenceData) {
   document.querySelector('#points').innerHTML = +LevelShown //+num removed trailing 0
   document.querySelector('#total').innerHTML = currentTotalPoints
   document.querySelectorAll('#final_span, #interim_span').forEach(e => e.innerHTML='')
-  hideElements('#end-speech-button, #mic-active-button, #next-button')
+  hideElements('#end-speech-button, #mic-active-button, #next-button, #japanese-text')
   showElements('#translate-button, #listen-button, #start-speech-button')
   mainOutputDisplay.innerHTML = instruction
   // set audio
@@ -107,15 +102,15 @@ function testConfetti() {
 
 function goToNextCardModal() {
     try { //try click the launch modal button on the next card
-        document.getElementById(currentModalData.SentenceID).closest('.card').nextElementSibling.querySelector("button").click()
+        console.log(document.getElementById(currentModalData.SentenceID.closest('.card').nextElementSibling.querySelector(".modal-btn")))
+        document.getElementById(currentModalData.SentenceID).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
     } catch { try { //catch no more cards in dom error and try create more cards
                 showMoreButton.click()
-                document.getElementById(currentModalData.SentenceID).closest('.card').nextElementSibling.querySelector("button").click()
+                document.getElementById(currentModalData.SentenceID).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
         } catch { //no more cards to create?
             console.warn("There are no more sentences to show")
         }}
 }
-
 
 // -- helper functions -- //
 const disableButtons = listOfElements => document.querySelectorAll(listOfElements).forEach(e => e.disabled = true)
@@ -206,27 +201,12 @@ if ("webkitSpeechRecognition" in window) {
 
     // isMatched = matchesArray.some(substring=>finalResult.toLowerCase().endsWith(substring))
     
-    // if the final result length is shorter than the shortest correct answer 
-    // then don't even match check
     if(finalResult.length < currentModalData.Match01_by_calc.length-1) return 
-
-    console.log("checking for a match now")
-
     if (finalResult.toLocaleLowerCase().includes(currentModalData.Match01_by_calc)) {
         recognition.abort()
         clearTimeout(timer)
         isMatched = true
-        // is matched move to situations
-       
-        console.log("match check finished")
     }
-    
-
-    // if(isMatched) {
-    // recognition.abort() // abort stops returning results after a match, better than recognition.stop()
-    // tBar.set(0)
-    // markCorrectText() 
-    // }
   }
 
   recognition.onspeechend = () => {
@@ -240,8 +220,6 @@ if ("webkitSpeechRecognition" in window) {
     if(isMatched && !clearedPhrases.includes(`${currentModalData.SentenceID}`)) {
         console.log('this is the first correct match on this device: sending data to the server')
         canvas.confetti({spread: 70,origin: { y: 0.9 }})
-        //mainOutputDisplay.style.color = 'green'
-        
         mainOutputDisplay.innerHTML = `
         <span class="fs-3 fw-light">${praiseArray[Math.floor(Math.random() * praiseArray.length)]}</span>
         <br> <br>
@@ -256,7 +234,7 @@ if ("webkitSpeechRecognition" in window) {
         document.getElementById(`${currentModalData.SentenceID}`).innerHTML = 'Cleared!!'
         document.querySelectorAll('#final_span, #interim_span').forEach(e => e.innerHTML='')
         hideElements('#end-speech-button, #mic-active-button')
-        showElements('#main-output-container, #translate-button, #listen-button, #start-speech-button, #next-button')
+        showElements('#main-output-container, #japanese-text, #translate-button, #listen-button, #start-speech-button, #next-button')
         enableButtons('#listen-button, #translate-button')
         submitPointsModal()
     }
@@ -266,8 +244,7 @@ if ("webkitSpeechRecognition" in window) {
         // set display
         hideElements('#end-speech-button, #mic-active-button')
         showElements('#main-output-container, #translate-button, #listen-button, #start-speech-button')
-        mainOutputDisplay.style.color = 'red'
-        mainOutputDisplay.innerHTML = `<span class="fs-1 fw-bold"> Time Up!! </span>`
+        mainOutputDisplay.innerHTML = `<span class="fs-1 fw-bold" style="color:red;"> Time Up!! </span>`
         // enable buttons
         enableButtons('#listen-button, #translate-button')
     }

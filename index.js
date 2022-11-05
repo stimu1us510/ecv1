@@ -340,20 +340,13 @@ function loadSentences() {
     modalButton.addEventListener("click", () => setNewModalData(e)) //pass sentence card data to be set for modal/stt use
     favoritesStar.addEventListener("click", () => toggleFavorite(e))   
   })
-  
   sentencesContainer.appendChild(sentences)
   if (isInitialLoad) sentencesContainer.scrollIntoView()
   isInitialLoad = false
   document.querySelector('#randomizeButton').classList.remove('d-none')
   size = size +50
-  // if(size >= sentencesToCreate.length) showMoreButton.classList.add('d-none')
-  // console.log(sentencesToCreate)
-  // if(sentencesToCreate.length === 0) {
-  //   showElements('#no-results-container')
-  // } else {hideElements('#no-results-container')}
   size >= sentencesToCreate.length ? hideElements('#see-more-sentences-container') : showElements('#see-more-sentences-container')
   sentencesToCreate.length === 0 ? showElements('#no-results-container') : hideElements('#no-results-container')
-
 }
 
 showMoreButton.onclick = () => {
@@ -380,14 +373,14 @@ const toggleFavorite = (e) => {
       .then(function (data) {
         if (data === true ) {
           selectedFavoriteButton.innerHTML = `<i class="bi bi-star-fill icon-yellow"></i>`
-          e._user_sentences_addon[0].isFavorited = true
+          e._user_sentences_addon = [{isFavorited: true}]
+          selectedFavoriteButton.disabled = false
         } else {
           selectedFavoriteButton.innerHTML = `<i class="bi bi-star"></i>`
-          e._user_sentences_addon[0].isFavorited = false
+          e._user_sentences_addon = [{isFavorited: false}]
+          selectedFavoriteButton.disabled = false
         }
-      
         if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove()
-        selectedFavoriteButton.disabled = false
       })
       .catch(function (err) {
       errorAlert('Something went wrong.', err)
