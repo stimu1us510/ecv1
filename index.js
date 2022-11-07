@@ -1,9 +1,11 @@
 const signupForm = document.getElementById('signup-form')
 const loginForm = document.getElementById('login-form')
 const helperTools = document.getElementById('helper-tools')
-const showMoreButton = document.getElementById('see-more-sentences-container')
 const loadingSpinner = document.getElementById('fetching-data-loader')
+const filtersContainer = document.getElementById('filters-container')
+const buttonFilterContainer = document.getElementById('button-filters-container')
 const sentencesContainer = document.getElementById('sentences-container')
+const showMoreButton = document.getElementById('see-more-sentences-container')
 const errorMessageBox = document.getElementById('error-message-alert')
 const errorMessageText = document.getElementById('error-message-text')
 const tempFilterButton = document.getElementById('temp-filter-button')
@@ -91,8 +93,9 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
     setAuthDisp()
-    getDailyTotalScoreBreakdown() 
-    getSevenDayHistory()
+    //getDailyTotalScoreBreakdown() 
+    //getSevenDayHistory()
+    getLockedSentences()
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
@@ -271,9 +274,10 @@ function getSevenDayHistory() {
 
 function loadSentences() {
   const sentences = document.createDocumentFragment()
-  isFiltered ? sentencesToCreate = filterArray(fetchedSentencesData, filters) : sentencesToCreate = fetchedSentencesData
-  console.log("sentences loaded")
-  //console.log(sentencesToCreate)
+  //isFiltered ? sentencesToCreate = filterArray(fetchedSentencesData, filters) : sentencesToCreate = fetchedSentencesData
+  sentencesToCreate = filterArray(fetchedSentencesData, filters)
+  //console.log("sentences loaded")
+  console.log(sentencesToCreate)
   sentencesToCreate.slice(size, size+50).map(function (e, i) {
     // create card
     let card = document.createElement('div')
@@ -345,7 +349,7 @@ function loadSentences() {
     favoritesStar.addEventListener("click", () => toggleFavorite(e))   
   })
   sentencesContainer.appendChild(sentences)
-  if (isInitialLoad) sentencesContainer.scrollIntoView()
+  if (isInitialLoad) filtersContainer.scrollIntoView()
   isInitialLoad = false
   document.querySelector('#randomizeButton').classList.remove('d-none')
   size = size +50
@@ -417,13 +421,16 @@ function getLockedSentences() {
   .then(function (data) {
     fetchedSentencesData = data  // JSON from our response saved as fetchedData
     isDatafetched = true
-    //get values for buttons
+    //get values for filter buttons
     var gradeListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grade))].sort()
     var pointListForButtons = [...new Set(fetchedSentencesData.map(item => item.Points))].sort((a, b) => a - b)
     var gramCatListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grammar_Categories[0]))].sort()
-    console.log(gradeListForButtons, pointListForButtons, gramCatListForButtons)
+    createFilterButtons(gradeListForButtons,'button-filters-container', selectedGradeFiltersArray)
+    createFilterButtons(pointListForButtons,'button-filters-container', selectedPointsFiltersArray)
+    createFilterButtons(gramCatListForButtons,'button-filters-container', selectedGrammarCatArray)
     showMoreButton.classList.remove('d-none')
     hideElements('#error-message-container, #fetching-data-loader')
+    showElements('#filters-container')
     loadSentences()
     console.log(data)
   })
@@ -444,32 +451,75 @@ function errorAlert(errMessage) {
     }, 2000)
 }
 
-
+// -- filtering -- //
 function filterArray(array, filters) {
   const filterKeys = Object.keys(filters)
   return array.filter(item => {
-    // validates all filter criteria
     return filterKeys.every(key => {
-      // ignores non-function predicates
       if (typeof filters[key] !== 'function') return true
       return filters[key](item[key])
     })
   })
 }
 
+// arrays to store currently selected filters
+let selectedGradeFiltersArray = []
+let selectedPointsFiltersArray = []
+let selectedGrammarCatArray = []
+
+
 var filters = {
-  Grade: grade => ['C 中学標準', 'D 中学応用・高校基礎'].includes(grade),
-  Points: points => ['4'].includes(points.toLowerCase()),
+  //Grade: grade => selectedGradeFiltersArray.includes(grade) || grade.length != 0,
+  //Grade: grade => ['C 中学標準', 'D 中学応用・高校基礎'].includes(grade),
+  Grade: grade => selectedGradeFiltersArray.includes(grade) || selectedGradeFiltersArray.length === 0,
+  Points: points => selectedPointsFiltersArray.includes(points.toLowerCase()) || selectedPointsFiltersArray.length === 0,
   Match01_by_calc: Match01_by_calc => {if (Match01_by_calc.includes(textInputEng)) return true},
   JpnPlain: JpnPlain => {if (JpnPlain.includes(textInputJpn)) return true},
-  _user_sentences_addon: fav => fav[0]?.isFavorited === !undefined || true,
-  Grammar_Categories: gramCat => ['01 文の種類', '10 関係詞'].includes(gramCat[0])
+  //_user_sentences_addon: fav => fav[0]?.isFavorited === !undefined || true,
+  Grammar_Categories: gramCat => selectedGrammarCatArray.includes(gramCat[0]) || selectedGrammarCatArray.length === 0
+}
+
+function createFilterButtons(array, appendLocationIdString, filterTypeArray) {
+  const arrayContainerFragment = document.createDocumentFragment()
+  let arrayButtonsContainer = document.createElement('div')
+  arrayButtonsContainer.classList.add('d-flex', 'flex-row')
+  array.map(function (e, i) {
+    let arrayButton = document.createElement('button')
+    arrayButton.classList.add('btn', 'btn-outline-primary', 'ms-2', 'mb-2')
+    arrayButton.setAttribute('id', `${array[i].split(' ').join('').replace('・','')}`)
+    arrayButton.innerHTML = `${array[i]}`
+    arrayButtonsContainer.appendChild(arrayButton) 
+    arrayContainerFragment.appendChild(arrayButtonsContainer)
+    arrayButton.addEventListener("click", () => addFilterToFilterListArray(e, filterTypeArray))
+  })
+  document.getElementById(appendLocationIdString).appendChild(arrayContainerFragment)
+  //console.log(buttonFilterContainer)
+  //console.log(arrayContainerFragment)
+}
+
+
+function addFilterToFilterListArray(e, filterTypeArray) {
+  if (filterTypeArray.includes(e)) {
+    filterTypeArray.splice(filterTypeArray.indexOf(e.toString()),1)
+    console.log(e + " was found", filterTypeArray)
+    //styling
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('btn-outline-primary')
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.remove('btn-primary')
+  } else {
+    filterTypeArray.push(e)
+    console.log(e + " was pushed", filterTypeArray)
+    //styling
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.remove('btn-outline-primary')
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('btn-primary')
+  }
+  clearSentences()
+  loadSentences()
 }
 
 function textFilter() {
   clearTimeout(searchTextDelayTimer)
   searchTextDelayTimer = setTimeout(function() {
-    textInput = document.getElementById('text-search-input').value
+    textInput = document.getElementById('text-search-input').value.toLowerCase()
     if (textInput.match(/[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B/g)) {
       textInputEng = ''
       textInputJpn = textInput
@@ -479,10 +529,12 @@ function textFilter() {
       textInputEng = textInput
       console.log("input is Japanese")
     }
+    if(textInput.length > 0) isFiltered = true //temp auto filter on value - TODO: add if any filters have values toggle filtered
     clearSentences()
     loadSentences()
   }, 300)
 }
+// add listener to text search input
 
 // -- on page load -- //
 authMe2()
