@@ -489,7 +489,7 @@ function createFilterButtons(array, appendLocationIdString, filterTypeArray) {
   //arrayButtonsContainer.innerHTML = `HEADER NAME <br>`
   array.map(function (e, i) {
     let arrayButton = document.createElement('button')
-    arrayButton.classList.add('btn', 'btn-primary', 'ms-2', 'mb-2', 'fw-bold', 'opacity-85')
+    arrayButton.classList.add('btn', 'btn-outline-primary', 'ms-2', 'mb-2', 'fw-bold', 'opacity-75')
     arrayButton.setAttribute('id', `${array[i].split(' ').join('').replace('・','')}`)
     arrayButton.innerHTML = `${array[i]}`
     arrayButtonsContainer.appendChild(arrayButton) 
@@ -507,11 +507,12 @@ function addFilterToFilterListArray(e, filterTypeArray) {
     filterTypeArray.splice(filterTypeArray.indexOf(e.toString()),1)
     console.log(e + " was found", filterTypeArray)
     document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.remove('active','opacity-100')
-
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).innerHTML = e
   } else {
     filterTypeArray.push(e)
     console.log(e + " was pushed", filterTypeArray)
     document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('active', 'opacity-100')
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).innerHTML = `<span>${e}  &nbsp; <i class="bi bi-x-lg"></i></span>`
   }
   clearSentences()
   loadSentences()

@@ -231,7 +231,7 @@ if ("webkitSpeechRecognition" in window) {
         <span class="text-secondary">${currentModalData.JpnPlain}</span>
         `
         document.getElementById(`${currentModalData.SentenceID}`).classList.add('btn-outline-warning')
-        document.getElementById(`${currentModalData.SentenceID}`).classList.remove('btn-outline-secondary')
+        document.getElementById(`${currentModalData.SentenceID}`).classList.remove('btn-outline-danger')
         document.getElementById(`${currentModalData.SentenceID}`).innerHTML = 'Cleared!!'
         document.querySelectorAll('#final_span, #interim_span').forEach(e => e.innerHTML='')
         hideElements('#end-speech-button, #mic-active-button')
