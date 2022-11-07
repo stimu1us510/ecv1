@@ -327,11 +327,11 @@ function loadSentences() {
     let modalButtonContainer = document.createElement('div')
     modalButtonContainer.classList.add('d-flex', 'flex-row-reverse')
     let modalButton = document.createElement('button')
-    modalButton.classList.add('btn', 'btn-outline-secondary', 'modal-btn', 'rounded-1')
+    modalButton.classList.add('btn', 'btn-outline-danger', 'modal-btn', 'rounded-1', 'border-4')
+    modalButton.setAttribute('style', 'border-opacity: 0.5; border-width: 2px;')
     modalButton.setAttribute('id', `${e.SentenceID}`)
     modalButton.setAttribute('data-bs-toggle', 'modal')
     modalButton.setAttribute('data-bs-target', '#exampleModal')
-    //modalButton.setAttribute('style', 'border-opacity: 0.5; border-width: 2px;')
     modalButton.innerHTML = `<span class="fw-bold"> ${e.LevelShown} ${e.LevelShown > 1 ? 'pts' : 'pt'}!</span>`
     modalButtonContainer.appendChild(modalButton)
     
@@ -397,7 +397,9 @@ const toggleFavorite = (e) => {
           e._user_sentences_addon = [{isFavorited: false}]
           selectedFavoriteButton.disabled = false
         }
-        if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove() // TODO: only remove is favorites filter is active
+        //if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove() // TODO: only remove is favorites filter is active
+        clearSentences()
+        loadSentences()
       })
       .catch(function (err) {
       errorAlert('Something went wrong.', err)
@@ -425,9 +427,11 @@ function getLockedSentences() {
     var gradeListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grade))].sort()
     var pointListForButtons = [...new Set(fetchedSentencesData.map(item => item.Points))].sort((a, b) => a - b)
     var gramCatListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grammar_Categories[0]))].sort()
+    var favoritedForButton = ['toggle favorites']
     createFilterButtons(gradeListForButtons,'button-filters-container', selectedGradeFiltersArray)
     createFilterButtons(pointListForButtons,'button-filters-container', selectedPointsFiltersArray)
     createFilterButtons(gramCatListForButtons,'button-filters-container', selectedGrammarCatArray)
+    createFilterButtons(favoritedForButton,'button-filters-container', selectedFavoritedArray)
     showMoreButton.classList.remove('d-none')
     hideElements('#error-message-container, #fetching-data-loader')
     showElements('#filters-container')
@@ -466,15 +470,14 @@ function filterArray(array, filters) {
 let selectedGradeFiltersArray = []
 let selectedPointsFiltersArray = []
 let selectedGrammarCatArray = []
-
+let selectedFavoritedArray = []
 
 var filters = {
-  //Grade: grade => selectedGradeFiltersArray.includes(grade) || grade.length != 0,
-  //Grade: grade => ['C 中学標準', 'D 中学応用・高校基礎'].includes(grade),
   Grade: grade => selectedGradeFiltersArray.includes(grade) || selectedGradeFiltersArray.length === 0,
   Points: points => selectedPointsFiltersArray.includes(points.toLowerCase()) || selectedPointsFiltersArray.length === 0,
   Match01_by_calc: Match01_by_calc => {if (Match01_by_calc.includes(textInputEng)) return true},
   JpnPlain: JpnPlain => {if (JpnPlain.includes(textInputJpn)) return true},
+  _user_sentences_addon: fav => fav[0]?.isFavorited === true && selectedFavoritedArray.includes('toggle favorites') || selectedFavoritedArray.length === 0,
   //_user_sentences_addon: fav => fav[0]?.isFavorited === !undefined || true,
   Grammar_Categories: gramCat => selectedGrammarCatArray.includes(gramCat[0]) || selectedGrammarCatArray.length === 0
 }
@@ -482,10 +485,11 @@ var filters = {
 function createFilterButtons(array, appendLocationIdString, filterTypeArray) {
   const arrayContainerFragment = document.createDocumentFragment()
   let arrayButtonsContainer = document.createElement('div')
-  arrayButtonsContainer.classList.add('d-flex', 'flex-row')
+  arrayButtonsContainer.classList.add('d-flex', 'flex-row', 'flex-wrap', 'justify-content-start', 'align-items-center')
+  //arrayButtonsContainer.innerHTML = `HEADER NAME <br>`
   array.map(function (e, i) {
     let arrayButton = document.createElement('button')
-    arrayButton.classList.add('btn', 'btn-outline-primary', 'ms-2', 'mb-2')
+    arrayButton.classList.add('btn', 'btn-primary', 'ms-2', 'mb-2', 'fw-bold', 'opacity-85')
     arrayButton.setAttribute('id', `${array[i].split(' ').join('').replace('・','')}`)
     arrayButton.innerHTML = `${array[i]}`
     arrayButtonsContainer.appendChild(arrayButton) 
@@ -502,15 +506,12 @@ function addFilterToFilterListArray(e, filterTypeArray) {
   if (filterTypeArray.includes(e)) {
     filterTypeArray.splice(filterTypeArray.indexOf(e.toString()),1)
     console.log(e + " was found", filterTypeArray)
-    //styling
-    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('btn-outline-primary')
-    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.remove('btn-primary')
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.remove('active','opacity-100')
+
   } else {
     filterTypeArray.push(e)
     console.log(e + " was pushed", filterTypeArray)
-    //styling
-    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.remove('btn-outline-primary')
-    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('btn-primary')
+    document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('active', 'opacity-100')
   }
   clearSentences()
   loadSentences()
@@ -523,18 +524,15 @@ function textFilter() {
     if (textInput.match(/[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B/g)) {
       textInputEng = ''
       textInputJpn = textInput
-      console.log("input is English")
     } else {
       textInputJpn = ''
       textInputEng = textInput
-      console.log("input is Japanese")
     }
     if(textInput.length > 0) isFiltered = true //temp auto filter on value - TODO: add if any filters have values toggle filtered
     clearSentences()
     loadSentences()
   }, 300)
 }
-// add listener to text search input
 
 // -- on page load -- //
 authMe2()
