@@ -15,7 +15,6 @@ let currentTotalPoints = 0
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
 let isFiltered = false
-//let isFavorited
 var helperToolsToggle = true //temp delete later
 var searchTextDelayTimer
 var textInput = ""
@@ -87,15 +86,15 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
         setNoAuthDisp()
         showHero()
     } else {
-      //console.log("sucessfully auth")
       return response.json()
     }})
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
     setAuthDisp()
-    //getDailyTotalScoreBreakdown() 
-    //getSevenDayHistory()
-    getLockedSentences()
+    // -- uncomment below to enable dashboard charts -- //
+    getDailyTotalScoreBreakdown() 
+    getSevenDayHistory()
+    getLockedSentences() // gets sentences on auth automatically now
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
@@ -167,7 +166,7 @@ document.querySelector("#randomizeButton").onclick = () => {
     var loadedSentenceCards = document.querySelector('#sentences-container') //items list must be first match
     var sentenceCardsToShuffle = loadedSentenceCards.querySelectorAll('.card')
     for(let i = sentenceCardsToShuffle.length; i >= 0; i--) loadedSentenceCards.appendChild(sentenceCardsToShuffle[Math.random() * i | 0])
-    sentencesContainer.scrollIntoView()
+    filtersContainer.scrollIntoView()
     //window.scrollTo(0, document.getElementById('sentences-container').offsetTop)
     //if(window.scrollY > 400) sentencesContainer.scrollIntoView()
 }
@@ -221,22 +220,17 @@ function getDailyTotalScoreBreakdown() {
   .then(function (response) {return response.json()})
   .then(function (data) {
     if (data === 0) return document.querySelector('#current-total-score').innerHTML = 0
-    
     currentTotalPoints = data[0].totalPoints
     document.querySelector('#current-total-score').innerHTML = currentTotalPoints
-
     let dataNames = {0:'one', 1:'two', 2:'three', 3:'four', 4:'five', 5:'six', 6:'seven', 7:'eight', 8:'nine', 9:'ten'} //for json scheme
-    
     // donut chart two: daily breakdown points per level
     myChartTwo.config.data.datasets[0].data.length = 0
     for (let i = 0; i < 10; i++, dataNames) myChartTwo.config.data.datasets[0].data.push(data[0][dataNames[i]])
     myChartTwo.update('none')
-   
     // donut chart one: daily breakdown points per level
     myChartThree.config.data.datasets[0].data.length = 0
     for (let i = 0; i < 10; i++, dataNames) myChartThree.config.data.datasets[0].data.push(data[0][dataNames[i]] / (i+1))
     myChartThree.update('none')
-
     })
   .catch(function (err) {
     errorAlert('Something went wrong.', err)
@@ -251,20 +245,16 @@ function getSevenDayHistory() {
   })
   .then(function (response) {return response.json()})
   .then(function (data) {
-    
     myChartOne.config.data.datasets[0].data.length = 0
     myChartOne.config.data.labels.length = 0
-
     data.map(dataObject => {
         dataObject.created_at = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric' }).format(dataObject.created_at)
         myChartOne.data.labels.push(dataObject.created_at)
         myChartOne.config.data.datasets[0].data.push(dataObject.totalPoints)
     })
-    
     myChartOne.data.labels = myChartOne.data.labels.slice(-7)
     myChartOne.config.data.datasets[0].data = myChartOne.config.data.datasets[0].data.slice(-7)
     myChartOne.update('none')
-
     })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
@@ -276,13 +266,11 @@ function loadSentences() {
   const sentences = document.createDocumentFragment()
   //isFiltered ? sentencesToCreate = filterArray(fetchedSentencesData, filters) : sentencesToCreate = fetchedSentencesData
   sentencesToCreate = filterArray(fetchedSentencesData, filters)
-  //console.log("sentences loaded")
   console.log(sentencesToCreate)
   sentencesToCreate.slice(size, size+50).map(function (e, i) {
-    // create card
+    // create card & body
     let card = document.createElement('div')
-    card.classList.add('card', 'mb-5')
-    //card.classList.add()
+    card.classList.add('card', 'sentence-card', 'mb-5')
     let cardBody = document.createElement('div')
     cardBody.classList.add('card-body')
     // card number
@@ -329,7 +317,8 @@ function loadSentences() {
     let modalButton = document.createElement('button')
     modalButton.classList.add('btn', 'btn-outline-danger', 'modal-btn', 'rounded-1', 'border-4')
     modalButton.setAttribute('style', 'border-opacity: 0.5; border-width: 2px;')
-    modalButton.setAttribute('id', `${e.SentenceID}`)
+    //modalButton.setAttribute('id', `${e.SentenceID}`)
+    modalButton.setAttribute('id', `modal-button-${e.id}`)
     modalButton.setAttribute('data-bs-toggle', 'modal')
     modalButton.setAttribute('data-bs-target', '#exampleModal')
     modalButton.innerHTML = `<span class="fw-bold"> ${e.LevelShown} ${e.LevelShown > 1 ? 'pts' : 'pt'}!</span>`
@@ -397,7 +386,6 @@ const toggleFavorite = (e) => {
           e._user_sentences_addon = [{isFavorited: false}]
           selectedFavoriteButton.disabled = false
         }
-        //if (isFiltered && data === false) selectedFavoriteButton.parentElement.parentElement.parentElement.remove() // TODO: only remove is favorites filter is active
         clearSentences()
         loadSentences()
       })
@@ -414,7 +402,6 @@ function showKey() {
 
 function getLockedSentences() {
   showElements('#error-message-container, #fetching-data-loader')
-  //loadingSpinner.classList.remove('d-none') //display fetching data
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/sentences-with-auth', {
   method: 'GET',
   headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
@@ -422,16 +409,16 @@ function getLockedSentences() {
   .then(function (response) {return response.json()})
   .then(function (data) {
     fetchedSentencesData = data  // JSON from our response saved as fetchedData
-    isDatafetched = true
-    //get values for filter buttons
+    isDatafetched = true //TODO: cache idea
+    //create values for filter buttons
     var gradeListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grade))].sort()
     var pointListForButtons = [...new Set(fetchedSentencesData.map(item => item.Points))].sort((a, b) => a - b)
     var gramCatListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grammar_Categories[0]))].sort()
     var favoritedForButton = ['toggle favorites']
-    createFilterButtons(gradeListForButtons,'button-filters-container', selectedGradeFiltersArray)
-    createFilterButtons(pointListForButtons,'button-filters-container', selectedPointsFiltersArray)
-    createFilterButtons(gramCatListForButtons,'button-filters-container', selectedGrammarCatArray)
-    createFilterButtons(favoritedForButton,'button-filters-container', selectedFavoritedArray)
+    createFilterButtons(gradeListForButtons,'button-filters-container', selectedGradeFiltersArray, '学習時期の目安')
+    createFilterButtons(pointListForButtons,'button-filters-container', selectedPointsFiltersArray, 'リピート難易度')
+    createFilterButtons(gramCatListForButtons,'button-filters-container', selectedGrammarCatArray, '関連する文法項目')
+    createFilterButtons(favoritedForButton,'button-filters-container', selectedFavoritedArray, 'filter by favorited')
     showMoreButton.classList.remove('d-none')
     hideElements('#error-message-container, #fetching-data-loader')
     showElements('#filters-container')
@@ -447,11 +434,9 @@ function getLockedSentences() {
 
 function errorAlert(errMessage) {
     showElements('#error-message-container, #error-message-alert')
-    //errorMessageBox.classList.remove('d-none')
     errorMessageText.innerHTML = errMessage
     setTimeout(() => {
       hideElements('#error-message-container, #error-message-alert')
-    //errorMessageBox.classList.add('d-none')
     }, 2000)
 }
 
@@ -478,18 +463,17 @@ var filters = {
   Match01_by_calc: Match01_by_calc => {if (Match01_by_calc.includes(textInputEng)) return true},
   JpnPlain: JpnPlain => {if (JpnPlain.includes(textInputJpn)) return true},
   _user_sentences_addon: fav => fav[0]?.isFavorited === true && selectedFavoritedArray.includes('toggle favorites') || selectedFavoritedArray.length === 0,
-  //_user_sentences_addon: fav => fav[0]?.isFavorited === !undefined || true,
   Grammar_Categories: gramCat => selectedGrammarCatArray.includes(gramCat[0]) || selectedGrammarCatArray.length === 0
 }
 
-function createFilterButtons(array, appendLocationIdString, filterTypeArray) {
+function createFilterButtons(array, appendLocationIdString, filterTypeArray, headerName) {
   const arrayContainerFragment = document.createDocumentFragment()
   let arrayButtonsContainer = document.createElement('div')
-  arrayButtonsContainer.classList.add('d-flex', 'flex-row', 'flex-wrap', 'justify-content-start', 'align-items-center')
-  //arrayButtonsContainer.innerHTML = `HEADER NAME <br>`
+  arrayButtonsContainer.classList.add('d-flex', 'flex-row', 'flex-wrap', 'justify-content-center', 'align-items-center', 'mb-2')
+  arrayButtonsContainer.innerHTML = `<div class="w-100 mb-1 text-center fs-6 text-muted">${headerName}</div>`
   array.map(function (e, i) {
     let arrayButton = document.createElement('button')
-    arrayButton.classList.add('btn', 'btn-outline-primary', 'ms-2', 'mb-2', 'fw-bold', 'opacity-75')
+    arrayButton.classList.add('btn', 'btn-outline-primary', 'filter-btn', 'me-2', 'mb-2', 'fw-bold', 'opacity-75')
     arrayButton.setAttribute('id', `${array[i].split(' ').join('').replace('・','')}`)
     arrayButton.innerHTML = `${array[i]}`
     arrayButtonsContainer.appendChild(arrayButton) 
@@ -497,10 +481,7 @@ function createFilterButtons(array, appendLocationIdString, filterTypeArray) {
     arrayButton.addEventListener("click", () => addFilterToFilterListArray(e, filterTypeArray))
   })
   document.getElementById(appendLocationIdString).appendChild(arrayContainerFragment)
-  //console.log(buttonFilterContainer)
-  //console.log(arrayContainerFragment)
 }
-
 
 function addFilterToFilterListArray(e, filterTypeArray) {
   if (filterTypeArray.includes(e)) {
@@ -529,11 +510,9 @@ function textFilter() {
       textInputJpn = ''
       textInputEng = textInput
     }
-    if(textInput.length > 0) isFiltered = true //temp auto filter on value - TODO: add if any filters have values toggle filtered
     clearSentences()
     loadSentences()
   }, 300)
 }
-
 // -- on page load -- //
 authMe2()

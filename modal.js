@@ -8,7 +8,7 @@ const nextButton = document.getElementById('next-button')
 const mainOutputDisplay = document.getElementById('main-output-container')
 const japaneseTextDisplay = document.getElementById('japanese-text')
 const praiseArray = ["Great!","Good Job!", "Excellent!"]
-const instruction = `<i class="bi bi-play"></i>  Hear the phrase <br><br> <i class="bi bi-lightbulb"></i>  Check the meaning <br><br> <img class="" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/confetti.png" style="height:30px; width:30px;"></img>  Repeat the phrase!`
+const instruction = `<i class="bi bi-play"></i>  Hear the phrase <br><br> <i class="bi bi-lightbulb"></i>  Check the meaning <br><br> <i class="bi bi-mic-fill"></i>  Repeat the phrase!`
 let currentModalData = [] //global variable for current sentence data
 let detectedDevice = "unknown"
 let clearedPhrases = []
@@ -75,7 +75,7 @@ function submitPointsModal() {
     let dateToSend = date.toISOString()
     let payload = { 
         pointsGained : parseFloat(currentModalData.LevelShown), 
-        timeStamp : dateToSend 
+        timeStamp : dateToSend,
     }
     fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/user_history/{user_history_id}/point_dist', {
     method: 'POST',
@@ -103,11 +103,12 @@ function testConfetti() {
 
 function goToNextCardModal() {
     try { //try click the launch modal button on the next card
-        console.log(document.getElementById(currentModalData.SentenceID.closest('.card').nextElementSibling.querySelector(".modal-btn")))
-        document.getElementById(currentModalData.SentenceID).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
+        console.log(currentModalData.id)
+        console.log(document.getElementById(`modal-button-${currentModalData.id}`.closest('.card').nextElementSibling.querySelector(".modal-btn")))
+        document.getElementById(`modal-button-${currentModalData.id}`).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
     } catch { try { //catch no more cards in dom error and try create more cards
                 showMoreButton.click()
-                document.getElementById(currentModalData.SentenceID).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
+                document.getElementById(`modal-button-${currentModalData.id}`).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
         } catch { //no more cards to create?
             console.warn("There are no more sentences to show")
         }}
@@ -230,9 +231,9 @@ if ("webkitSpeechRecognition" in window) {
         <hr class="hr-bar">
         <span class="text-secondary">${currentModalData.JpnPlain}</span>
         `
-        document.getElementById(`${currentModalData.SentenceID}`).classList.add('btn-outline-warning')
-        document.getElementById(`${currentModalData.SentenceID}`).classList.remove('btn-outline-danger')
-        document.getElementById(`${currentModalData.SentenceID}`).innerHTML = 'Cleared!!'
+        document.getElementById(`modal-button-${currentModalData.id}`).classList.add('btn-outline-warning')
+        document.getElementById(`modal-button-${currentModalData.id}`).classList.remove('btn-outline-danger')
+        document.getElementById(`modal-button-${currentModalData.id}`).innerHTML = 'Cleared!!'
         document.querySelectorAll('#final_span, #interim_span').forEach(e => e.innerHTML='')
         hideElements('#end-speech-button, #mic-active-button')
         showElements('#main-output-container, #japanese-text, #translate-button, #listen-button, #start-speech-button, #next-button')
@@ -346,35 +347,3 @@ if ("webkitSpeechRecognition" in window) {
 } else {
     status.innerHTML = "Sorry not speech-to-text is not supported 😭";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -- on page load -- //
-// detectDevice()

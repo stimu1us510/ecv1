@@ -63,7 +63,7 @@
         <button id="translate-button" class="btn btn-light btn-lg border border-dark"><i class="bi bi-lightbulb"></i></button>
         <button id="listen-button" class="btn btn-light btn-lg border border-dark"><i class="bi bi-play"></i></button>
         <button id="end-speech-button" class="btn btn-outline-danger btn-lg d-none"><i class="bi bi-mic-mute"></i></button>
-        <button id="start-speech-button" class="btn btn-warning btn-lg"><img class="svg-icon" src="https://surasura-challenge.com/wpfiles/wp-content/uploads/2022/09/confetti.png" style="height:20px; width:20px;"></button>
+        <button id="start-speech-button" class="btn btn-warning btn-lg"><i class="bi bi-mic-fill"></i></button>
         <button id="mic-active-button" class="btn btn-light btn-lg d-none"><span class="spinner-grow spinner-grow-sm text-danger" role="status" aria-hidden="true"></span></button>
         <button id="next-button" class="btn btn-success btn-lg d-none"><i class="bi bi-arrow-right-circle"></i></button>
       </div>
@@ -118,7 +118,6 @@
 </nav>
 
 <div id="main-wrapper" class="container-xxl d-flex justify-content-start flex-column" style="height: 80vh; padding:0;"> <!-- main-page wrapper for max-width -->
-  
   <!-- temp helper tools  -->
   <div id="helper-tools" class="d-flex justify-content-center d-none position-fixed position-absolute top-0 end-0" style="z-index: 99999999999;">
     <div class="card">
@@ -282,7 +281,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- point entry form -->
@@ -366,16 +364,15 @@
   </div>
 
   <!-- filters -->
-  <div id="filters-container" class="card m-2 d-none">
+  <div id="filters-container" class="card mt-4 m-2 d-none">
     <div class="card-header d-flex flex-row">
       <h5 class="ms-2 pt-2">Filter Options<h5>
     </div>
     <div class="card-body">
       <div id="button-filters-container" class=""></div>
-      <input id="text-search-input" class="form-control form-control-lg mt-2 mx-1" type="search" placeholder="Type here in English or Japanese" aria-label="Search" oninput="textFilter();return false;">
+      <input id="text-search-input" class="form-control form-control-lg mt-3 mb-2 mx-1 border-primary" type="search" placeholder="Type here in English or Japanese" aria-label="Search" oninput="textFilter();return false;">
     </div>
   </div>
-
 
   <!-- sentences -->
   <div id="sentences-container" class="mt-4 p-2"></div>
@@ -403,32 +400,33 @@
 
 </div> <!-- body wrapper end -->
 
-<!-- Footer -->
-<div id="footer" class="d-none">
-  <div class="container-xxl d-none d-sm-block mb-1 p-0 m-0">
-    <hr class="mt-0 mb-1">
-    <!-- normal text md+ -->
-    <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
-      <li class="list-group-item border-0 fw-light">About</li>
-      <li class="list-group-item border-0 fw-light">School</li>
-      <li class="list-group-item border-0 fw-light">Help</li>
-      <li class="list-group-item border-0 fw-light">Support</li>
-      <li class="list-group-item border-0 fw-light">Terms</li>
-      <li class="list-group-item border-0 fw-light">Privacy</li>
-    </ul>
-  </div>
+<footer>
+  <div id="footer" class="d-none">
+    <div class="d-none d-sm-block p-0 m-0">
+      <hr class="mt-0 mb-1">
+      <!-- normal text md+ -->
+      <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
+        <li class="list-group-item border-0 fw-light">About</li>
+        <li class="list-group-item border-0 fw-light">School</li>
+        <li class="list-group-item border-0 fw-light">Help</li>
+        <li class="list-group-item border-0 fw-light">Support</li>
+        <li class="list-group-item border-0 fw-light">Terms</li>
+        <li class="list-group-item border-0 fw-light">Privacy</li>
+      </ul>
+    </div>
 
-  <div class="container-xxl d-block d-sm-none mb-3 p-0 m-0">
-    <!-- small icons on sm -->
-    <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
-      <li class="list-group-item d-flex align-items-center border-0 d-block d-sm-none fw-light fs-6 px-2">About</li>
-      <li class="list-group-item border-0 fw-light fs-6 px-2">School</li>
-      <li class="list-group-item border-0 fw-light fs-6 px-2">Help</li>
-      <li class="list-group-item border-0 fw-light fs-6 px-2">Support</li>
-      <li class="list-group-item border-0 fw-light fs-6 px-2">Terms</li>
-      <li class="list-group-item border-0 fw-light fs-6 px-2">Privacy</li>
-    </ul>
+    <div class="container-xxl d-block d-sm-none mb-3 p-0 m-0">
+      <!-- small icons on sm -->
+      <ul class="list-group list-group-horizontal d-flex justify-content-center align-items-center">
+        <li class="list-group-item d-flex align-items-center border-0 d-block d-sm-none fw-light fs-6 px-2">About</li>
+        <li class="list-group-item border-0 fw-light fs-6 px-2">School</li>
+        <li class="list-group-item border-0 fw-light fs-6 px-2">Help</li>
+        <li class="list-group-item border-0 fw-light fs-6 px-2">Support</li>
+        <li class="list-group-item border-0 fw-light fs-6 px-2">Terms</li>
+        <li class="list-group-item border-0 fw-light fs-6 px-2">Privacy</li>
+      </ul>
+    </div>
   </div>
-</div>
+</footer>
 </body>
 </html>
