@@ -125,7 +125,6 @@
             <div class="d-flex flex-row-reverse mb-2"><button class="btn btn-close" onclick="toggleHelperTools()"></button></div>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="showKey()">See Key</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="getLockedSentences()">Get Sentences</button>
-            <button id="temp-filter-button" class="btn btn-outline-dark w-100 mb-2">Filter</button>
             <button class="btn btn-outline-dark w-100 mb-2" onclick="testConfetti()">Test Confetti</button>
             <button type="button" class="btn btn-outline-dark w-100 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
         </div>
@@ -231,7 +230,7 @@
     <div class="container-xxl">
       <div class="card mb-4 mt-2">
         <div class="card-body">
-          <h2 id="history-score-report"> Your total score today is <span id="current-total-score">~</span> !</h2>
+          <h3 id="history-score-report"> Your total score today is <span id="current-total-score">~</span> !</h2>
         </div>
       </div>
     </div>
@@ -370,7 +369,21 @@
     </div>
     <div class="card-body">
       <div id="button-filters-container" class=""></div>
-      <input id="text-search-input" class="form-control form-control-lg mt-3 mb-2 mx-1 border-primary" type="search" placeholder="Type here in English or Japanese" aria-label="Search" oninput="textFilter();return false;">
+    </div>
+
+    <!-- collections dropdown -->
+    <div class="w-100 text-center fs-6 text-muted">Collections</div>
+    <div id="collection-dropdown-container" class="w-100 d-flex justify-content-center p-2">
+      <div class="btn-group w-100">
+        <button id="collections-drop-down" class="btn btn-outline-primary border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+          All Sentences
+        </button>
+        <ul id="collections-list" class="dropdown-menu w-100 text-center">
+          <li><a id="load-all-sentences-from-collections-list" class="dropdown-item" href="" onclick="return false;">All Sentences</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a id="load-new-sentences-from-collections-list" class="dropdown-item" href="" onclick="return false;">NEW!!</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -383,7 +396,7 @@
   </div>
 
   <!-- no results -->
-  <div id="no-results-container" class="text-center d-none mt-2 mb-4 d-flex justify-content-center align-items-center">
+  <div id="no-results-container" class="text-center d-none mt-2 mb-4 mx-4 d-flex justify-content-center align-items-center">
     <div class="alert alert-dark w-auto px-5" role="alert">
       <h4 class="alert-heading mt-3">No results were found!</h4>
       <p>Try adjusting filter settings to see results.</p>

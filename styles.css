@@ -56,23 +56,27 @@ html, body {
 }
 
 .sentence-card {
-  animation: fade 0.2s ease-in-out;
+  animation: fade 0.5s ease-in-out;
 }
-.sentence-card:nth-child(2) {
-  animation-delay: .1s;
+
+.fade-in {
+  animation: fade 0.5s ease-in;
 }
-.sentence-card:nth-child(3) {
-  animation-delay: .2s;
-}
-.sentence-card:nth-child(4) {
+/* .sentence-card:nth-child(2) {
   animation-delay: .3s;
 }
-.sentence-card:nth-child(5) {
-  animation-delay: .4s;
+.sentence-card:nth-child(3) {
+  animation-delay: .6s;
 }
+.sentence-card:nth-child(4) {
+  animation-delay: .9s;
+}
+.sentence-card:nth-child(5) {
+  animation-delay: 1.2s;
+} */
 @keyframes fade {
-  0% { opacity: 0; transform: translateY(500px) }
-  100% { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .nested summary {
@@ -91,6 +95,10 @@ html, body {
 
 .icon-yellow {
   color: goldenrod;
+}
+
+.icon-pink {
+  color: hotpink;
 }
 
 .hr-bar {

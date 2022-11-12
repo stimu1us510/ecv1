@@ -14,12 +14,13 @@ let size = 0 // used for display sentence cards
 let currentTotalPoints = 0
 let isDatafetched = false // used for loading sentence cards display
 let isInitialLoad = true //scrolls to first card after fetch, but won't on any more loadSentences calls
-let isFiltered = false
+//let isFiltered = true
 var helperToolsToggle = true //temp delete later
-var searchTextDelayTimer
+var searchTextDelayTimer //temp before timerbar delete later
 var textInput = ""
 var textInputEng = ""
 var textInputJpn = ""
+let sentencesToCreateArray = []
 
 signupForm.addEventListener('submit', function(e) {
   e.preventDefault()
@@ -91,7 +92,7 @@ fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/auth/me', {
   .then(function (data) {
     user = data.name[0].toUpperCase() + data.name.slice(1)
     setAuthDisp()
-    // -- uncomment below to enable dashboard charts -- //
+    // -- get functions for data that is needed on pageload after auth -- //
     getDailyTotalScoreBreakdown() 
     getSevenDayHistory()
     getLockedSentences() // gets sentences on auth automatically now
@@ -111,6 +112,11 @@ function clearSentences() {
     size = 0
     showMoreButton.classList.add('hide')
     while(sentencesContainer.hasChildNodes()) sentencesContainer.removeChild(sentencesContainer.lastChild)
+}
+
+function reloadSentences(){
+  clearSentences()
+  buildSentenceCards()
 }
 
 function showHero() {
@@ -262,10 +268,9 @@ function getSevenDayHistory() {
   }) 
 }
 
-function loadSentences() {
+function buildSentenceCards() {
   const sentences = document.createDocumentFragment()
-  //isFiltered ? sentencesToCreate = filterArray(fetchedSentencesData, filters) : sentencesToCreate = fetchedSentencesData
-  sentencesToCreate = filterArray(fetchedSentencesData, filters)
+  let sentencesToCreate = filterArray(sentencesToCreateArray, filters) //use sentencesToCreateArray for different datasets
   console.log(sentencesToCreate)
   sentencesToCreate.slice(size, size+50).map(function (e, i) {
     // create card & body
@@ -276,6 +281,18 @@ function loadSentences() {
     // card number
     let number = document.createElement('h4')
     number.innerHTML = `${size === 0 ? i + 1 : size + (i + 1)}`
+    // new marker
+    if(e.Newly_added){
+      var newIcon = document.createElement('div')
+      newIcon.classList.add('mb-1')
+      newIcon.innerHTML = `<i class="bi bi-asterisk icon-pink ms-1"></i> NEW!!`
+    }
+    // set item name
+    if(e.collection_item_name != undefined){
+      var setItemName = document.createElement('div')
+      setItemName.classList.add('mb-2', 'fs-6')
+      setItemName.innerHTML = `${e.collection_item_name}`
+    }
     // grade pill
     let gradePill = document.createElement('div')
     gradePill.classList.add('grade-pill', 'd-inline-flex', 'mb-3', 'px-2', 'py-1', 'fw-light', 'text-success', 'bg-success', 'bg-opacity-10', 'border', 'border-success', 'border-opacity-10', 'rounded-2')
@@ -324,9 +341,12 @@ function loadSentences() {
     modalButton.innerHTML = `<span class="fw-bold"> ${e.LevelShown} ${e.LevelShown > 1 ? 'pts' : 'pt'}!</span>`
     modalButtonContainer.appendChild(modalButton)
     
-    // append each element to card body
     //cardBody.appendChild(number)
     //cardBody.appendChild(gradePill)
+    
+    // append each element to card body
+    if(newIcon) cardBody.appendChild(newIcon)
+    if(setItemName) cardBody.appendChild(setItemName) //only on set cards
     cardBody.appendChild(gradeFavoritesContainer)
     cardBody.appendChild(mainAccord)
     cardBody.appendChild(modalButtonContainer)
@@ -347,23 +367,7 @@ function loadSentences() {
 }
 
 showMoreButton.onclick = () => {
-  loadSentences()
-}
-
-tempFilterButton.addEventListener("click", () => filterSentences())  
-
-const filterSentences = () => {
-  isFiltered = !isFiltered
-  if(isFiltered) {
-    event.currentTarget.classList.remove('btn-outline-dark')
-    event.currentTarget.classList.add('btn-dark')
-  } else {
-    event.currentTarget.classList.add('btn-outline-dark')
-    event.currentTarget.classList.remove('btn-dark')
-  }
-  clearSentences()
-  loadSentences()
-  sentencesContainer.scrollIntoView()
+  buildSentenceCards()
 }
 
 const toggleFavorite = (e) => {
@@ -385,9 +389,11 @@ const toggleFavorite = (e) => {
           selectedFavoriteButton.innerHTML = `<i class="bi bi-star"></i>`
           e._user_sentences_addon = [{isFavorited: false}]
           selectedFavoriteButton.disabled = false
+          //console.log(selectedFavoritedArray)
+          if (selectedFavoritedArray.length > 0 ) selectedFavoriteButton.closest('.card').remove() //remove if filter is on
         }
-        clearSentences()
-        loadSentences()
+        //clearSentences()
+        //loadSentences()
       })
       .catch(function (err) {
       errorAlert('Something went wrong.', err)
@@ -396,7 +402,7 @@ const toggleFavorite = (e) => {
 }
 
 function showKey() {
-  console.log(localStorage.getItem('authkey'))
+  //console.log(localStorage.getItem('authkey'))
   errorAlert(`This is the authkey: ${localStorage.getItem('authkey')}`)
 }
 
@@ -410,26 +416,29 @@ function getLockedSentences() {
   .then(function (data) {
     fetchedSentencesData = data  // JSON from our response saved as fetchedData
     isDatafetched = true //TODO: cache idea
-    //create values for filter buttons
-    var gradeListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grade))].sort()
-    var pointListForButtons = [...new Set(fetchedSentencesData.map(item => item.Points))].sort((a, b) => a - b)
-    var gramCatListForButtons = [...new Set(fetchedSentencesData.map(item => item.Grammar_Categories[0]))].sort()
-    var favoritedForButton = ['toggle favorites']
-    createFilterButtons(gradeListForButtons,'button-filters-container', selectedGradeFiltersArray, '学習時期の目安')
-    createFilterButtons(pointListForButtons,'button-filters-container', selectedPointsFiltersArray, 'リピート難易度')
-    createFilterButtons(gramCatListForButtons,'button-filters-container', selectedGrammarCatArray, '関連する文法項目')
-    createFilterButtons(favoritedForButton,'button-filters-container', selectedFavoritedArray, 'filter by favorited')
     showMoreButton.classList.remove('d-none')
     hideElements('#error-message-container, #fetching-data-loader')
     showElements('#filters-container')
-    loadSentences()
-    console.log(data)
+    loadDefaultSentences()
   })
   .catch(function (err) {
 	console.warn('Something went wrong.', err)
 	showMoreButton.classList.add('d-none')
 	errorAlert("Loggin to access this content")
   })    
+}
+
+function createNewFilterInput() {
+  var gradeListForButtons = [...new Set(sentencesToCreateArray.map(item => item.Grade))].sort()
+  var pointListForButtons = [...new Set(sentencesToCreateArray.map(item => item.Points))].sort((a, b) => a - b)
+  var gramCatListForButtons = [...new Set(sentencesToCreateArray.map(item => item.Grammar_Categories[0]))].sort()
+  var favoritedForButton = ['toggle favorites']
+  buttonFilterContainer.innerHTML = '' //clear from dom
+  createFilterButtons(gradeListForButtons,'button-filters-container', selectedGradeFiltersArray, '学習時期の目安')
+  createFilterButtons(pointListForButtons,'button-filters-container', selectedPointsFiltersArray, 'リピート難易度')
+  createFilterButtons(gramCatListForButtons,'button-filters-container', selectedGrammarCatArray, '関連する文法項目')
+  createFilterButtons(favoritedForButton,'button-filters-container', selectedFavoritedArray, 'filter by favorited')
+  createFilterTextInput()
 }
 
 function errorAlert(errMessage) {
@@ -450,13 +459,22 @@ function filterArray(array, filters) {
     })
   })
 }
-
 // arrays to store currently selected filters
 let selectedGradeFiltersArray = []
 let selectedPointsFiltersArray = []
 let selectedGrammarCatArray = []
 let selectedFavoritedArray = []
+let selectedSetArray = []
 
+function clearAllFilterArrays() {
+selectedGradeFiltersArray = []
+selectedPointsFiltersArray = [] 
+selectedGrammarCatArray = [] 
+selectedFavoritedArray = [] 
+selectedSetArray = []
+}
+
+// filters to pass to filterArray function
 var filters = {
   Grade: grade => selectedGradeFiltersArray.includes(grade) || selectedGradeFiltersArray.length === 0,
   Points: points => selectedPointsFiltersArray.includes(points.toLowerCase()) || selectedPointsFiltersArray.length === 0,
@@ -473,7 +491,7 @@ function createFilterButtons(array, appendLocationIdString, filterTypeArray, hea
   arrayButtonsContainer.innerHTML = `<div class="w-100 mb-1 text-center fs-6 text-muted">${headerName}</div>`
   array.map(function (e, i) {
     let arrayButton = document.createElement('button')
-    arrayButton.classList.add('btn', 'btn-outline-primary', 'filter-btn', 'me-2', 'mb-2', 'fw-bold', 'opacity-75')
+    arrayButton.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'filter-btn', 'me-2', 'mb-2', 'fw-bold', 'opacity-75')
     arrayButton.setAttribute('id', `${array[i].split(' ').join('').replace('・','')}`)
     arrayButton.innerHTML = `${array[i]}`
     arrayButtonsContainer.appendChild(arrayButton) 
@@ -481,6 +499,13 @@ function createFilterButtons(array, appendLocationIdString, filterTypeArray, hea
     arrayButton.addEventListener("click", () => addFilterToFilterListArray(e, filterTypeArray))
   })
   document.getElementById(appendLocationIdString).appendChild(arrayContainerFragment)
+}
+
+function createFilterTextInput() {
+  let textInputContainer = document.createElement('div')
+  textInputContainer.innerHTML = `<input id="text-search-input" class="form-control form-control-lg border-primary" type="search" placeholder="Type here in English or Japanese" aria-label="Search" oninput="textFilter();return false;">`
+  buttonFilterContainer.appendChild(textInputContainer)
+  textInputContainer.addEventListener("click", () => textFilter())
 }
 
 function addFilterToFilterListArray(e, filterTypeArray) {
@@ -495,8 +520,7 @@ function addFilterToFilterListArray(e, filterTypeArray) {
     document.getElementById(`${e.split(' ').join('').replace('・','')}`).classList.add('active', 'opacity-100')
     document.getElementById(`${e.split(' ').join('').replace('・','')}`).innerHTML = `<span>${e}  &nbsp; <i class="bi bi-x-lg"></i></span>`
   }
-  clearSentences()
-  loadSentences()
+  reloadSentences()
 }
 
 function textFilter() {
@@ -510,9 +534,112 @@ function textFilter() {
       textInputJpn = ''
       textInputEng = textInput
     }
-    clearSentences()
-    loadSentences()
+    reloadSentences()
   }, 300)
 }
-// -- on page load -- //
+
+let isSet = false
+
+function loadCollection(collectionId, collectionName) {
+  //isFiltered = false
+  isSet = true
+  payload = { collection_id: collectionId}
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/collection_sentences', {
+    method: 'POST',
+    headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') },
+    body: JSON.stringify(payload)  
+    })
+    .then(function (response) {return response.json()})
+    .then(function (data) {
+      //currentSetName = data[0].collection_name
+      sentencesToCreateArray = []
+      data.forEach(e => sentencesToCreateArray.push(e._sentences))
+      sentencesToCreateArray.forEach( (e,i) => e.collection_item_name = data[i].collection_item_name)
+      document.querySelector('#collections-drop-down').innerHTML = collectionName
+      clearAllFilterArrays()
+      createNewFilterInput() //refresh only shows related filters
+      reloadSentences()
+      //showMoreButton.classList.remove('d-none')
+      //hideElements('#error-message-container, #fetching-data-loader')
+      //showElements('#filters-container')
+      console.log(data)
+    })
+    .catch(function (err) {
+    console.warn('Something went wrong.', err)
+    showMoreButton.classList.add('d-none')
+    errorAlert("Loggin to access this content")
+    })    
+}
+
+function loadDefaultSentences() {
+  isSet = false
+  //isFiltered = true
+  sentencesToCreateArray = fetchedSentencesData
+  document.querySelector('#collections-drop-down').innerHTML = `All Sentences`
+  clearAllFilterArrays()
+  createNewFilterInput()
+  reloadSentences()
+}
+
+document.querySelector('#load-all-sentences-from-collections-list').addEventListener("click", () => loadDefaultSentences()) //temp
+document.querySelector('#collections-drop-down').addEventListener("click", () => getCollectionsData()) //temp
+let isCollectionDataFetched = false
+let collectionListArray = []
+
+function getCollectionsData() {
+  if(isCollectionDataFetched) return
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/collections', {
+  method: 'GET',
+  headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
+  })
+  .then(function (response) {return response.json()})
+  .then(function (data) {
+    createCollectionsList(data)
+    collectionListArray = data
+    isCollectionDataFetched = true
+  })
+  .catch(function (err) {
+	console.warn('Something went wrong.', err)
+	errorAlert("unable to get collections data")
+  })    
+}
+
+function createCollectionsList(array) {
+  array.map(function (e, i) {
+    console.log(e)
+    let collectionListItem = document.createElement('li')
+    let collectionListItemLink = document.createElement('a')
+    collectionListItemLink.setAttribute('id', `${e.id}`)
+    collectionListItemLink.setAttribute('href', ``)
+    collectionListItemLink.setAttribute('onclick', `return false;`)
+    collectionListItemLink.classList.add('dropdown-item')
+    collectionListItemLink.innerHTML = `${e.collection_title}`
+    collectionListItemLink.addEventListener("click", () => loadCollection(e.id, e.collection_title))
+    collectionListItem.appendChild(collectionListItemLink) 
+    document.querySelector('#collections-list').appendChild(collectionListItem)
+  })
+}
+
+document.querySelector('#load-new-sentences-from-collections-list').addEventListener("click", () => getNewSentencesData())
+function getNewSentencesData() {
+  //https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/new_sentences
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:oZwmlDc6/new_sentences', {
+  method: 'GET',
+  headers: { 'Content-Type' : 'application/json', 'Authorization' : localStorage.getItem('authkey') }
+  })
+  .then(function (response) {return response.json()})
+  .then(function (data) {
+    sentencesToCreateArray = data
+    document.querySelector('#collections-drop-down').innerHTML = `NEW!`
+    clearAllFilterArrays()
+    createNewFilterInput()
+    reloadSentences()
+  })
+  .catch(function (err) {
+	console.warn('Something went wrong.', err)
+	errorAlert("unable to get collections data")
+  })    
+}
+
+// -- on page load & data is requested only after auth-- //
 authMe2()

@@ -53,6 +53,7 @@ function detectDevice() {
 // -- when modal button on the sentence ard is pressed -- //
 function setNewModalData(newSentenceData) {
   // set data
+  console.log(newSentenceData)
   currentModalData = newSentenceData
   const { AudioURL, EngPlain, EngWordOrder, JpnPlain, JpnWordOrder, LevelShown, Match01_by_calc, SentenceID, TimeLimit, list_of_alternative_matches } = currentModalData
   // set display
@@ -103,14 +104,17 @@ function testConfetti() {
 
 function goToNextCardModal() {
     try { //try click the launch modal button on the next card
-        console.log(currentModalData.id)
-        console.log(document.getElementById(`modal-button-${currentModalData.id}`.closest('.card').nextElementSibling.querySelector(".modal-btn")))
+        //console.log(currentModalData.id)
+        //console.log(document.getElementById(`modal-button-${currentModalData.id}`.closest('.card').nextElementSibling.querySelector(".modal-btn")))
         document.getElementById(`modal-button-${currentModalData.id}`).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
     } catch { try { //catch no more cards in dom error and try create more cards
                 showMoreButton.click()
                 document.getElementById(`modal-button-${currentModalData.id}`).closest('.card').nextElementSibling.querySelector(".modal-btn").click()
         } catch { //no more cards to create?
             console.warn("There are no more sentences to show")
+            document.getElementById('modal-close').click()
+            //TODO: tell the user the reason they didn&t go to a new card 
+            
         }}
 }
 
@@ -124,8 +128,7 @@ nextButton.onclick = () => {
 }
 
 // -- speech-to-text -- //
-if ("webkitSpeechRecognition" in window) {
-  let recognition = new webkitSpeechRecognition()
+  let recognition = new webkitSpeechRecognition() 
   recognition.lang = 'en-US'
   recognition.continuous = true
   recognition.interimResults = true
@@ -344,6 +347,3 @@ if ("webkitSpeechRecognition" in window) {
     //     }
     // })
     
-} else {
-    status.innerHTML = "Sorry not speech-to-text is not supported 😭";
-}
