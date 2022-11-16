@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>英語チャレンジ by 英会話サイモンズ</title>
     <link id="site-icon" rel="icon" href="https://cdn-icons-png.flaticon.com/512/1212/1212830.png" style="filter: invert(1);" type="image/icon type">
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;700&family=Klee+One&family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -72,7 +76,7 @@
 </div>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="container-xxl">
     <a class="navbar-brand mx-1" href="#"><img class="brand-img" style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,6 +119,61 @@
       </ul>
     </div>
   </div>
+</nav> -->
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-lg mb-4">
+  <div class="container-xxl">
+    <a class="navbar-brand mx-1" href="#">
+      <img class="brand-img" style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+      <!-- <span class="navbar-toggler-icon"></span> -->
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"><img class="brand-img" style="max-height:30px;" src="https://softr-prod.imgix.net/applications/b5fedfc4-cd1f-43b7-954c-60ebbf13631a/assets/8bf6e5c1-bbd5-4442-9e19-74515017980c.png"></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body pt-0">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li id="home-button"class="nav-item mx-3">
+            <a class="nav-link" aria-current="page" href="#" onclick="showHero();return false;">Home</a>
+          </li>
+          <li id="dashboard-button"class="nav-item mx-3">
+            <a class="nav-link" aria-current="page" href="" onclick="return false;">Dashboard</a>
+          </li>
+          <li class="nav-item mx-3">
+            <a class="nav-link" href="" onclick="getLockedSentences();return false;">Show All</a>
+          </li>
+          <li class="nav-item mx-3">
+            <a class="nav-link" href="">Collections</a>
+          </li>
+          <li class="nav-item mx-3">
+            <a class="nav-link" href="" onclick="toggleHelperTools();return false;">Helper Tools</a>
+          </li>
+          <li id="log-in-button" class="nav-item mx-3 d-none">
+            <a class="nav-link btn btn-sm btn-outline-dark text-light" href="" onclick="dispLogin();return false;"><b>Login</b></a>
+          </li>
+          <li id="sign-up-button" class="nav-item d-none">
+            <a class="nav-link btn btn-sm btn-light text-dark" href="" onclick="dispSignup();return false;"><b>Signup</b></a>
+          </li>
+          <li id="user-profile-dropdown" class="nav-item dropdown mx-3 d-none">
+            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person fa-lg"></i>Profile
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+              <li><a class="dropdown-item" href="">My History</a></li>
+              <li><a class="dropdown-item" href="">Update Information</a></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item d-flex justify-content-between" href="" onclick="logout();return false;">Logout <i class="bi bi-box-arrow-right"></i></a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <div id="main-wrapper" class="container-xxl d-flex justify-content-start flex-column" style="height: 80vh; padding:0;"> <!-- main-page wrapper for max-width -->
@@ -140,18 +199,18 @@
   </div>
 
   <!-- Hero Section -->
-  <div id="hero-section" class="container-xxl pt-5 d-none">
-    <h2 id="hero-h2"class="d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-bold mb-5 text-dark text-center">
+  <div id="hero-section" class="container-xxl d-none" style="margin-top: 55px;">
+    <h3 id="hero-h2" class="d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-bold mt-5 mb-5 text-center jpn">
       英語を聞いて、リピートするだけ。<br>心地よいレベルを、できるだけ毎日。
-    </h2>
-    <h6 id="hero-h6" class="text-center d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-light mb-5">
+    </h3>
+    <h6 id="hero-h6" class="text-center d-flex justify-content-center flex-row align-items-center text-wrap lh-lg fw-light mb-5 jpn">
       ただし、英語の文字は見ずに、通じる発音で。<br>なかなか challenging ですね。<br>がんばりましょう！ 
     </h6>
     <div class="text-center d-flex flex-row d-flex justify-content-center align-items-center text-decoration-none">
       <div class="btn btn-outline-primary mx-2 mb-5" onclick="dispLogin();return false;">
         Learn More
       </div>
-      <div class="btn btn-primary mx-2 mb-5" onclick="dispLogin();return false;">
+      <div class="btn btn-primary mx-2 mb-5 jpn" onclick="dispLogin();return false;">
         やってみる！ <i class="bi bi-arrow-right"></i>
       </div>
     </div>
@@ -248,7 +307,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="container-xxl">
       <div class="row">
@@ -387,8 +445,8 @@
     </div>
   </div>
 
-  <!-- sentences -->
-  <div id="sentences-container" class="mt-4 p-2"></div>
+  <!-- sentences (made d-none 17/11/2022) -->
+  <div id="sentences-container" class="mt-4 p-2 d-none"></div>
 
   <!-- more sentences -->
   <div id="see-more-sentences-container" class="text-center d-none mb-5">

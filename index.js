@@ -136,7 +136,7 @@ function dispLogin() {
 
 function setAuthDisp() {
   hideElements('#hero-section, #getAuth-forms, #log-in-button, #sign-up-button, #home-button')
-  showElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-container, #footer')
+  showElements('#dashboard-button, #log-out-button, #user-profile-dropdown, #welcome-alert-container, #user-history-container, #sentences-container, #footer')
   document.querySelector('#welcome-user').innerHTML = user
 }
 
@@ -358,7 +358,7 @@ function buildSentenceCards() {
     favoritesStar.addEventListener("click", () => toggleFavorite(e))   
   })
   sentencesContainer.appendChild(sentences)
-  if (isInitialLoad) filtersContainer.scrollIntoView()
+  //if (isInitialLoad) filtersContainer.scrollIntoView()
   isInitialLoad = false
   document.querySelector('#randomizeButton').classList.remove('d-none')
   size = size +50

@@ -1,5 +1,12 @@
 html, body {
+  /* makes scroll to feel instant */
   scroll-behavior: auto !important;
+}
+
+body {
+  /* remove below to restore plain bootstrap look */
+  /* background-color: #f0f0f0 !important; */
+  background-color: white;
 }
 
 .mainAccord--summary {
@@ -57,6 +64,11 @@ html, body {
 
 .sentence-card {
   animation: fade 0.5s ease-in-out;
+  
+  /* remove below to restore plain bootstrap look */
+  /* border: none !important;
+  padding: 2rem !important;
+  font-size: 1.3rem!important; */
 }
 
 .fade-in {
@@ -87,6 +99,11 @@ html, body {
   color: gray;
   border-bottom: 1px solid #bababa;
   margin: 1rem 0 1rem;
+}
+
+.jpn {
+  font-family: 'Roboto', sans-serif;
+  color: #383B3D;
 }
 
 .grade-pill {
